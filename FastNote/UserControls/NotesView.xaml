@@ -6,10 +6,8 @@
              xmlns:local="clr-namespace:FastNote"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
-    <ListBox Margin="10 20 10 10" 
-             Background="{DynamicResource BackgroundDarkBrush}"
-             BorderThickness="0">
+
+    <ListBox BorderThickness="0">
 
         <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
@@ -18,19 +16,17 @@
         </ListBox.ItemsPanel>
 
         <ListBox.Resources>
-            <Style TargetType="{x:Type ListBoxItem}">                
+            <Style TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ListBoxItem}">
-
                             <Border Margin="5"
                                     Padding="5" 
-                                    CornerRadius="5"
-                                    BorderThickness="0 0 0 0" 
-                                    BorderBrush="{StaticResource AzureRegularBrush}"
-                                    Background="{StaticResource AzureRegularBrush}"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Bottom"> 
+                                    CornerRadius="0"
+                                    BorderThickness="1" 
+                                    BorderBrush="{StaticResource ForegroundLightBrush}"
+                                    Background="{StaticResource AzureRegularBrush}"                                    
+                                    VerticalAlignment="Bottom">
                                 <TextBlock Text="{TemplateBinding Content}"                                                
                                            Foreground="White" 
                                            FontSize="15"
@@ -42,9 +38,12 @@
                 </Setter>
             </Style>
         </ListBox.Resources>
+        <ListBox.Background>
+            <SolidColorBrush Color="#FF2B2B2B"/>
+        </ListBox.Background>
         <ListBoxItem Content="Cześć koleżko"/>
         <ListBoxItem Content="Witam serdecznie serdecznie&#x0a;z tej strony Mirosław Zelent"/>
         <ListBoxItem Content="Elo ziom"/>
     </ListBox>
-    
+
 </UserControl>

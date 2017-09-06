@@ -12,13 +12,13 @@ namespace FastNote
         #region Public Properties
         public bool Borderless => mWindow.WindowState == WindowState.Maximized;
 
-        public int Border { get; set; } = 1;
+        public int Border { get; set; } = 0;
         public Thickness BorderThickness => new Thickness(Borderless ? 0 : Border);
 
         public int ResizeBorder { get; set; } = 5;
         public Thickness ResizeBorderThickness => new Thickness(ResizeBorder);
 
-        public int CaptionHeight { get; set; } = 35;
+        public int CaptionHeight { get; set; } = 40;
         public GridLength CaptionHeightGridLength => new GridLength(CaptionHeight);
 
         public int OuterMargin { get; set; } = 0;

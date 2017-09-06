@@ -25,14 +25,26 @@
     <Color x:Key="BackgroundSuperDark">#212121</Color>
     <SolidColorBrush x:Key="BackgroundSuperDarkBrush" Color="{StaticResource BackgroundSuperDark}"/>
 
-    <Color x:Key="BackgroundLight">#9b9b9b</Color>
+    <Color x:Key="BackgroundUltraDark">#FF131313</Color>
+    <SolidColorBrush x:Key="BackgroundUltraDarkBrush" Color="{StaticResource BackgroundUltraDark}"/>
+
+    <Color x:Key="BackgroundLight">#FFD3D3D3</Color>
     <SolidColorBrush x:Key="BackgroundLightBrush" Color="{StaticResource BackgroundLight}"/>
-    
-    <Color x:Key="ForegroundVeryLight">#ffffff</Color>
+
+    <Color x:Key="BackgroundLittleLight">#FF565656</Color>
+    <SolidColorBrush x:Key="BackgroundLittleLightBrush" Color="{StaticResource BackgroundLittleLight}"/>
+
+    <Color x:Key="ForegroundVeryLight">#FFAAAAAA</Color>
     <SolidColorBrush x:Key="ForegroundVeryLightBrush" Color="{StaticResource ForegroundVeryLight}"/>
 
-    <Color x:Key="ForegroundLight">#999999</Color>
+    <Color x:Key="ForegroundLight">#FF3C3C3C</Color>
     <SolidColorBrush x:Key="ForegroundLightBrush" Color="{StaticResource ForegroundLight}"/>
+
+    <Color x:Key="ForegroundLighter">#FF7C7C7C</Color>
+    <SolidColorBrush x:Key="ForegroundLighterBrush" Color="{StaticResource ForegroundLighter}"/>
+
+    <Color x:Key="ForegroundSuperLight">#FFD3D3D3</Color>
+    <SolidColorBrush x:Key="ForegroundSuperLightBrush" Color="{StaticResource ForegroundSuperLight}"/>
 
     <Color x:Key="BackgroundDarkRed">#FF801818</Color>
     <SolidColorBrush x:Key="BackgroundDarkRedBrush" Color="{StaticResource BackgroundDarkRed}"/>

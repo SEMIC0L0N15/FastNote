@@ -67,11 +67,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Attached Properties\MarginSetter.cs" />
     <Compile Include="UserControls\NotesView.xaml.cs">
       <DependentUpon>NotesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\NoteTextBox.xaml.cs">
-      <DependentUpon>NoteTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\FocusToBorderConverter.cs" />
@@ -108,10 +106,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\NotesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\NoteTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

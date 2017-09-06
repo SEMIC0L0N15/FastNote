@@ -18,89 +18,84 @@
 
                         <Border Background="{StaticResource BackgroundDarkBrush}"
                                  BorderThickness="{Binding BorderThickness}"
-                                 CornerRadius="{Binding WindowCornerRadius}"
-                                 BorderBrush="{Binding IsActive, 
-                                     Converter={local:FocusToBorderConverter}}"
+                                 CornerRadius="{Binding WindowCornerRadius}"                                 
+                                 BorderBrush="Black"
                                  Padding="0 0 0 0">
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Grid Grid.Column="0">
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Border BorderThickness="0 1 1 0"
-                                        BorderBrush="Black"
-                                        CornerRadius="0">
-
-                                    </Border>
-                                    <Border CornerRadius="0"
-                                        BorderThickness="0 0 1 0" 
-                                        Background="{StaticResource BackgroundVeryDarkBrush}"/>
-
-                                    <StackPanel Grid.Row="0" Margin="0 1 0 0">
-                                        <Button Style="{StaticResource LeftToolbarButton}" 
-                                            Content="&#xf0c1;" 
-                                            VerticalAlignment="Top"/>
-                                        <Button Style="{StaticResource LeftToolbarButton}" 
-                                             Content="&#xf0c2;" 
-                                             VerticalAlignment="Top"/>
-                                        <Button Style="{StaticResource LeftToolbarButton}" 
-                                            Content="&#xf0c3;" 
-                                            VerticalAlignment="Top"/>
-                                    </StackPanel>
-                                </Grid>
-
-                                <Border Grid.Column="1" Padding="{Binding OuterMarginThickness, FallbackValue=0}">
+                                <Border Padding="{Binding OuterMarginThickness, FallbackValue=0}">
 
                                     <Grid>
 
                                         <!-- Window border -->
                                         <Border Background="{StaticResource BackgroundDarkBrush}">
-                                            
+
                                             <!-- Caption and content -->
                                             <Grid>
 
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="{Binding CaptionHeightGridLength, FallbackValue=35}"/>
+                                                    <RowDefinition Height="{Binding CaptionHeightGridLength, FallbackValue=40}"/>
+                                                    <RowDefinition Height="40"/>
                                                     <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
 
                                                 <!-- Caption -->
-                                                <Grid Grid.Row="0" Panel.ZIndex="1">
+                                                <Border BorderBrush="Black" BorderThickness="0 0 0 1">
 
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
+                                                    <Grid Grid.Row="0" Panel.ZIndex="1" Background="{StaticResource BackgroundSuperDarkBrush}">
 
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
 
-                                                    
+                                                        <Button Style="{StaticResource SystemIconButton}"
+                                                                Command="{Binding SystemMenuCommand}"
+                                                                Margin="0 0 0 0" Padding="7">
+                                                            <Image Source="Images/Logo/logo32.png"/>
+                                                        </Button>
+
                                                         <TextBlock Text="FastNote"
                                                                    Style="{x:Null}"
-                                                                   Grid.ColumnSpan="2" 
+                                                                   Grid.ColumnSpan="3" 
                                                                    HorizontalAlignment="Center"
                                                                    FontSize="15"
                                                                    FontStyle="Italic"
                                                                    Foreground="{StaticResource ForegroundVeryLightBrush}"
                                                            Padding="5"/>
-                                                    
 
-                                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                        <Button Content="_" Style="{StaticResource WindowControlButton}" Command="{Binding MinimizeCommand}"/>
-                                                        <Button Content="[ ]" Style="{StaticResource WindowControlButton}" Command="{Binding MaximizeCommand}"/>
-                                                        <Button Content="X" Style="{StaticResource WindowControlCloseButton}" Command="{Binding CloseCommand}"/>
+
+                                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                                            <Button Content="_" Style="{StaticResource WindowControlButton}" Command="{Binding MinimizeCommand}"/>
+                                                            <Button Content="[ ]" Style="{StaticResource WindowControlButton}" Command="{Binding MaximizeCommand}"/>
+                                                            <Button Content="X" Style="{StaticResource WindowControlCloseButton}" Command="{Binding CloseCommand}"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+
+                                                <Border Grid.Row="1"
+                                                        BorderBrush="{StaticResource ForegroundLightBrush}"
+                                                        BorderThickness="0 0 0 1"
+                                                        Background="{StaticResource BackgroundUltraDarkBrush}">
+
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBox Width="225" Margin="5" FontSize="12"/>
+                                                        <Button Content="&#xf002;" 
+                                                                Style="{StaticResource IconButton}"
+                                                                Background="{StaticResource BackgroundDarkBrush}"
+                                                                Foreground="{StaticResource ForegroundVeryLightBrush}"
+                                                                FontSize="12" Margin="0 5 5 5" Width="35" />
+
+                                                        <Button Style="{StaticResource ExpandTextButton}"
+                                                                Background="{StaticResource BackgroundUltraDarkBrush}"
+                                                                Content="Wyszukiwanie zaawansowane"/>
                                                     </StackPanel>
-                                                </Grid>
+                        
+                                                </Border>
 
                                                 <!-- Actual content -->
-                                                <Border Grid.Row="1" Padding="{Binding InnerContentPadding}" Margin="0 0 0 0">
+                                                <Border Grid.Row="2" Padding="{Binding InnerContentPadding}" Margin="0 0 0 0" BorderBrush="Black" 
+                                                        BorderThickness="0 0 0 0">
                                                     <ContentPresenter Content="{TemplateBinding Content}"/>
                                                 </Border>
                                             </Grid>
@@ -124,23 +119,95 @@
             GlassFrameThickness="0"/>
     </WindowChrome.WindowChrome>
 
-    <Grid>
+    <Grid Background="#FF2B2B2B">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="0" Margin="0 0 0 0">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <local:NotesView Grid.Row="0"/>
+            <Border BorderThickness="0 0 1 0"
+                    BorderBrush="Black"
+                    CornerRadius="0">
 
-            <local:NoteTextBox Grid.Row="1" Margin="0 0 0 0"/>
+            </Border>
+            <Border CornerRadius="0"
+                    BorderThickness="0 0 1 0" 
+                    BorderBrush="{StaticResource ForegroundLightBrush}">
+                <Border.Background>
+                    <SolidColorBrush Color="#FF2B2B2B"/>
+                </Border.Background>
+            </Border>
+
+            <StackPanel Grid.Row="0" Margin="0 20 0 0" 
+                        local:MarginSetter.Margin="0 0 0 10">
+
+                <Button Style="{StaticResource LeftToolbarButton}" 
+                        Content="&#xf0c1;" 
+                        VerticalAlignment="Top"
+                                                />
+                <Button Style="{StaticResource LeftToolbarButton}" 
+                        Content="&#xf0c2;" 
+                        VerticalAlignment="Top"/>
+                <Button Style="{StaticResource LeftToolbarButton}" 
+                        Content="&#xf0c3;" 
+                        VerticalAlignment="Top"/>
+            </StackPanel>
+        </Grid>
+
+
+        <Border BorderBrush="{StaticResource ForegroundLightBrush}" 
+                BorderThickness="0 0 1 0" 
+                Grid.Column="1"
+                Background="{StaticResource BackgroundVeryDarkBrush}">
+            <Grid>
+                <ListBox Background="{StaticResource BackgroundVeryDarkBrush}"
+                         BorderThickness="0">
+
+                    <ListBox.Resources>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Button Style="{StaticResource TextButton}" 
+                                                Content="{TemplateBinding Content}"
+                                                BorderThickness="0 0 0 1"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.Resources>
+
+                    <ListBoxItem Content="Filmy do obejrzenia"/>
+                    <ListBoxItem Content="Książki do przeczytania"/>
+                    <ListBoxItem Content="Linki"/>
+                    <ListBoxItem Content="Screeny"/>
+                </ListBox>                
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="2">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Margin="10 0 10 10" Grid.Row="0" 
+                    BorderBrush="Black" BorderThickness="0 0 0 0">
+                <local:NotesView />
+            </Border>
+
+
+
+            <TextBox Grid.Row="1" Margin="15 0 15 5" Height="50" />
         </Grid>
     </Grid>
 </Window>

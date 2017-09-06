@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-c:\users\radek\documents\visual studio 2017\Projects\FastNote\FastNote\obj\Debug\
+C:\Users\Radek\documents\visual studio 2017\Projects\FastNote\FastNote\obj\Debug\
 FastNote
 none
 false
 DEBUG;TRACE
-c:\users\radek\documents\visual studio 2017\Projects\FastNote\FastNote\App.xaml
-11151548125
+C:\Users\Radek\documents\visual studio 2017\Projects\FastNote\FastNote\App.xaml
+71937570390
 
-9-1830472080
-13738642453
-MainWindow.xaml;
+17143705352
+68-1338723359
+MainWindow.xaml;Styles\Buttons.xaml;Styles\Colors.xaml;Styles\Fonts.xaml;Styles\Texts.xaml;UserControls\NotesView.xaml;UserControls\NoteTextBox.xaml;
 
 True
 

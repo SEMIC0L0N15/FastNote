@@ -12,6 +12,6 @@ namespace FastNote
             InitializeComponent();
 
             this.DataContext = new MainWindowViewModel(this);
-        }        
+        }      
     }
 }

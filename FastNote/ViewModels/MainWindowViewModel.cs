@@ -46,6 +46,7 @@ namespace FastNote
             FixMaximizeBug();
         }
 
+        #region Contructor Helpers
         private void SetupEvents()
         {
             mWindow.Activated += (sender, e) => OnPropertyChanged(nameof(IsActive));
@@ -56,17 +57,13 @@ namespace FastNote
         private void OnWindowResized()
         {
             OnPropertyChanged(nameof(Borderless));
-
             OnPropertyChanged(nameof(Border));
             OnPropertyChanged(nameof(BorderThickness));
-
             OnPropertyChanged(nameof(OuterMargin));
             OnPropertyChanged(nameof(OuterMarginThickness));
-
             OnPropertyChanged(nameof(ResizeBorder));
             OnPropertyChanged(nameof(ResizeBorderThickness));
-
-            OnPropertyChanged(nameof(IsActive));            
+            OnPropertyChanged(nameof(IsActive));
         }
 
         private void CreateCommands()
@@ -107,7 +104,7 @@ namespace FastNote
                 new RelayCommand(
                     () => SystemCommands.ShowSystemMenu(mWindow, GetMousePosition()));
         }
-            
+
         private Point GetMousePosition()
         {
             Point position = Mouse.GetPosition(mWindow);
@@ -117,7 +114,9 @@ namespace FastNote
         private void FixMaximizeBug()
         {
             WindowResizer resizer = new WindowResizer(mWindow);
-        }
+        } 
+        #endregion
+
         #endregion
     }
 }

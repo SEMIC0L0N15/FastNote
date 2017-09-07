@@ -49,4 +49,7 @@
     <Color x:Key="BackgroundDarkRed">#FF801818</Color>
     <SolidColorBrush x:Key="BackgroundDarkRedBrush" Color="{StaticResource BackgroundDarkRed}"/>
 
+    <Color x:Key="PurpleRegular">#3d0463</Color>
+    <SolidColorBrush x:Key="PurpleRegularBrush" Color="{StaticResource PurpleRegular}"/>
+
 </ResourceDictionary>

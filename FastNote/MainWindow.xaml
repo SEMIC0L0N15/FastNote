@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FastNote"
         mc:Ignorable="d"
-        Title="Welcome, friend!" Height="450" Width="650"
+        Title="Welcome, friend!" 
+        Height="620" Width="830"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         MinHeight="300"
         MinWidth="400">
+        <!--Height="450" Width="650"-->
     <Window.Resources>
         <Style TargetType="{x:Type local:MainWindow}">
             <Setter Property="Template">
@@ -185,6 +187,7 @@
                         </Style>
                     </ListBox.Resources>
 
+                    <ListBoxItem Content="Szybkie notatki"/>
                     <ListBoxItem Content="Filmy do obejrzenia"/>
                     <ListBoxItem Content="Książki do przeczytania"/>
                     <ListBoxItem Content="Linki"/>

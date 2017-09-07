@@ -1,0 +1,11 @@
+﻿using System;
+
+namespace FastNote.Core
+{
+    public class NoteItemViewModel : BaseViewModel
+    {
+        public string Content { get; set; }
+        public DateTime CreationDate { get; set; }
+        public bool IsSelected { get; set; }
+    }
+}

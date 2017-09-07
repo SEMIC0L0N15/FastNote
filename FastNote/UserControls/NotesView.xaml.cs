@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using FastNote.Core;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace FastNote
@@ -11,6 +12,8 @@ namespace FastNote
         public NotesView()
         {
             InitializeComponent();
+
+            this.DataContext = new NotesViewViewModel();
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -25,7 +28,7 @@ namespace FastNote
         {
             ListBox listBox = sender as ListBox;
 
-            foreach (ListBoxItem item in listBox.Items)
+            foreach ( NoteItemViewModel item in listBox.Items)
             {
                 item.IsSelected = false;
             }

@@ -1,0 +1,137 @@
+﻿<Window x:Class="FastNote.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FastNote"
+        mc:Ignorable="d"
+        Title="Welcome, friend!" 
+        Height="620" Width="830"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="300"
+        MinWidth="400">
+        <!--Height="450" Width="650"-->
+    <Window.Resources>
+        <Style TargetType="{x:Type local:MainWindow}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+
+                        <Border Background="{StaticResource BackgroundDarkBrush}"
+                                 BorderThickness="{Binding BorderThickness}"
+                                 CornerRadius="{Binding WindowCornerRadius}"                                 
+                                 BorderBrush="Black"
+                                 Padding="0 0 0 0">
+                            <Grid>
+                                <Border Padding="{Binding OuterMarginThickness, FallbackValue=0}">
+
+                                    <Grid>
+
+                                        <!-- Window border -->
+                                        <Border Background="{StaticResource BackgroundDarkBrush}">
+
+                                            <!-- Caption and content -->
+                                            <Grid>
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="{Binding CaptionHeightGridLength, FallbackValue=40}"/>
+                                                    <RowDefinition Height="40"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Caption -->
+                                                <Border BorderBrush="Black" BorderThickness="0 0 0 1">
+
+                                                    <Grid Grid.Row="0" Panel.ZIndex="1" Background="{StaticResource BackgroundSuperDarkBrush}">
+
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Button Style="{StaticResource SystemIconButton}"
+                                                                Command="{Binding SystemMenuCommand}"
+                                                                Margin="0 0 0 0" Padding="7">
+                                                            <Image Source="Images/Logo/logo32.png"/>
+                                                        </Button>
+
+                                                        <TextBlock Text="FastNote"
+                                                                   Style="{x:Null}"
+                                                                   Grid.ColumnSpan="3" 
+                                                                   HorizontalAlignment="Center"
+                                                                   FontSize="15"
+                                                                   FontStyle="Italic"
+                                                                   Foreground="{StaticResource ForegroundVeryLightBrush}"
+                                                           Padding="5"/>
+
+
+                                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                                            <Button Content="_" Style="{StaticResource WindowControlButton}" Command="{Binding MinimizeCommand}"/>
+                                                            <Button Content="[ ]" Style="{StaticResource WindowControlButton}" Command="{Binding MaximizeCommand}"/>
+                                                            <Button Content="X" Style="{StaticResource WindowControlCloseButton}" Command="{Binding CloseCommand}"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+
+                                                <Border Grid.Row="1"
+                                                        BorderBrush="{StaticResource ForegroundLightBrush}"
+                                                        BorderThickness="0 0 0 1"
+                                                        Background="{StaticResource BackgroundUltraDarkBrush}">
+
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBox Width="225" Margin="5" FontSize="12"/>
+                                                        <Button Content="&#xf002;" 
+                                                                Style="{StaticResource IconButton}"
+                                                                Background="{StaticResource BackgroundDarkBrush}"
+                                                                Foreground="{StaticResource ForegroundVeryLightBrush}"
+                                                                FontSize="12" Margin="0 5 5 5" Width="35" />
+
+                                                        <Button Style="{StaticResource ExpandTextButton}"
+                                                                Background="{StaticResource BackgroundUltraDarkBrush}"
+                                                                Content="Wyszukiwanie zaawansowane"/>
+                                                    </StackPanel>
+                        
+                                                </Border>
+
+                                                <!-- Actual content -->
+                                                <Border Grid.Row="2" Padding="{Binding InnerContentPadding}" Margin="0 0 0 0" BorderBrush="Black" 
+                                                        BorderThickness="0 0 0 0">
+                                                    <ContentPresenter Content="{TemplateBinding Content}"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome 
+            ResizeBorderThickness="{Binding ResizeBorderThickness}"
+            CaptionHeight="{Binding CaptionHeight}"
+            CornerRadius="0"
+            GlassFrameThickness="0"/>
+    </WindowChrome.WindowChrome>
+
+    <Grid Background="#FF2B2B2B">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <local:LeftToolbar Grid.Column="0"/>
+
+        <local:NoteCategoryList Grid.Column="1"/>
+
+        <local:NotesView Grid.Column="2"/>
+    </Grid>
+</Window>

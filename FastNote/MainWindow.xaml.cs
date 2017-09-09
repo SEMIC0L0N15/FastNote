@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using FastNote.Core;
+using System.Windows;
 
 namespace FastNote
 {
@@ -12,6 +13,11 @@ namespace FastNote
             InitializeComponent();
 
             this.DataContext = new MainWindowViewModel(this);
-        }      
+        }
+
+        private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            (sender as FrameworkElement).Focus();
+        }
     }
 }

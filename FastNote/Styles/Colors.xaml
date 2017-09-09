@@ -13,6 +13,9 @@
     <Color x:Key="AzureDark">#0b352f</Color>
     <SolidColorBrush x:Key="AzureDarkBrush" Color="{StaticResource AzureDark}"/>
 
+    <Color x:Key="AzureVeryDark">#12393a</Color>
+    <SolidColorBrush x:Key="AzureVeryDarkBrush" Color="{StaticResource AzureVeryDark}"/>
+
     <Color x:Key="AzureVeryLight">#d1fff2</Color>
     <SolidColorBrush x:Key="AzureVeryLightBrush" Color="{StaticResource AzureVeryLight}"/>
 
@@ -48,8 +51,5 @@
 
     <Color x:Key="BackgroundDarkRed">#FF801818</Color>
     <SolidColorBrush x:Key="BackgroundDarkRedBrush" Color="{StaticResource BackgroundDarkRed}"/>
-
-    <Color x:Key="PurpleRegular">#3d0463</Color>
-    <SolidColorBrush x:Key="PurpleRegularBrush" Color="{StaticResource PurpleRegular}"/>
 
 </ResourceDictionary>

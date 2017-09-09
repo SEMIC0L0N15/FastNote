@@ -23,7 +23,8 @@
                                  CornerRadius="{Binding WindowCornerRadius}"                                 
                                  BorderBrush="Black"
                                  Padding="0 0 0 0">
-                            <Grid>
+
+                            <Grid MouseDown="Border_MouseDown" Focusable="True">
                                 <Border Padding="{Binding OuterMarginThickness, FallbackValue=0}">
 
                                     <Grid>
@@ -126,76 +127,17 @@
             <ColumnDefinition Width="70"/>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Margin="0 0 0 0">
+        <local:LeftToolbarControl Grid.Column="0"/>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <local:NoteGroupListControl Grid.Column="1"/>
 
-            <Border BorderThickness="0 0 1 0"
-                    BorderBrush="Black"
-                    CornerRadius="0">
+        <local:NoteBoxControl Grid.Column="2"/>
 
-            </Border>
-            <Border CornerRadius="0"
-                    BorderThickness="0 0 1 0" 
-                    BorderBrush="{StaticResource ForegroundLightBrush}">
-                <Border.Background>
-                    <SolidColorBrush Color="#FF2B2B2B"/>
-                </Border.Background>
-            </Border>
-
-            <StackPanel Grid.Row="0" Margin="0 20 0 0" 
-                        local:MarginSetter.Margin="0 0 0 10">
-
-                <Button Style="{StaticResource LeftToolbarButton}" 
-                        Content="&#xf0c1;" 
-                        VerticalAlignment="Top"
-                                                />
-                <Button Style="{StaticResource LeftToolbarButton}" 
-                        Content="&#xf0c2;" 
-                        VerticalAlignment="Top"/>
-                <Button Style="{StaticResource LeftToolbarButton}" 
-                        Content="&#xf0c3;" 
-                        VerticalAlignment="Top"/>
-            </StackPanel>
-        </Grid>
-
-
-        <Border BorderBrush="{StaticResource ForegroundLightBrush}" 
-                BorderThickness="0 0 1 0" 
-                Grid.Column="1"
-                Background="{StaticResource BackgroundVeryDarkBrush}">
-            <Grid>
-                <ListBox Background="{StaticResource BackgroundVeryDarkBrush}"
-                         BorderThickness="0">
-
-                    <ListBox.Resources>
-                        <Style TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                        <Button Style="{StaticResource TextButton}" 
-                                                Content="{TemplateBinding Content}"
-                                                BorderThickness="0 0 0 1"/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.Resources>
-
-                    <ListBoxItem Content="Szybkie notatki"/>
-                    <ListBoxItem Content="Filmy do obejrzenia"/>
-                    <ListBoxItem Content="Książki do przeczytania"/>
-                    <ListBoxItem Content="Linki"/>
-                    <ListBoxItem Content="Screeny"/>
-                </ListBox>                
-            </Grid>
+        <Border Grid.Column="3" BorderThickness="1 0 0 0" BorderBrush="{StaticResource ForegroundLightBrush}">
+            
         </Border>
-
-        <local:NotesView Grid.Column="2"/>
     </Grid>
 </Window>

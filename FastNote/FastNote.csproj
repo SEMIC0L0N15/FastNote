@@ -72,8 +72,14 @@
     </ApplicationDefinition>
     <Compile Include="Attached Properties\MarginSetter.cs" />
     <Compile Include="Interaction\SetPropertyAction.cs" />
-    <Compile Include="UserControls\NotesView.xaml.cs">
-      <DependentUpon>NotesView.xaml</DependentUpon>
+    <Compile Include="UserControls\LeftToolbarControl.xaml.cs">
+      <DependentUpon>LeftToolbarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NoteGroupListControl.xaml.cs">
+      <DependentUpon>NoteGroupListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NoteBoxControl.xaml.cs">
+      <DependentUpon>NoteBoxControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\FocusToBorderConverter.cs" />
@@ -107,7 +113,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\NotesView.xaml">
+    <Page Include="UserControls\LeftToolbarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\NoteGroupListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\NoteBoxControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

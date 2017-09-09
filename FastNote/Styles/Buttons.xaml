@@ -200,7 +200,8 @@
                             Padding="{TemplateBinding Padding}">
                         <TextBlock Text="{TemplateBinding Content}" 
                                    Foreground="White"
-                                   FontSize="{TemplateBinding FontSize}"/>
+                                   FontSize="{TemplateBinding FontSize}"
+                                   TextWrapping="Wrap"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

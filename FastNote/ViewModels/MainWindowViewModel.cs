@@ -16,7 +16,7 @@ namespace FastNote
         public int Border { get; set; } = 0;
         public Thickness BorderThickness => new Thickness(Borderless ? 0 : Border);
 
-        public int ResizeBorder { get; set; } = 5;
+        public int ResizeBorder { get; set; } = 10;
         public Thickness ResizeBorderThickness => new Thickness(ResizeBorder);
 
         public int CaptionHeight { get; set; } = 40;

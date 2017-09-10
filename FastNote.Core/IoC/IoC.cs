@@ -12,6 +12,7 @@ namespace FastNote.Core
         public static void Setup()
         {
             Kernel.Bind<IItemsProvider<NoteGroupViewModel>>().To<DesignNoteGroupProvider>();
+            Kernel.Bind<IItemsProvider<NoteItemViewModel>>().To<DesignNoteItemProvider>();
         } 
 
         public static T Get<T>()

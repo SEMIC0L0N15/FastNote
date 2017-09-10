@@ -22,8 +22,12 @@
     <Color x:Key="BackgroundDark">#353535</Color>
     <SolidColorBrush x:Key="BackgroundDarkBrush" Color="{StaticResource BackgroundDark}"/>
 
+    <Color x:Key="BackgroundDarker">#FF2B2B2B</Color>
+    <SolidColorBrush x:Key="BackgroundDarkerBrush" Color="{StaticResource BackgroundDarker}"/>
+
     <Color x:Key="BackgroundVeryDark">#FF292929</Color>
     <SolidColorBrush x:Key="BackgroundVeryDarkBrush" Color="{StaticResource BackgroundVeryDark}"/>
+    
 
     <Color x:Key="BackgroundSuperDark">#212121</Color>
     <SolidColorBrush x:Key="BackgroundSuperDarkBrush" Color="{StaticResource BackgroundSuperDark}"/>

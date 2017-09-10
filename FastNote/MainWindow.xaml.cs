@@ -17,7 +17,7 @@ namespace FastNote
 
         private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            (sender as FrameworkElement).Focus();
+            (sender as FrameworkElement)?.Focus();
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight;
 
 namespace FastNote.Core
 {
-    public class NoteGroup : BaseViewModel
+    public class NoteGroup : ObservableObject
     {
         #region Public Properties
         public string Name { get; set; }

@@ -1,31 +1,32 @@
 ﻿using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight;
 
 namespace FastNote.Core
 {
-    public class NoteGroupViewModel : BaseViewModel
+    public class NoteGroupViewModel : ViewModelBase
     {
-        #region Private Members
-        private NoteGroup mNoteGroup;
-        #endregion
 
         #region Public Properties
+        public NoteGroup NoteGroup { get; set; }
+        public bool IsSelected { get; set; }
+
         public string Name
         {
-            get => mNoteGroup.Name;
-            set => mNoteGroup.Name = value;
+            get => NoteGroup.Name;
+            set => NoteGroup.Name = value;
         }
 
         public ObservableCollection<Note> Notes
         {
-            get => mNoteGroup.Notes;
-            set => mNoteGroup.Notes = value;
+            get => NoteGroup.Notes;
+            set => NoteGroup.Notes = value;
         }
         #endregion
 
         public NoteGroupViewModel(NoteGroup noteGroup = null)
         {
-            mNoteGroup = noteGroup ?? new NoteGroup();
-            mNoteGroup.PropertyChanged += (sender, e) => OnPropertyChanged(e.PropertyName);
+            NoteGroup = noteGroup ?? new NoteGroup();
+            NoteGroup.PropertyChanged += (sender, e) => RaisePropertyChanged(e.PropertyName);
         }
 
     }

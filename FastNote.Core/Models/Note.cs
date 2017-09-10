@@ -1,6 +1,8 @@
-﻿namespace FastNote.Core
+﻿using GalaSoft.MvvmLight;
+
+namespace FastNote.Core
 {
-    public class Note
+    public class Note : ObservableObject
     {
     }
 }

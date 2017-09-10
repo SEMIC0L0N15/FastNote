@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FakeItEasy;
 
 namespace FastNote.Test
 {
@@ -13,41 +14,72 @@ namespace FastNote.Test
     {
         public class SendNoteMethod
         {
+            private NoteBoxViewModel viewModel;
+
             [Test]
             public void WhenTypedTextValid_AddItemWithThatText()
             {
-                NoteBoxViewModel vm = new NoteBoxViewModel();
-                string text = "Hello world!";
-                vm.TypedText = text;
+                SetupViewModel();
+                SetTypedText("Hello World!");
 
-                vm.SendNote();
+                SendNote();
 
-                Assert.AreEqual(1, vm.Items.Count);
-                Assert.AreEqual(text, vm.Items[0].Content);
+                AssertChildrenCountEquals(1);
+                AssertFirstItemContentEquals("Hello World!");
             }
 
             [Test]
             public void WhenTypedTextEmpty_NotAddItem()
             {
-                NoteBoxViewModel vm = new NoteBoxViewModel();
-                vm.TypedText = string.Empty;
+                SetupViewModel();
+                SetTypedText(string.Empty);
 
-                vm.SendNote();
+                SendNote();
 
-                Assert.AreEqual(0, vm.Items.Count);
+                AssertChildrenCountEquals(0);
             }
 
             [Test]
             public void WhenTypedTextNull_NotAddItem()
             {
-                NoteBoxViewModel vm = new NoteBoxViewModel();
-                vm.TypedText = null;
+                SetupViewModel();
+                SetTypedText(null);
 
-                vm.SendNote();
+                SendNote();
 
-                Assert.AreEqual(0, vm.Items.Count);
+                AssertChildrenCountEquals(0);
             }
+
+            #region Helpers
+            private void SetupViewModel()
+            {
+                var itemsProvider = A.Fake<IItemsProvider<NoteItemViewModel>>();
+                A.CallTo(() => itemsProvider.GetItems()).Returns(new List<NoteItemViewModel>());
+                viewModel = new NoteBoxViewModel(itemsProvider);
+            }
+
+            private void SetTypedText(string text)
+            {
+                viewModel.TypedText = text;
+            }
+
+            private void SendNote()
+            {
+                viewModel.SendNote();
+            }
+
+            private void AssertChildrenCountEquals(int expectedCount)
+            {
+                Assert.AreEqual(expectedCount, viewModel.Items.Count);
+            }
+
+            private void AssertFirstItemContentEquals(string expectedContent)
+            {
+                Assert.AreEqual(expectedContent, viewModel.Items[0].Content);
+            }
+            #endregion
         }
-        
+
+
     }    
 }

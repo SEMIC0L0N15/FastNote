@@ -122,12 +122,12 @@
             GlassFrameThickness="0"/>
     </WindowChrome.WindowChrome>
 
-    <Grid Background="#FF2B2B2B">
+    <Grid Background="{StaticResource BackgroundDarkerBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70"/>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="35"/>
         </Grid.ColumnDefinitions>
 
         <local:LeftToolbarControl Grid.Column="0"/>

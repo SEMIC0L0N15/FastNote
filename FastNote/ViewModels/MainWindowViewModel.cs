@@ -1,10 +1,12 @@
 ﻿using FastNote.Core;
 using System.Windows;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 
 namespace FastNote
 {
-    class MainWindowViewModel : BaseViewModel
+    class MainWindowViewModel : ViewModelBase
     { 
         #region Private Mambers
         private Window mWindow;
@@ -50,21 +52,21 @@ namespace FastNote
         #region Contructor Helpers
         private void SetupEvents()
         {
-            mWindow.Activated += (sender, e) => OnPropertyChanged(nameof(IsActive));
-            mWindow.Deactivated += (sender, e) => OnPropertyChanged(nameof(IsActive));
+            mWindow.Activated += (sender, e) => RaisePropertyChanged(nameof(IsActive));
+            mWindow.Deactivated += (sender, e) => RaisePropertyChanged(nameof(IsActive));
             mWindow.StateChanged += (sender, e) => OnWindowResized();
         }
 
         private void OnWindowResized()
         {
-            OnPropertyChanged(nameof(Borderless));
-            OnPropertyChanged(nameof(Border));
-            OnPropertyChanged(nameof(BorderThickness));
-            OnPropertyChanged(nameof(OuterMargin));
-            OnPropertyChanged(nameof(OuterMarginThickness));
-            OnPropertyChanged(nameof(ResizeBorder));
-            OnPropertyChanged(nameof(ResizeBorderThickness));
-            OnPropertyChanged(nameof(IsActive));
+            RaisePropertyChanged(nameof(Borderless));
+            RaisePropertyChanged(nameof(Border));
+            RaisePropertyChanged(nameof(BorderThickness));
+            RaisePropertyChanged(nameof(OuterMargin));
+            RaisePropertyChanged(nameof(OuterMarginThickness));
+            RaisePropertyChanged(nameof(ResizeBorder));
+            RaisePropertyChanged(nameof(ResizeBorderThickness));
+            RaisePropertyChanged(nameof(IsActive));
         }
 
         private void CreateCommands()
@@ -114,7 +116,7 @@ namespace FastNote
 
         private void FixMaximizeBug()
         {
-            WindowResizer resizer = new WindowResizer(mWindow);
+            var resizer = new WindowResizer(mWindow);
         } 
         #endregion
 

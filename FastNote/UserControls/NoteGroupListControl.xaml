@@ -4,31 +4,42 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FastNote"
+             xmlns:core="clr-namespace:FastNote.Core;assembly=FastNote.Core"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{x:Static core:NoteGroupListDesignModel.Instance}">
     <Border BorderBrush="{StaticResource ForegroundLightBrush}" 
             BorderThickness="0 0 1 0" 
             Background="{StaticResource BackgroundVeryDarkBrush}">
         <Grid>
             <ListBox Background="{StaticResource BackgroundVeryDarkBrush}"
                      BorderThickness="0"
-                     ItemsSource="{Binding Items}">
+                     ItemsSource="{Binding Items}"
+                     SelectionChanged="Selector_OnSelectionChanged">
 
-                <ListBox.Resources>
+                <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"></Setter>
+                        
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Button Style="{StaticResource TextButton}" 
-                                                Content="{Binding Name}"
-                                                BorderThickness="0 0 0 1"/>
+                                    <Button x:Name="button"
+                                            Style="{StaticResource TextButton}" 
+                                            Content="{Binding Name}"
+                                            BorderThickness="0 0 0 1"
+                                            Click="Button_OnClick"/>
+                                    
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="button" Property="Background" Value="{StaticResource AzureDarkBrush}"></Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
                     </Style>
-                </ListBox.Resources>
-
-                
+                </ListBox.ItemContainerStyle>
             </ListBox>
         </Grid>
     </Border>

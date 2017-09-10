@@ -1,40 +1,33 @@
-﻿using FastNote.Core;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using FastNote.Core;
+using GalaSoft.MvvmLight;
 
 namespace FastNote
 {
-    /// <summary>
-    /// Interaction logic for NotesView.xaml
-    /// </summary>
     public partial class NoteBoxControl : UserControl
     {
         public NoteBoxControl()
         {
             InitializeComponent();
 
-            //this.DataContext = new NotesViewViewModel();
+            if (ViewModelBase.IsInDesignModeStatic)
+                this.DataContext = new NoteBoxDesignModel();
+            else
+                this.DataContext = ViewModelLocator.NoteBoxViewModel;
         }
 
-        private void ListBox_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Item_OnClick(object sender, RoutedEventArgs e)
         {
-            /*ListBox listBox = sender as ListBox;
-            listBox.Focus();*/
+            if (sender is FrameworkElement contentElement)
+            {
+                if (contentElement.TemplatedParent is ListBoxItem listBoxItem)
+                    listBoxItem.IsSelected ^= true;
+            }
         }
 
-        private void Item_MouseDown(object sender, RoutedEventArgs e)
-        {
-            FrameworkElement element = sender as FrameworkElement;
-            ListBoxItem parent = element.TemplatedParent as ListBoxItem;
-
-            parent.IsSelected ^= true;
-            //element.Focus();
-
-            e.Handled = true;
-        }
-
-        private void Item_LostFocus(object sender, RoutedEventArgs e)
+        private void Item_OnLostFocus(object sender, RoutedEventArgs e)
         {
             foreach (NoteItemViewModel item in this.ListBox.Items)
             {

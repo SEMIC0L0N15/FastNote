@@ -3,20 +3,31 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 
 namespace FastNote.Core
 {
-    public class NoteBoxViewModel : BaseViewModel
+    public class NoteBoxViewModel : ViewModelBase
     {
         #region Private Members
+        private IItemsProvider<NoteItemViewModel> mItemsProvider;
         private NoteGroup mNoteGroup;
         #endregion
 
         #region Public Properties
         public string TypedText { get; set; }
+        public ObservableCollection<NoteItemViewModel> Items { get; set; }
 
-        public ObservableCollection<NoteItemViewModel> Items { get; set; } 
-            = new ObservableCollection<NoteItemViewModel>();      
+        public NoteGroup NoteGroup
+        {
+            get => mNoteGroup;
+            set
+            {
+                mNoteGroup = value;
+                UpdateItems();
+            }
+        }
         #endregion
 
         #region Public Commands
@@ -24,10 +35,9 @@ namespace FastNote.Core
         #endregion
 
         #region Constructor
-        public NoteBoxViewModel()
+        public NoteBoxViewModel(IItemsProvider<NoteItemViewModel> itemsProvider)
         {
-
-
+            mItemsProvider = itemsProvider;
             SendNoteCommand = new RelayCommand(SendNote);
         }     
         #endregion
@@ -38,9 +48,14 @@ namespace FastNote.Core
             if (string.IsNullOrEmpty(TypedText))
                 return;
 
-            NoteItemViewModel item = new NoteItemViewModel { Content = TypedText };
+            var item = new NoteItemViewModel { Content = TypedText };
             Items.Add(item);
             TypedText = string.Empty;
+        }
+
+        public void UpdateItems()
+        {
+            Items = new ObservableCollection<NoteItemViewModel>(mItemsProvider.GetItems(NoteGroup));
         }
         #endregion        
     }

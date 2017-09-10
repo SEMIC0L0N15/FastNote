@@ -9,8 +9,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{x:Static core:NoteBoxDesignModel.Instance}">
+    <!-- DataContext="{x:Static core:NoteBoxDesignModel.Instance}" -->
 
-    <Grid>
+    <Grid Background="{StaticResource BackgroundDarkerBrush}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -18,12 +19,12 @@
         </Grid.RowDefinitions>
 
         <Border Margin="10 0 10 10" Grid.Row="0" 
-                    BorderBrush="Black" BorderThickness="0 0 0 0">
+                BorderBrush="Black" BorderThickness="0 0 0 0">
             <ListBox BorderThickness="0" 
                      x:Name="ListBox" 
                      ItemsSource="{Binding Items}"
-                     MouseDown="ListBox_MouseDown"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     Background="Transparent">
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -53,8 +54,8 @@
                                             Foreground="White" 
                                             FontSize="15"
                                             Background="{TemplateBinding Background}"
-                                            Click="Item_MouseDown"
-                                            LostFocus="Item_LostFocus"
+                                            Click="Item_OnClick"
+                                            LostFocus="Item_OnLostFocus"
                                             Margin="5"
                                             Padding="8"
                                             BorderThickness="1"
@@ -82,14 +83,8 @@
 
                     </Style>
                 </ListBox.ItemContainerStyle>
+                
 
-                <ListBox.Background>
-                    <SolidColorBrush Color="#FF2B2B2B"/>
-                </ListBox.Background>
-
-                <!--<ListBoxItem Content="Cześć koleżko"/>
-                <ListBoxItem Content="Witam serdecznie serdecznie&#x0a;z tej strony Mirosław Zelent"/>
-                <ListBoxItem Content="Elo ziom"/>-->
             </ListBox>
         </Border>
 

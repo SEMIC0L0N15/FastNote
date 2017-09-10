@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Command;
 
 namespace FastNote.Core
 {
     public class NoteBoxDesignModel : NoteBoxViewModel
     {
-        public static NoteBoxDesignModel Instance = 
-            new NoteBoxDesignModel();
+        #region Static Members
+        public static NoteBoxDesignModel Instance = new NoteBoxDesignModel();
+        #endregion
 
+        #region Constructor
         public NoteBoxDesignModel()
+            : base(null)
         {
             Items = new ObservableCollection<NoteItemViewModel>()
             {
@@ -22,6 +22,9 @@ namespace FastNote.Core
                 new NoteItemViewModel { Content = "Orcs must die!" },
                 new NoteItemViewModel { Content = "Mass Effect: Andromeda" },
             };
+
+            SendNoteCommand = new RelayCommand(SendNote);
         }
+        #endregion
     }
 }

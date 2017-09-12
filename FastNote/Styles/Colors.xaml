@@ -46,6 +46,7 @@
 
     <Color x:Key="ForegroundLight">#FF3C3C3C</Color>
     <SolidColorBrush x:Key="ForegroundLightBrush" Color="{StaticResource ForegroundLight}"/>
+    <SolidColorBrush x:Key="BorderLightBrush" Color="{StaticResource ForegroundLight}"/>
 
     <Color x:Key="ForegroundLighter">#FF7C7C7C</Color>
     <SolidColorBrush x:Key="ForegroundLighterBrush" Color="{StaticResource ForegroundLighter}"/>

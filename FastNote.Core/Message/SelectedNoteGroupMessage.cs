@@ -2,6 +2,11 @@
 {
     public class SelectedNoteGroupMessage
     {
-        public NoteGroupViewModel SelectedGroup { get; set; }
+        public NoteGroup SelectedGroup { get; set; }
+
+        public SelectedNoteGroupMessage(NoteGroup noteGroup)
+        {
+            SelectedGroup = noteGroup;
+        }
     }
 }

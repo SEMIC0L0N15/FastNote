@@ -1,29 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 
 namespace FastNote.Core
 {
-    public class DesignNoteGroupProvider : IItemsProvider<NoteGroupViewModel>
+    public class DesignNoteGroupProvider : INoteGroupProvider
     {
-        public IEnumerable<NoteGroupViewModel> GetItems()
+        public IEnumerable<NoteGroup> GetItems(User user)
         {
-            IEnumerable<NoteGroupViewModel> items = new List<NoteGroupViewModel>()
+            IEnumerable<NoteGroup> items = new List<NoteGroup>()
             {
-                new NoteGroupViewModel { Name = "Szybkie notatki" },
-                new NoteGroupViewModel { Name = "Gry do zagrania" },
-                new NoteGroupViewModel { Name = "Filmy do obejrzenia" },
-                new NoteGroupViewModel { Name = "Książki do przeczytania" },
-                new NoteGroupViewModel { Name = "Linki" },
-                new NoteGroupViewModel { Name = "Screeny" },
+                new NoteGroup("Szybkie notatki"),
+                new NoteGroup("Gry do zagrania")
+                {
+                    Notes = new ObservableCollection<NoteItem>
+                    {
+                        new NoteItem("Lords of The Fallen"),
+                        new NoteItem("DeusEx: Bunt Ludzkości"),
+                        new NoteItem("Sid Meier's Civilization VI"),
+                        new NoteItem("Orcs must die!"),
+                        new NoteItem("Mass Effect: Andromeda"),
+                    }
+                },
+                new NoteGroup("Filmy do obejrzenia")
+                {
+                    Notes = new ObservableCollection<NoteItem>
+                    {
+                        new NoteItem("Gladiator"),
+                        new NoteItem("Interstellar"),
+                        new NoteItem("Incepcja"),
+                    }
+                },
+                new NoteGroup("Książki do przeczytania"),
+                new NoteGroup("Linki"),
+                new NoteGroup("Screeny"),
             };
 
             return items;
-        }
-
-        public IEnumerable<NoteGroupViewModel> GetItems(object parameter)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace FastNote.Core
 {
     public class NoteBoxViewModel : ViewModelBase
     {
         #region Private Members
-        private IItemsProvider<NoteItemViewModel> mItemsProvider;
-        private NoteGroup mNoteGroup;
+        private NoteGroup mNoteGroup = new NoteGroup("dummy");
         #endregion
 
         #region Public Properties
         public string TypedText { get; set; }
-        public ObservableCollection<NoteItemViewModel> Items { get; set; }
+        public List<NoteItemViewModel> Items { get; set; }
 
         public NoteGroup NoteGroup
         {
@@ -31,31 +32,57 @@ namespace FastNote.Core
         #endregion
 
         #region Public Commands
-        public ICommand SendNoteCommand { get; set; }
+        public ICommand PushNoteCommand { get; set; }
         #endregion
 
         #region Constructor
-        public NoteBoxViewModel(IItemsProvider<NoteItemViewModel> itemsProvider)
+        public NoteBoxViewModel()
         {
-            mItemsProvider = itemsProvider;
-            SendNoteCommand = new RelayCommand(SendNote);
-        }     
+            CreateCommands();
+            SubscribeToSelectedGroupMessage();
+            UpdateItems();
+        }
+
+        private void CreateCommands()
+        {
+            PushNoteCommand = new RelayCommand(PushNote);
+        }
+
+        private void SubscribeToSelectedGroupMessage()
+        {
+            Messenger.Default.Register<SelectedNoteGroupMessage>(this,
+                (message) => NoteGroup = message.SelectedGroup);
+        }
         #endregion
 
-        #region Public Methods
-        public void SendNote()
+        #region Methods
+        public void PushNote()
         {
-            if (string.IsNullOrEmpty(TypedText))
+            if (NoTextTyped())
                 return;
+            FlushTypedText();
+            UpdateItems();
+        }
 
-            var item = new NoteItemViewModel { Content = TypedText };
-            Items.Add(item);
+        private bool NoTextTyped()
+        {
+            return string.IsNullOrEmpty(TypedText);
+        }
+
+        private void FlushTypedText()
+        {
+            NoteGroup.AddNote(new NoteItem(TypedText));
             TypedText = string.Empty;
         }
 
         public void UpdateItems()
         {
-            Items = new ObservableCollection<NoteItemViewModel>(mItemsProvider.GetItems(NoteGroup));
+            Items = new List<NoteItemViewModel>(ConvertToViewModels(NoteGroup.Notes));
+        }
+
+        private static IEnumerable<NoteItemViewModel> ConvertToViewModels(IEnumerable<NoteItem> models)
+        {
+            return models.Select((noteItem) => new NoteItemViewModel(noteItem));
         }
         #endregion        
     }

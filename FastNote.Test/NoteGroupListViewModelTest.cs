@@ -1,14 +1,17 @@
-﻿using FakeItEasy;
-using FastNote.Core;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using NUnit.Framework;
 
 namespace FastNote.Test
 {
     [TestFixture]
     public class NoteGroupListViewModelTest
     {
-        //TODO test selection feature
+        public class SelectingGroups
+        {
+            [Test]
+            public void InitialConditions_ExpectedResult()
+            {
+                
+            }
+        }
     }
 }

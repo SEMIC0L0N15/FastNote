@@ -11,44 +11,47 @@
              DataContext="{x:Static core:NoteBoxDesignModel.Instance}">
     <!-- DataContext="{x:Static core:NoteBoxDesignModel.Instance}" -->
 
-    <Grid Background="{StaticResource BackgroundDarkerBrush}">
+    
+        <Grid Background="{StaticResource BackgroundDarkerBrush}">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Border Margin="10 0 10 10" Grid.Row="0" 
-                BorderBrush="Black" BorderThickness="0 0 0 0">
-            <ListBox BorderThickness="0" 
+            <Border Margin="15 0 15 10" Grid.Row="0" 
+                BorderBrush="{StaticResource BorderLightBrush}" 
+                    BorderThickness="1 0 1 1">
+                
+                <ListBox BorderThickness="0" 
                      x:Name="ListBox" 
                      ItemsSource="{Binding Items}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      Background="Transparent">
 
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel VerticalAlignment="Bottom"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel VerticalAlignment="Bottom"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
 
-                <ListBox.Resources>
-
-
-                </ListBox.Resources>
-
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-
-                        <Setter Property="Background" Value="{StaticResource AzureRegularBrush}"/>
-                        <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
-
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <ListBox.Resources>
 
 
-                                    <Button x:Name="button"
+                    </ListBox.Resources>
+
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+
+                            <Setter Property="Background" Value="{StaticResource BackgroundSuperDarkBrush}"/>
+                            <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+
+
+                                        <Button x:Name="button"
                                             Content="{Binding Content}"   
                                             Style="{StaticResource TextButton}"
                                             Foreground="White" 
@@ -56,46 +59,50 @@
                                             Background="{TemplateBinding Background}"
                                             Click="Item_OnClick"
                                             LostFocus="Item_OnLostFocus"
-                                            Margin="5"
-                                            Padding="8"
-                                            BorderThickness="1"
-                                            BorderBrush="{StaticResource ForegroundLightBrush}"/>
+                                            Margin="0"
+                                            Padding="15"
+                                            BorderThickness="0 1 0 0"
+                                            BorderBrush="{StaticResource BorderLightBrush}"/>
 
 
 
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{StaticResource AzureLightBrush}"/>
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="Background" TargetName="button" Value="{StaticResource AzureDarkBrush}"/>
-                                            <Setter Property="BorderBrush" TargetName="button" Value="{StaticResource AzureDarkBrush}"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource AzureLightBrush}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" TargetName="button" Value="{StaticResource AzureDarkBrush}"/>
+                                                <Setter Property="BorderBrush" TargetName="button" Value="{StaticResource AzureDarkBrush}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
 
-                                </ControlTemplate>
-
-
-
-
-                            </Setter.Value>
-                        </Setter>
-
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                
-
-            </ListBox>
-        </Border>
+                                    </ControlTemplate>
 
 
 
-        <TextBox Grid.Row="1" Margin="15 0 15 5" Height="50" 
-                 Text="{Binding TypedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <TextBox.InputBindings>
-                <KeyBinding Key="Enter" Command="{Binding SendNoteCommand}"/>
-            </TextBox.InputBindings>
-        </TextBox>
-    </Grid>
+
+                                </Setter.Value>
+                            </Setter>
+
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+
+
+                </ListBox>
+            </Border>
+
+
+
+            <TextBox Grid.Row="1" 
+                     Margin="15 0 15 10" 
+                     Height="50" 
+                     Background="{StaticResource BackgroundUltraDarkBrush}"
+                     Tag="Napisz coś..."
+                     Text="{Binding TypedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding PushNoteCommand}"/>
+                </TextBox.InputBindings>
+            </TextBox>
+        </Grid>
 
 </UserControl>

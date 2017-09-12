@@ -11,11 +11,7 @@ namespace FastNote
         public NoteBoxControl()
         {
             InitializeComponent();
-
-            if (ViewModelBase.IsInDesignModeStatic)
-                this.DataContext = new NoteBoxDesignModel();
-            else
-                this.DataContext = ViewModelLocator.NoteBoxViewModel;
+            this.DataContext = ViewModelLocator.NoteBoxViewModel;
         }
 
         private void Item_OnClick(object sender, RoutedEventArgs e)

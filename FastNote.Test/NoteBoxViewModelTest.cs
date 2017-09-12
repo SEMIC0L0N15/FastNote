@@ -12,7 +12,7 @@ namespace FastNote.Test
     [TestFixture]
     public class NoteBoxViewModelTest
     {
-        public class SendNoteMethod
+        public class PushNoteMethod
         {
             private NoteBoxViewModel viewModel;
 
@@ -22,7 +22,7 @@ namespace FastNote.Test
                 SetupViewModel();
                 SetTypedText("Hello World!");
 
-                SendNote();
+                PushNote();
 
                 AssertChildrenCountEquals(1);
                 AssertFirstItemContentEquals("Hello World!");
@@ -34,7 +34,7 @@ namespace FastNote.Test
                 SetupViewModel();
                 SetTypedText(string.Empty);
 
-                SendNote();
+                PushNote();
 
                 AssertChildrenCountEquals(0);
             }
@@ -45,7 +45,7 @@ namespace FastNote.Test
                 SetupViewModel();
                 SetTypedText(null);
 
-                SendNote();
+                PushNote();
 
                 AssertChildrenCountEquals(0);
             }
@@ -53,9 +53,7 @@ namespace FastNote.Test
             #region Helpers
             private void SetupViewModel()
             {
-                var itemsProvider = A.Fake<IItemsProvider<NoteItemViewModel>>();
-                A.CallTo(() => itemsProvider.GetItems()).Returns(new List<NoteItemViewModel>());
-                viewModel = new NoteBoxViewModel(itemsProvider);
+                viewModel = ViewModelLocator.NoteBoxViewModel;
             }
 
             private void SetTypedText(string text)
@@ -63,9 +61,9 @@ namespace FastNote.Test
                 viewModel.TypedText = text;
             }
 
-            private void SendNote()
+            private void PushNote()
             {
-                viewModel.SendNote();
+                viewModel.PushNote();
             }
 
             private void AssertChildrenCountEquals(int expectedCount)

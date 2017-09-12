@@ -12,11 +12,7 @@ namespace FastNote
         public NoteGroupListControl()
         {
             InitializeComponent();
-
-            if (ViewModelBase.IsInDesignModeStatic)
-                this.DataContext = new NoteGroupListDesignModel();
-            else
-                this.DataContext = ViewModelLocator.NoteGroupListViewModel;
+            this.DataContext = ViewModelLocator.NoteGroupListViewModel;
         }
 
         private void Button_OnClick(object sender, RoutedEventArgs e)
@@ -27,15 +23,6 @@ namespace FastNote
                 {
                     listBoxItem.IsSelected = true;
                 }
-            }
-        }
-
-        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is ListBox listBox)
-            {
-                var selectedGroup = ((NoteGroupViewModel) listBox.SelectedItem).NoteGroup;
-                ViewModelLocator.NoteGroupListViewModel.SelectedGroup = selectedGroup;
             }
         }
     }

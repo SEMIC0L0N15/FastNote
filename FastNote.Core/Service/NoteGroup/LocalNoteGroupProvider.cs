@@ -2,14 +2,9 @@
 
 namespace FastNote.Core
 {
-    public class LocalNoteGroupProvider : IItemsProvider<NoteGroupViewModel>
+    public class LocalNoteGroupProvider : INoteGroupProvider
     {
-        public IEnumerable<NoteGroupViewModel> GetItems()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IEnumerable<NoteGroupViewModel> GetItems(object parameter)
+        public IEnumerable<NoteGroup> GetItems(User user)
         {
             throw new System.NotImplementedException();
         }

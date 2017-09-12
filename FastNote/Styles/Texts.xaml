@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:FastNote">
+                    xmlns:local="clr-namespace:FastNote"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Colors.xaml"/>
@@ -21,18 +22,62 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBoxBase}">
-                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+
+                    <Border x:Name="border" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            Background="{TemplateBinding Background}" 
+                            SnapsToDevicePixels="True">
+
+                        <Grid>
+
+                        
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="GotFocus">
+                                        <local:SetPropertyAction TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}" 
+                                                                PropertyName="Tag"
+                                                                PropertyValue="{x:Static Visibility.Hidden}" />
+                                    </i:EventTrigger>
+
+                                    <i:EventTrigger EventName="LostFocus">
+                                        <local:SetPropertyAction PropertyName="Tag" TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}" 
+                                                                    PropertyValue="{x:Static Visibility.Visible}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ScrollViewer>
+                        
+
+                            <TextBlock IsHitTestVisible="False" 
+                                       Background="{TemplateBinding Background}" 
+                                       Foreground="{StaticResource ForegroundVeryLightBrush}" 
+                                       Text="{TemplateBinding Tag}"
+                                       Padding="{TemplateBinding Padding}">
+
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                <Setter Property="Visibility" Value="{Binding Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                        </Grid>
                     </Border>
-                    <ControlTemplate.Triggers>                        
+                <ControlTemplate.Triggers>                        
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ForegroundLighterBrush}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ForegroundVeryLightBrush}"/>
                         </Trigger>
-
                     </ControlTemplate.Triggers>
+                    
+                    
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

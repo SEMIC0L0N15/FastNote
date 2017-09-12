@@ -8,11 +8,10 @@ namespace FastNote.Core
         public static IKernel Kernel { get; set; } = new StandardKernel();
         #endregion
 
-        #region Public Methods
+        #region Methods
         public static void Setup()
         {
-            Kernel.Bind<IItemsProvider<NoteGroupViewModel>>().To<DesignNoteGroupProvider>();
-            Kernel.Bind<IItemsProvider<NoteItemViewModel>>().To<DesignNoteItemProvider>();
+            Kernel.Bind<INoteGroupProvider>().To<DesignNoteGroupProvider>();
         } 
 
         public static T Get<T>()

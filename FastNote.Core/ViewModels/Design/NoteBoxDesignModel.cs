@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight.Command;
 
@@ -12,18 +13,15 @@ namespace FastNote.Core
 
         #region Constructor
         public NoteBoxDesignModel()
-            : base(null)
         {
-            Items = new ObservableCollection<NoteItemViewModel>()
+            Items = new List<NoteItemViewModel>()
             {
-                new NoteItemViewModel { Content = "Lords of The Fallen" },
-                new NoteItemViewModel { Content = "DeusEx: Bunt Ludzkości" },
-                new NoteItemViewModel { Content = "Sid Meier's Civilization VI" },
-                new NoteItemViewModel { Content = "Orcs must die!" },
-                new NoteItemViewModel { Content = "Mass Effect: Andromeda" },
+                new NoteItemViewModel(new NoteItem("Lords of The Fallen")),
+                new NoteItemViewModel(new NoteItem("DeusEx: Bunt Ludzkości")),
+                new NoteItemViewModel(new NoteItem("Sid Meier's Civilization VI")),
+                new NoteItemViewModel(new NoteItem("Orcs must die!")),
+                new NoteItemViewModel(new NoteItem("Mass Effect: Andromeda")),
             };
-
-            SendNoteCommand = new RelayCommand(SendNote);
         }
         #endregion
     }

@@ -76,6 +76,7 @@
                                                     </Grid>
                                                 </Border>
 
+                                                <!-- Search box -->
                                                 <Border Grid.Row="1"
                                                         BorderBrush="{StaticResource ForegroundLightBrush}"
                                                         BorderThickness="0 0 0 1"
@@ -87,7 +88,7 @@
                                                                 Style="{StaticResource IconButton}"
                                                                 Background="{StaticResource BackgroundDarkBrush}"
                                                                 Foreground="{StaticResource ForegroundVeryLightBrush}"
-                                                                FontSize="12" Margin="0 5 5 5" Width="35" />
+                                                                FontSize="12" Margin="0 5 5 5" Width="33" />
 
                                                         <Button Style="{StaticResource ExpandTextButton}"
                                                                 Background="{StaticResource BackgroundUltraDarkBrush}"
@@ -136,7 +137,10 @@
 
         <local:NoteBoxControl Grid.Column="2"/>
 
-        <Border Grid.Column="3" BorderThickness="1 0 0 0" BorderBrush="{StaticResource ForegroundLightBrush}">
+        <Border Grid.Column="3" 
+                Background="{StaticResource BackgroundVeryDarkBrush}"
+                BorderThickness="1 0 0 0" 
+                BorderBrush="{StaticResource BorderLightBrush}">
             
         </Border>
     </Grid>

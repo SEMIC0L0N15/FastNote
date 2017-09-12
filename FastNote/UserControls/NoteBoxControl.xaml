@@ -77,8 +77,8 @@
 
                                             <ContentPresenter x:Name="presenter" 
                                                               MouseDown="Item_OnMouseDown"
-                                                              MouseEnter="Presenter_OnMouseEnter"
-                                                              MouseLeave="Presenter_OnMouseEnter"
+                                                              MouseEnter="Presenter_OnMouseEnterLeave"
+                                                              MouseLeave="Presenter_OnMouseEnterLeave"
                                                               Focusable="True"
                                                               Tag="{TemplateBinding Background}"/>
 

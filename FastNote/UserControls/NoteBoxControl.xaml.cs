@@ -8,22 +8,67 @@ namespace FastNote
 {
     public partial class NoteBoxControl : UserControl
     {
-        private bool AutoScroll = true;
+        #region Private Members
+        private bool AutoScroll = true; 
+        #endregion
 
+        #region Constructor
         public NoteBoxControl()
         {
             InitializeComponent();
             this.DataContext = ViewModelLocator.NoteBoxViewModel;
         }
+        #endregion
 
-        public void DeselectAllItems()
+        #region Initial Actions
+        private void NoteBoxControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            foreach (NoteItemViewModel item in ListBox.Items)
+            TextBox.Focus();
+        }
+        #endregion
+
+        #region Selecting
+        private void Item_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ListBoxItem listBoxItem = GetAssociatedListBoxItem(sender);
+
+            if (AcceptsClick(listBoxItem))
             {
-                item.IsSelected = false;
+                listBoxItem.IsSelected ^= true;
+                e.Handled = true;
             }
         }
 
+        private void Presenter_OnMouseEnterLeave(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                ListBoxItem listBoxItem = GetAssociatedListBoxItem(sender);
+
+                if (AcceptsClick(listBoxItem))
+                {
+                    listBoxItem.IsSelected = true;
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private static ListBoxItem GetAssociatedListBoxItem(object sender)
+        {
+            var contentElement = sender as FrameworkElement;
+            var listBoxItem = contentElement.TemplatedParent as ListBoxItem;
+            return listBoxItem;
+        }
+
+        private bool AcceptsClick(ListBoxItem listBoxItem)
+        {
+            return ListBox.SelectionMode == SelectionMode.Multiple ||
+                   (ListBox.SelectionMode == SelectionMode.Extended && Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)) ||
+                   listBoxItem.IsSelected;
+        }
+        #endregion
+
+        #region Deselecting
         private void Item_OnLostFocus(object sender, RoutedEventArgs e)
         {
             DeselectAllItems();
@@ -34,23 +79,17 @@ namespace FastNote
             DeselectAllItems();
         }
 
-        private void Item_OnMouseDown(object sender, MouseButtonEventArgs e)
+
+        public void DeselectAllItems()
         {
-            if (sender is FrameworkElement contentElement)
+            foreach (NoteItemViewModel item in ListBox.Items)
             {
-                if (contentElement.TemplatedParent is ListBoxItem listBoxItem)
-                {
-                    if (ListBox.SelectionMode == SelectionMode.Multiple ||
-                        (ListBox.SelectionMode == SelectionMode.Extended && Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)) ||
-                        listBoxItem.IsSelected)
-                    {
-                        listBoxItem.IsSelected ^= true;
-                        e.Handled = true;
-                    }
-                }
+                item.IsSelected = false;
             }
         }
+        #endregion
 
+        #region Scrolling
         private void ScrollViewer_OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (!(sender is ScrollViewer scrollViewer)) return;
@@ -73,30 +112,7 @@ namespace FastNote
             scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
             e.Handled = true;
         }
-
-        private void NoteBoxControl_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            TextBox.Focus();
-        }
-
-        private void Presenter_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                if (sender is FrameworkElement contentElement)
-                {
-                    if (contentElement.TemplatedParent is ListBoxItem listBoxItem)
-                    {
-                        if (ListBox.SelectionMode == SelectionMode.Multiple ||
-                            (ListBox.SelectionMode == SelectionMode.Extended && Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)) ||
-                            listBoxItem.IsSelected)
-                        {
-                            listBoxItem.IsSelected = true;
-                            e.Handled = true;
-                        }
-                    }
-                }
-            }
-        }
+        #endregion
+        
     }
 }

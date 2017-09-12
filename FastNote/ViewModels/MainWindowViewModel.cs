@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace FastNote
 {
@@ -10,6 +10,7 @@ namespace FastNote
     { 
         #region Private Mambers
         private Window mWindow;
+        private WindowResizer mWindowResizer;
         #endregion
 
         #region Public Properties
@@ -19,7 +20,7 @@ namespace FastNote
         public Thickness BorderThickness => new Thickness(Borderless ? 0 : Border);
 
         public int ResizeBorder { get; set; } = 10;
-        public Thickness ResizeBorderThickness => new Thickness(ResizeBorder);
+        public Thickness ResizeBorderThickness => new Thickness(Borderless ? 0 : ResizeBorder);
 
         public int CaptionHeight { get; set; } = 40;
         public GridLength CaptionHeightGridLength => new GridLength(CaptionHeight);
@@ -27,8 +28,8 @@ namespace FastNote
         public int OuterMargin { get; set; } = 0;
         public Thickness OuterMarginThickness => new Thickness(OuterMargin);
 
-        public int CornerRadiusSize { get; set; } = 0;
-        public CornerRadius CornerRadius => new CornerRadius(CornerRadiusSize);
+        public int CornerRadiusValue { get; set; } = 0;
+        public CornerRadius CornerRadius => new CornerRadius(CornerRadiusValue);
 
         public bool IsActive => mWindow.IsActive;
         #endregion
@@ -38,6 +39,7 @@ namespace FastNote
         public ICommand MaximizeCommand { get; set; }
         public ICommand CloseCommand { get; set; }
         public ICommand SystemMenuCommand { get; set; }
+        public ICommand AdvancedSearchCommand { get; set; }
         #endregion
 
         #region Constructor and it's helpers
@@ -71,52 +73,49 @@ namespace FastNote
 
         private void CreateCommands()
         {
-            CreateMinimizeCommand();
-            CreateMaximizeCommand();
-            CreateCloseCommand();
-            CreateSystemMenuCommand();
+            MinimizeCommand = new RelayCommand(Minimize);
+            MaximizeCommand = new RelayCommand(Maximize);
+            CloseCommand = new RelayCommand(CloseWindow);
+            SystemMenuCommand = new RelayCommand(ShowSystemMenu);
+            AdvancedSearchCommand = new RelayCommand(AdvancedSearchExpand);
         }
 
-        private void CreateMinimizeCommand()
+        private void Minimize()
         {
-            MinimizeCommand = new RelayCommand(() =>
-            {
-                if (mWindow.WindowState != WindowState.Maximized)
-                    mWindow.WindowStyle = WindowStyle.SingleBorderWindow;
-                mWindow.WindowState = WindowState.Minimized;
-            });
+            if (mWindow.WindowState != WindowState.Maximized)
+                mWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+            mWindow.WindowState = WindowState.Minimized;
         }
 
-        private void CreateMaximizeCommand()
+        private void Maximize()
         {
-            MaximizeCommand = new RelayCommand(() =>
-            {
-                mWindow.WindowStyle = WindowStyle.None;
-                mWindow.WindowState ^= WindowState.Maximized;
-            });
+            mWindow.WindowStyle = WindowStyle.None;
+            mWindow.WindowState ^= WindowState.Maximized;
         }
 
-        private void CreateCloseCommand()
+        private void CloseWindow()
         {
-            CloseCommand = new RelayCommand(() => mWindow.Close());
+            mWindow.Close();
         }
 
-        private void CreateSystemMenuCommand()
+        private void ShowSystemMenu()
         {
-            SystemMenuCommand =
-                new RelayCommand(
-                    () => SystemCommands.ShowSystemMenu(mWindow, GetMousePosition()));
+            SystemCommands.ShowSystemMenu(mWindow, GetMousePosition());
         }
 
         private Point GetMousePosition()
         {
-            Point position = Mouse.GetPosition(mWindow);
-            return new Point(position.X + mWindow.Left, position.Y + mWindow.Top);
+            return mWindowResizer.GetCursorPosition();
+        }
+
+        private void AdvancedSearchExpand()
+        {
+            
         }
 
         private void FixMaximizeBug()
         {
-            var resizer = new WindowResizer(mWindow);
+            mWindowResizer = new WindowResizer(mWindow);
         } 
         #endregion
 

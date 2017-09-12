@@ -11,30 +11,10 @@ namespace FastNote.Core
 
         #region Constructor
         public NoteGroupListDesignModel()
-            : base(new DummyNoteGroupProvider())
+            : base(new DesignNoteGroupProvider())
         {
         }
         #endregion
 
-
-
-        private class DummyNoteGroupProvider : INoteGroupProvider
-        {
-
-            public IEnumerable<NoteGroup> GetItems(User parameter)
-            {
-                var items = new List<NoteGroup>()
-            {
-                new NoteGroup("Szybkie notatki"),
-                new NoteGroup("Gry do zagrania"),
-                new NoteGroup("Filmy do obejrzenia"),
-                new NoteGroup("Książki do przeczytania"),
-                new NoteGroup("Linki"),
-                new NoteGroup("Screeny"),
-            };
-
-                return items;
-            }
-        }
     }
 }

@@ -27,12 +27,18 @@
                             BorderBrush="{TemplateBinding BorderBrush}" 
                             BorderThickness="{TemplateBinding BorderThickness}" 
                             Background="{TemplateBinding Background}" 
-                            SnapsToDevicePixels="True">
+                            SnapsToDevicePixels="True"
+                            Cursor="{x:Static Cursors.IBeam}">
 
-                        <Grid>
+                        <Grid HorizontalAlignment="{TemplateBinding HorizontalAlignment}" 
+                              VerticalAlignment="{TemplateBinding VerticalAlignment}">
 
                         
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Focusable="False" 
+                                          HorizontalScrollBarVisibility="Hidden" 
+                                          VerticalScrollBarVisibility="Hidden" 
+                                          Padding="{TemplateBinding Padding}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="GotFocus">
                                         <local:SetPropertyAction TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}" 
@@ -49,7 +55,6 @@
                         
 
                             <TextBlock IsHitTestVisible="False" 
-                                       Background="{TemplateBinding Background}" 
                                        Foreground="{StaticResource ForegroundVeryLightBrush}" 
                                        Text="{TemplateBinding Tag}"
                                        Padding="{TemplateBinding Padding}">

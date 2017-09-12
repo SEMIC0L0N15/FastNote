@@ -14,13 +14,16 @@ namespace FastNote.Core
         #region Constructor
         public NoteBoxDesignModel()
         {
-            Items = new List<NoteItemViewModel>()
+            NoteGroup = new NoteGroup("dummy")
             {
-                new NoteItemViewModel(new NoteItem("Lords of The Fallen")),
-                new NoteItemViewModel(new NoteItem("DeusEx: Bunt Ludzkości")),
-                new NoteItemViewModel(new NoteItem("Sid Meier's Civilization VI")),
-                new NoteItemViewModel(new NoteItem("Orcs must die!")),
-                new NoteItemViewModel(new NoteItem("Mass Effect: Andromeda")),
+                Notes = new ObservableCollection<NoteItem>()
+                {
+                    new NoteItem("Lords of The Fallen"),
+                    new NoteItem("DeusEx: Rozłam Ludzkości"),
+                    new NoteItem("Sid Meier's Civilization VI"),
+                    new NoteItem("Dragon Age: Inkwizycja"),
+                    new NoteItem("Mass Effect: Andromeda"),
+                }
             };
         }
         #endregion

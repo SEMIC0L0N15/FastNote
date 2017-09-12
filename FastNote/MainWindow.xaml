@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:FastNote"
         mc:Ignorable="d"
         Title="Welcome, friend!" 
-        Height="620" Width="830"
+        Height="620" Width="880"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         MinHeight="300"
-        MinWidth="400">
+        MinWidth="400"
+        SizeChanged="MainWindow_OnSizeChanged">
         <!--Height="450" Width="650"-->
     <Window.Resources>
         <Style TargetType="{x:Type local:MainWindow}">
@@ -92,7 +93,8 @@
 
                                                         <Button Style="{StaticResource ExpandTextButton}"
                                                                 Background="{StaticResource BackgroundUltraDarkBrush}"
-                                                                Content="Wyszukiwanie zaawansowane"/>
+                                                                Content="Wyszukiwanie zaawansowane"
+                                                                Command="{Binding SearchCommand}"/>
                                                     </StackPanel>
                         
                                                 </Border>
@@ -135,7 +137,7 @@
 
         <local:NoteGroupListControl Grid.Column="1"/>
 
-        <local:NoteBoxControl Grid.Column="2"/>
+        <local:NoteBoxControl x:Name="noteBox" Grid.Column="2" Tag="15 0 15 10"/>
 
         <Border Grid.Column="3" 
                 Background="{StaticResource BackgroundVeryDarkBrush}"

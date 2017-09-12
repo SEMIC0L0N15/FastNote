@@ -13,8 +13,11 @@
     <Color x:Key="AzureDark">#0b352f</Color>
     <SolidColorBrush x:Key="AzureDarkBrush" Color="{StaticResource AzureDark}"/>
 
-    <Color x:Key="AzureVeryDark">#12393a</Color>
+    <Color x:Key="AzureVeryDark">#072d28</Color>
     <SolidColorBrush x:Key="AzureVeryDarkBrush" Color="{StaticResource AzureVeryDark}"/>
+
+    <Color x:Key="AzureNoteHighlight">#013832</Color>
+    <SolidColorBrush x:Key="AzureNoteHighlightBrush" Color="{StaticResource AzureDark}"/>
 
     <Color x:Key="AzureVeryLight">#d1fff2</Color>
     <SolidColorBrush x:Key="AzureVeryLightBrush" Color="{StaticResource AzureVeryLight}"/>
@@ -27,7 +30,6 @@
 
     <Color x:Key="BackgroundVeryDark">#FF292929</Color>
     <SolidColorBrush x:Key="BackgroundVeryDarkBrush" Color="{StaticResource BackgroundVeryDark}"/>
-    
 
     <Color x:Key="BackgroundSuperDark">#212121</Color>
     <SolidColorBrush x:Key="BackgroundSuperDarkBrush" Color="{StaticResource BackgroundSuperDark}"/>

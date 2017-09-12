@@ -15,6 +15,7 @@
             <ListBox Background="{StaticResource BackgroundVeryDarkBrush}"
                      BorderThickness="0"
                      ItemsSource="{Binding Items}"
+                     Loaded="FrameworkElement_OnLoaded"
                      SelectedItem="{Binding SelectedGroup, Mode=OneWayToSource, 
                                     Converter={local:NoteGroupModelToVMConverter}}">
 

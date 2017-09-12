@@ -25,5 +25,10 @@ namespace FastNote
                 }
             }
         }
+
+        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ((ListBox) sender).SelectedIndex = 1;
+        }
     }
 }

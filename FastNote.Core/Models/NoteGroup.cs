@@ -8,21 +8,12 @@ namespace FastNote.Core
     {
         #region Public Properties
         public string Name { get; set; }
-        public ObservableCollection<NoteItem> Notes { get; set; } = 
-            new ObservableCollection<NoteItem>();
         #endregion
 
         #region Constructor
         public NoteGroup(string name)
         {
             Name = name;
-        }
-        #endregion
-
-        #region Methods
-        public void AddNote(NoteItem noteItem)
-        {
-            Notes.Add(noteItem);
         }
         #endregion
     }

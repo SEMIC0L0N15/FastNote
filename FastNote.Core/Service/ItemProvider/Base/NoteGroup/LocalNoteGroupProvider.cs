@@ -4,7 +4,7 @@ namespace FastNote.Core
 {
     public class LocalNoteGroupProvider : INoteGroupProvider
     {
-        public IEnumerable<NoteGroup> GetItems(User user)
+        public IEnumerable<NoteGroup> GetItems()
         {
             throw new System.NotImplementedException();
         }

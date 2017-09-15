@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -14,11 +15,12 @@ namespace FastNote.Core
     {
         #region Private Members
         private NoteGroup mNoteGroup = new NoteGroup("dummy");
+        private INoteItemProvider mItemProvider;
         #endregion
 
         #region Public Properties
         public string TypedText { get; set; }
-        public List<NoteItemViewModel> Items { get; set; }
+        public ObservableCollection<NoteItemViewModel> Items { get; set; }
 
         public NoteGroup NoteGroup
         {
@@ -36,8 +38,9 @@ namespace FastNote.Core
         #endregion
 
         #region Constructor
-        public NoteBoxViewModel()
+        public NoteBoxViewModel(INoteItemProvider itemProvider)
         {
+            mItemProvider = itemProvider;
             CreateCommands();
             SubscribeToSelectedGroupMessage();
             UpdateItems();
@@ -56,12 +59,14 @@ namespace FastNote.Core
         #endregion
 
         #region Methods
+
+        #region PushNote Method
         public void PushNote()
         {
             if (NoTextTyped())
                 return;
             FlushTypedText();
-            UpdateItems();
+            Task.Run(async () => await SaveItemsAsync());
         }
 
         private bool NoTextTyped()
@@ -71,19 +76,44 @@ namespace FastNote.Core
 
         private void FlushTypedText()
         {
-            NoteGroup.AddNote(new NoteItem(TypedText));
+            Items.Add(new NoteItemViewModel(new NoteItem(TypedText)));
             TypedText = string.Empty;
         }
+        #endregion
 
+        #region SaveItems Method
+        public async Task SaveItemsAsync()
+        {
+            SaveItemsLocally();
+            await SaveItemsToDatabaseAsync();
+        }
+
+        private void SaveItemsLocally()
+        {
+            // TODO implement SaveItemsLocally
+        }
+
+        private async Task SaveItemsToDatabaseAsync()
+        {
+            // TODO implement SaveItemsToDatabase
+        }
+        #endregion
+
+        #region UpdateItems Method
         public void UpdateItems()
         {
-            Items = new List<NoteItemViewModel>(ConvertToViewModels(NoteGroup.Notes));
+            var providedItems = mItemProvider.GetItems(NoteGroup);
+
+            Items = new ObservableCollection<NoteItemViewModel>(
+                ConvertToViewModels(providedItems));
         }
 
         private static IEnumerable<NoteItemViewModel> ConvertToViewModels(IEnumerable<NoteItem> models)
         {
             return models.Select((noteItem) => new NoteItemViewModel(noteItem));
-        }
-        #endregion        
+        } 
+        #endregion
+
+        #endregion
     }
 }

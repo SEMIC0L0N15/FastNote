@@ -9,9 +9,10 @@ namespace FastNote.Core
         #endregion
 
         #region Methods
-        public static void Setup()
+        static IoC()
         {
-            Kernel.Bind<INoteGroupProvider>().To<DesignNoteGroupProvider>();
+            Kernel.Bind<INoteItemProvider>().To<DesignNoteItemProvider>();
+            Kernel.Bind<INoteGroupProvider>().To<DesingNoteGroupProvider>();
         } 
 
         public static T Get<T>()

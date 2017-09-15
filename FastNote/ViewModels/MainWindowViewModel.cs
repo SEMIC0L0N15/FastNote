@@ -110,7 +110,7 @@ namespace FastNote
 
         private void AdvancedSearchExpand()
         {
-            
+            // TODO implement AdvancedSearchExpand
         }
 
         private void FixMaximizeBug()

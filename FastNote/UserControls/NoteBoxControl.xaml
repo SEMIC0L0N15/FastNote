@@ -77,18 +77,22 @@
 
                                             <ContentPresenter x:Name="presenter" 
                                                               MouseDown="Item_OnMouseDown"
-                                                              MouseEnter="Presenter_OnMouseEnterLeave"
-                                                              MouseLeave="Presenter_OnMouseEnterLeave"
+                                                              MouseUp="Item_OnMouseUp"
+                                                              MouseEnter="Presenter_OnMouseEnter"
+                                                              MouseLeave="Presenter_OnMouseLeave"
                                                               Focusable="True"
                                                               Tag="{TemplateBinding Background}"/>
 
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="{StaticResource AzureDarkBrush}"/>
+                                                    <Setter Property="Background" Value="{StaticResource AzureRegularBrush}"/>
                                                 </Trigger>
                                                 <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="{StaticResource AzureDarkBrush}"/>
+                                                    <Setter Property="Background" Value="{StaticResource  AzureDarkBrush}"/>
                                                     <Setter Property="BorderBrush" Value="{StaticResource AzureDarkBrush}"/>
+                                                </Trigger>
+                                                <Trigger Property="local:IsMouseDownProperty.Value" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource AzureDarkBrush}"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
 

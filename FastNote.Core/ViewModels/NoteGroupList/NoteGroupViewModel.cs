@@ -13,12 +13,6 @@ namespace FastNote.Core
             get => NoteGroup.Name;
             set => NoteGroup.Name = value;
         }
-
-        public ObservableCollection<NoteItem> Notes
-        {
-            get => NoteGroup.Notes;
-            //set => NoteGroup.Notes = value;
-        }
         #endregion
 
         #region Constructor

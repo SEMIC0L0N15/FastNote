@@ -2,7 +2,7 @@
 
 namespace FastNote.Core
 {
-    public interface IItemsProvider<T>
+    public interface IItemProvider<T>
     {
         IEnumerable<T> GetItems();
     }

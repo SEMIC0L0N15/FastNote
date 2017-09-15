@@ -8,8 +8,8 @@ namespace FastNote.Core
 {
     public class NoteGroupListViewModel : ViewModelBase
     {
-        #region Private and Protected Members
-        private INoteGroupProvider mItemsProvider;
+        #region Private Members
+        private INoteGroupProvider mItemProvider;
         private NoteGroup mSelectedGroup;
         #endregion
 
@@ -28,9 +28,9 @@ namespace FastNote.Core
         #endregion
 
         #region Constructor
-        public NoteGroupListViewModel(INoteGroupProvider itemsProvider)
+        public NoteGroupListViewModel(INoteGroupProvider itemProvider)
         {
-            mItemsProvider = itemsProvider;
+            mItemProvider = itemProvider;
             UpdateItems();
         }
         #endregion
@@ -39,7 +39,7 @@ namespace FastNote.Core
         public void UpdateItems()
         {
             Items = new ObservableCollection<NoteGroupViewModel>(
-                ConvertToViewModels(mItemsProvider.GetItems(null)));
+                ConvertToViewModels(mItemProvider.GetItems()));
         }
 
         private IEnumerable<NoteGroupViewModel> ConvertToViewModels(IEnumerable<NoteGroup> models)

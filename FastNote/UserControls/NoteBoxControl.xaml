@@ -60,7 +60,8 @@
                                         FontSize="15"
                                         Background="{TemplateBinding Tag}"
                                         Margin="0"
-                                        Padding="12"/>
+                                        Padding="12"
+                                        TextWrapping="Wrap"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
 

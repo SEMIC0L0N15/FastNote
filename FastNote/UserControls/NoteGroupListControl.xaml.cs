@@ -12,7 +12,7 @@ namespace FastNote
         public NoteGroupListControl()
         {
             InitializeComponent();
-            this.DataContext = ViewModelLocator.NoteGroupListViewModel;
+            this.DataContext = ViewModelLocator.GetNoteGroupListViewModel();
         }
 
         private void Button_OnClick(object sender, RoutedEventArgs e)

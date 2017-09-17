@@ -12,14 +12,14 @@ namespace FastNote
     public partial class NoteBoxControl : UserControl
     {
         #region Private Members
-        private bool AutoScroll = true; 
+        private bool mAutoScroll = true; 
         #endregion
 
         #region Constructor
         public NoteBoxControl()
         {
             InitializeComponent();
-            this.DataContext = ViewModelLocator.NoteBoxViewModel;
+            this.DataContext = ViewModelLocator.GetNoteBoxViewModel();
         }
         #endregion
 
@@ -142,12 +142,12 @@ namespace FastNote
             if (e.ExtentHeightChange == 0)
             {
                 if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
-                    AutoScroll = true;
+                    mAutoScroll = true;
                 else
-                    AutoScroll = false;
+                    mAutoScroll = false;
             }
 
-            if (AutoScroll && e.ExtentHeightChange != 0)
+            if (mAutoScroll && e.ExtentHeightChange != 0)
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
         }
 

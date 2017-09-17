@@ -73,9 +73,9 @@
     <Compile Include="Service\ItemProvider\Base\IItemProvider.cs" />
     <Compile Include="Service\ItemProvider\Base\INoteItemProvider.cs" />
     <Compile Include="Service\ItemProvider\Base\IParametrizedItemsProvider.cs" />
-    <Compile Include="Service\ItemProvider\Base\NoteGroup\DesingNoteGroupProvider.cs" />
+    <Compile Include="Service\ItemProvider\NoteGroup\DesingNoteGroupProvider.cs" />
     <Compile Include="Service\ItemProvider\Base\INoteGroupProvider.cs" />
-    <Compile Include="Service\ItemProvider\Base\NoteGroup\LocalNoteGroupProvider.cs" />
+    <Compile Include="Service\ItemProvider\NoteGroup\LocalNoteGroupProvider.cs" />
     <Compile Include="Service\ItemProvider\NoteItem\DesignNoteItemProvider.cs" />
     <Compile Include="Service\ItemSaver\Base\IItemSaver.cs" />
     <Compile Include="ViewModels\Design\NoteBoxDesignModel.cs" />

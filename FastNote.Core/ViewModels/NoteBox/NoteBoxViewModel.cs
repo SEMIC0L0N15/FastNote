@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
@@ -27,8 +28,11 @@ namespace FastNote.Core
             get => mNoteGroup;
             set
             {
-                mNoteGroup = value;
-                UpdateItems();
+                if (value != null)
+                {
+                    mNoteGroup = value;
+                    UpdateItems(); 
+                }
             }
         }
         #endregion
@@ -54,19 +58,19 @@ namespace FastNote.Core
         private void SubscribeToSelectedGroupMessage()
         {
             Messenger.Default.Register<SelectedNoteGroupMessage>(this,
-                (message) => NoteGroup = message.SelectedGroup);
+                message => NoteGroup = message.SelectedGroup);
         }
         #endregion
 
         #region Methods
 
         #region PushNote Method
-        public void PushNote()
+        public async void PushNote()
         {
             if (NoTextTyped())
                 return;
             FlushTypedText();
-            Task.Run(async () => await SaveItemsAsync());
+            await SaveItemsAsync();
         }
 
         private bool NoTextTyped()
@@ -96,6 +100,7 @@ namespace FastNote.Core
         private async Task SaveItemsToDatabaseAsync()
         {
             // TODO implement SaveItemsToDatabase
+            await Task.Delay(10000);
         }
         #endregion
 

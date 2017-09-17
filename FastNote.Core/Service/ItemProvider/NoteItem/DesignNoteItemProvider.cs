@@ -43,7 +43,7 @@ namespace FastNote
                         new NoteItem(
                             "private void OnWindowResized()\r\n{\r\n            RaisePropertyChanged(nameof(Borderless));\r\n            RaisePropertyChanged(nameof(Border));\r\n            RaisePropertyChanged(nameof(BorderThickness));\r\n            RaisePropertyChanged(nameof(OuterMargin));\r\n            RaisePropertyChanged(nameof(OuterMarginThickness));\r\n            RaisePropertyChanged(nameof(ResizeBorder));\r\n            RaisePropertyChanged(nameof(ResizeBorderThickness));\r\n            RaisePropertyChanged(nameof(IsActive));\r\n}"),
                         new NoteItem(
-                            "private void CreateCommands()\r\n{\r\n            MinimizeCommand = new RelayCommand(Minimize);\r\n            MaximizeCommand = new RelayCommand(Maximize);\r\n            CloseCommand = new RelayCommand(CloseWindow);\r\n            SystemMenuCommand = new RelayCommand(ShowSystemMenu);\r\n}\r\n"),
+                            "private void CreateCommands()\r\n{\r\n            MinimizeCommand = new RelayCommand(Minimize);\r\n            MaximizeCommand = new RelayCommand(Maximize);\r\n            CloseCommand = new RelayCommand(CloseWindow);\r\n            SystemMenuCommand = new RelayCommand(ShowSystemMenu);\r\n}"),
                         new NoteItem(
                             "private void Minimize()\r\n{\r\n            if (mWindow.WindowState != WindowState.Maximized)\r\n                mWindow.WindowStyle = WindowStyle.SingleBorderWindow;\r\n            mWindow.WindowState = WindowState.Minimized;\r\n}")
                     };

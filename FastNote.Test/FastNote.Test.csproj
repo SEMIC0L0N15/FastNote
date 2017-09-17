@@ -64,7 +64,6 @@
     <Compile Include="NoteBoxViewModelTest.cs" />
     <Compile Include="NoteGroupListViewModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GlobalTestsSetup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

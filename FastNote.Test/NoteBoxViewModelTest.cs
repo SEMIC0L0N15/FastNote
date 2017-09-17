@@ -14,12 +14,12 @@ namespace FastNote.Test
     {
         public class PushNoteMethod
         {
-            private NoteBoxViewModel viewModel;
+            public NoteBoxViewModel ViewModel;
 
             [Test]
             public void WhenTypedTextValid_AddItemWithThatText()
             {
-                SetupViewModel();
+                ConfigureViewModel();
                 SetTypedText("Hello World!");
 
                 PushNote();
@@ -29,9 +29,9 @@ namespace FastNote.Test
             }
 
             [Test]
-            public void WhenTypedTextEmpty_NotAddItem()
+            public void WhenTypedTextEmpty_DontAddItem()
             {
-                SetupViewModel();
+                ConfigureViewModel();
                 SetTypedText(string.Empty);
 
                 PushNote();
@@ -40,9 +40,9 @@ namespace FastNote.Test
             }
 
             [Test]
-            public void WhenTypedTextNull_NotAddItem()
+            public void WhenTypedTextNull_DontAddItem()
             {
-                SetupViewModel();
+                ConfigureViewModel();
                 SetTypedText(null);
 
                 PushNote();
@@ -51,29 +51,32 @@ namespace FastNote.Test
             }
 
             #region Helpers
-            private void SetupViewModel()
+            private void ConfigureViewModel()
             {
-                viewModel = ViewModelLocator.NoteBoxViewModel;
+                var itemsProvider = A.Fake<INoteItemProvider>();
+                A.CallTo(() => itemsProvider.GetItems(null)).Returns(new List<NoteItem>());
+
+                ViewModel = new NoteBoxViewModel(itemsProvider);
             }
 
             private void SetTypedText(string text)
             {
-                viewModel.TypedText = text;
+                ViewModel.TypedText = text;
             }
 
             private void PushNote()
             {
-                viewModel.PushNote();
+                ViewModel.PushNote();
             }
 
             private void AssertChildrenCountEquals(int expectedCount)
             {
-                Assert.AreEqual(expectedCount, viewModel.Items.Count);
+                Assert.AreEqual(expectedCount, ViewModel.Items.Count);
             }
 
             private void AssertFirstItemContentEquals(string expectedContent)
             {
-                Assert.AreEqual(expectedContent, viewModel.Items[0].Content);
+                Assert.AreEqual(expectedContent, ViewModel.Items[0].Content);
             }
             #endregion
         }

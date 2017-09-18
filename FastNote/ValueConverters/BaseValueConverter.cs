@@ -5,17 +5,17 @@ using System.Windows.Markup;
 
 namespace FastNote
 {
-    public abstract class BaseValueConverter<ConverterType> : MarkupExtension, IValueConverter
-        where ConverterType : class, new()
+    public abstract class BaseValueConverter<TConverter> : MarkupExtension, IValueConverter
+        where TConverter : class, new()
     {
         #region Private Members
-        private ConverterType mConverter;
+        private TConverter mConverter;
         #endregion
 
         #region MarkupExtension Methods
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return mConverter ?? (mConverter = new ConverterType());
+            return mConverter ?? (mConverter = new TConverter());
         }
         #endregion
 

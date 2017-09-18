@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FastNote.Core
 {
-    public interface IParametrizedItemsProvider<ReturnType, ParameterType>
+    public interface IParametrizedItemsProvider<TReturn, TParameter>
     {
-        IEnumerable<ReturnType> GetItems(ParameterType parameter);
+        IEnumerable<TReturn> GetItems(TParameter parameter);
     }
 }

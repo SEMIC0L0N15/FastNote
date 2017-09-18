@@ -90,5 +90,78 @@
 
     </Style>
     
+    <Style x:Key="SpinningIconText" TargetType="{x:Type TextBlock}" x:Name="style">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundVeryLightBrush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5 0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <RotateTransform />
+            </Setter.Value>
+        </Setter>
+        
+        <Style.Resources>
+            <Storyboard x:Key="SpinStoryboard">
+                <DoubleAnimation
+                    From="0" 
+                    To="360" 
+                    Duration="0:0:2"
+                    Storyboard.TargetProperty="RenderTransform.Angle"
+                    RepeatBehavior="Forever"/>
+            </Storyboard>
+        </Style.Resources>
+        
+        <Style.Triggers>
+            <Trigger Property="IsVisible" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard x:Name="BeginSpin" Storyboard="{StaticResource SpinStoryboard}"/>
+                </Trigger.EnterActions>
+                
+                <Trigger.ExitActions>
+                    <RemoveStoryboard BeginStoryboardName="BeginSpin"></RemoveStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+        
+    </Style>
+
+    <Style x:Key="FadeInIconText" TargetType="{x:Type TextBlock}">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundVeryLightBrush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5 0.5"/>
+
+        <!--<Style.Resources>
+            <Storyboard x:Key="FadeInStoryboard">
+                <DoubleAnimation 
+                    From="0" 
+                    To="1" 
+                    Duration="0:0:0.2"
+                    Storyboard.TargetProperty="Opacity"/>
+            </Storyboard>
+
+            <Storyboard x:Key="FadeOutStoryboard">
+                <DoubleAnimation 
+                    From="1" 
+                    To="0" 
+                    Duration="0:0:1"
+                    Storyboard.TargetProperty="Opacity"/>
+            </Storyboard>
+        </Style.Resources>-->
+
+        <!--<Style.Triggers>
+            <Trigger Property="IsVisible" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard x:Name="BeginFadeIn" Storyboard="{StaticResource FadeInStoryboard}"/>
+                </Trigger.EnterActions>
+
+            </Trigger>
+        </Style.Triggers>-->
+
+    </Style>
+
 
 </ResourceDictionary>

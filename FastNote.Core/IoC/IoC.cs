@@ -11,8 +11,11 @@ namespace FastNote.Core
         #region Methods
         static IoC()
         {
-            Kernel.Bind<INoteItemProvider>().To<DesignNoteItemProvider>();
+            Kernel.Bind<INoteItemProvider>().To<LocalNoteItemProvider>();
             Kernel.Bind<INoteGroupProvider>().To<DesingNoteGroupProvider>();
+            Kernel.Bind<INoteItemSaver>().To<LocalNoteItemSaver>();
+            Kernel.Bind<ApplicationViewModel>().ToConstant(new ApplicationViewModel());
+
         } 
 
         public static T Get<T>()

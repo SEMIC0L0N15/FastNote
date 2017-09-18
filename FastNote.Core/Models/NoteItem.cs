@@ -15,6 +15,11 @@ namespace FastNote.Core
         {
             Content = content;
         }
+
+        public NoteItem()
+        {
+            
+        }
         #endregion
     }
 }

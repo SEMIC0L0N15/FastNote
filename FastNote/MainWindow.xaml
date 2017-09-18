@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FastNote"
         mc:Ignorable="d"
-        Title="Welcome, friend!" 
+        Title="FastNote" 
         Height="620" Width="880"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         MinHeight="300"
         MinWidth="400"
-        SizeChanged="MainWindow_OnSizeChanged">
+        SizeChanged="MainWindow_OnSizeChanged"
+        Loaded="MainWindow_OnLoaded">
         <!--Height="450" Width="650"-->
     <Window.Resources>
         <Style TargetType="{x:Type local:MainWindow}">
@@ -53,13 +54,17 @@
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
 
-                                                        <Button Style="{StaticResource SystemIconButton}"
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Button Style="{StaticResource SystemIconButton}"
                                                                 Command="{Binding SystemMenuCommand}"
                                                                 Margin="0 0 0 0" Padding="7">
-                                                            <Image Source="Images/Logo/logo32.png"/>
-                                                        </Button>
+                                                                <Image Source="Images/Logo/logo32.png"/>
+                                                            </Button>
 
-                                                        <TextBlock Text="FastNote"
+                                                            <local:UpdateIndicator />
+                                                        </StackPanel>
+
+                                                        <TextBlock Text="{TemplateBinding Title}"
                                                                    Style="{x:Null}"
                                                                    Grid.ColumnSpan="3" 
                                                                    HorizontalAlignment="Center"

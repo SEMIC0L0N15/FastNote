@@ -6,10 +6,10 @@ namespace FastNote
     /// <summary>
     /// A base attached property to replace the vanilla WPF attached property
     /// </summary>
-    /// <typeparam name="Self">The parent class to be the attached property</typeparam>
-    /// <typeparam name="PropertyType">The type of this attached property</typeparam>
-    public abstract class BaseAttachedProperty<Self, PropertyType>
-        where Self : new()
+    /// <typeparam name="TSelf">The parent class to be the attached property</typeparam>
+    /// <typeparam name="TProperty">The type of this attached property</typeparam>
+    public abstract class BaseAttachedProperty<TSelf, TProperty>
+        where TSelf : new()
     {
         #region Public Events
 
@@ -30,7 +30,7 @@ namespace FastNote
         /// <summary>
         /// A singleton instance of our parent class
         /// </summary>
-        public static Self Instance { get; private set; } = new Self();
+        public static TSelf Instance { get; private set; } = new TSelf();
 
         #endregion
 
@@ -41,10 +41,10 @@ namespace FastNote
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.RegisterAttached(
             "Value",
-            typeof(PropertyType),
-            typeof(BaseAttachedProperty<Self, PropertyType>),
+            typeof(TProperty),
+            typeof(BaseAttachedProperty<TSelf, TProperty>),
             new UIPropertyMetadata(
-                default(PropertyType),
+                default(TProperty),
                 new PropertyChangedCallback(OnValuePropertyChanged),
                 new CoerceValueCallback(OnValuePropertyUpdated)
                 ));
@@ -57,10 +57,10 @@ namespace FastNote
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             // Call the parent function
-            (Instance as BaseAttachedProperty<Self, PropertyType>)?.OnValueChanged(d, e);
+            (Instance as BaseAttachedProperty<TSelf, TProperty>)?.OnValueChanged(d, e);
 
             // Call event listeners
-            (Instance as BaseAttachedProperty<Self, PropertyType>)?.ValueChanged(d, e);
+            (Instance as BaseAttachedProperty<TSelf, TProperty>)?.ValueChanged(d, e);
         }
 
         /// <summary>
@@ -71,10 +71,10 @@ namespace FastNote
         private static object OnValuePropertyUpdated(DependencyObject d, object value)
         {
             // Call the parent function
-            (Instance as BaseAttachedProperty<Self, PropertyType>)?.OnValueUpdated(d, value);
+            (Instance as BaseAttachedProperty<TSelf, TProperty>)?.OnValueUpdated(d, value);
 
             // Call event listeners
-            (Instance as BaseAttachedProperty<Self, PropertyType>)?.ValueUpdated(d, value);
+            (Instance as BaseAttachedProperty<TSelf, TProperty>)?.ValueUpdated(d, value);
 
             // Return the value
             return value;
@@ -85,14 +85,14 @@ namespace FastNote
         /// </summary>
         /// <param name="d">The element to get the property from</param>
         /// <returns></returns>
-        public static PropertyType GetValue(DependencyObject d) => (PropertyType)d.GetValue(ValueProperty);
+        public static TProperty GetValue(DependencyObject d) => (TProperty)d.GetValue(ValueProperty);
 
         /// <summary>
         /// Sets the attached property
         /// </summary>
         /// <param name="d">The element to get the property from</param>
         /// <param name="value">The value to set the property to</param>
-        public static void SetValue(DependencyObject d, PropertyType value) => d.SetValue(ValueProperty, value);
+        public static void SetValue(DependencyObject d, TProperty value) => d.SetValue(ValueProperty, value);
 
         #endregion
 

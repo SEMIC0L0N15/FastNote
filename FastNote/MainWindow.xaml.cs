@@ -1,5 +1,6 @@
 ﻿using FastNote.Core;
 using System.Windows;
+using FastNote.Core.Database;
 
 namespace FastNote
 {
@@ -24,6 +25,11 @@ namespace FastNote
                 noteBox.Tag = "15 0 15 50";
             else
                 noteBox.Tag = "15 0 15 10";
+        }
+
+        private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            await DatabaseAccessor.UpdateLocalDataFromDatabase();
         }
     }
 }

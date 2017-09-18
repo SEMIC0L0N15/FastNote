@@ -1,7 +1,9 @@
-﻿namespace FastNote.Core
+﻿using System.Collections.Generic;
+
+namespace FastNote.Core
 {
-    public interface IItemSaver
+    public interface IItemSaver<T>
     {
-        void SaveItems();
+        void SaveItems(List<T> items, string filename);
     }
 }

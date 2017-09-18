@@ -1,27 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Serialization;
+using FastNote.Core.Database;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace FastNote.Core
 {
+    [Serializable]
     public class NoteBoxViewModel : ViewModelBase
     {
         #region Private Members
-        private NoteGroup mNoteGroup = new NoteGroup("dummy");
+        private NoteGroup mNoteGroup;
         private INoteItemProvider mItemProvider;
+        private INoteItemSaver mItemSaver;
         #endregion
 
         #region Public Properties
         public string TypedText { get; set; }
-        public ObservableCollection<NoteItemViewModel> Items { get; set; }
+        public ObservableCollection<NoteItemViewModel> Items { get; set; } = 
+            new ObservableCollection<NoteItemViewModel>();
 
         public NoteGroup NoteGroup
         {
@@ -38,17 +44,20 @@ namespace FastNote.Core
         #endregion
 
         #region Public Commands
+        [XmlIgnore]
         public ICommand PushNoteCommand { get; set; }
         #endregion
 
         #region Constructor
-        public NoteBoxViewModel(INoteItemProvider itemProvider)
+        public NoteBoxViewModel(INoteItemProvider itemProvider, INoteItemSaver itemSaver = null)
         {
             mItemProvider = itemProvider;
+            mItemSaver = itemSaver;
             CreateCommands();
             SubscribeToSelectedGroupMessage();
-            UpdateItems();
         }
+
+        public NoteBoxViewModel() { }
 
         private void CreateCommands()
         {
@@ -64,13 +73,13 @@ namespace FastNote.Core
 
         #region Methods
 
-        #region PushNote Method
-        public async void PushNote()
+        #region PushNote
+        public void PushNote()
         {
             if (NoTextTyped())
                 return;
             FlushTypedText();
-            await SaveItemsAsync();
+            SaveItems();
         }
 
         private bool NoTextTyped()
@@ -85,38 +94,32 @@ namespace FastNote.Core
         }
         #endregion
 
-        #region SaveItems Method
-        public async Task SaveItemsAsync()
+        #region SaveItems
+        public void SaveItems()
         {
-            SaveItemsLocally();
-            await SaveItemsToDatabaseAsync();
-        }
-
-        private void SaveItemsLocally()
-        {
-            // TODO implement SaveItemsLocally
-        }
-
-        private async Task SaveItemsToDatabaseAsync()
-        {
-            // TODO implement SaveItemsToDatabase
-            await Task.Delay(10000);
+            mItemSaver?.SaveItems(ConvertToModels(Items).ToList(), NoteGroup.Name);
         }
         #endregion
 
-        #region UpdateItems Method
+        #region UpdateItems
         public void UpdateItems()
         {
             var providedItems = mItemProvider.GetItems(NoteGroup);
 
             Items = new ObservableCollection<NoteItemViewModel>(
                 ConvertToViewModels(providedItems));
+            
         }
 
         private static IEnumerable<NoteItemViewModel> ConvertToViewModels(IEnumerable<NoteItem> models)
         {
             return models.Select((noteItem) => new NoteItemViewModel(noteItem));
-        } 
+        }
+
+        private static IEnumerable<NoteItem> ConvertToModels(IEnumerable<NoteItemViewModel> viewModels)
+        {
+            return viewModels.Select(vm => vm.NoteItem);
+        }
         #endregion
 
         #endregion

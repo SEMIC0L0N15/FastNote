@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FastNote.Core
 {
-    public interface IItemProvider<T>
+    public interface IItemProvider<TReturn>
     {
-        IEnumerable<T> GetItems();
+        IEnumerable<TReturn> GetItems();
     }
 }

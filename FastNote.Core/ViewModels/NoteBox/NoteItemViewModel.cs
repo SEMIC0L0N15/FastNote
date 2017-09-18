@@ -30,6 +30,11 @@ namespace FastNote.Core
             NoteItem = noteItem;
             NoteItem.PropertyChanged += (sender, e) => RaisePropertyChanged(e.PropertyName);
         }
+
+        public NoteItemViewModel()
+        {
+            
+        }
         #endregion
 
     }

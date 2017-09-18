@@ -21,6 +21,7 @@ namespace FastNote.Core
             NoteGroup = noteGroup;
             NoteGroup.PropertyChanged += (sender, e) => RaisePropertyChanged(e.PropertyName);
         } 
+        public NoteGroupViewModel() { }
         #endregion
 
     }

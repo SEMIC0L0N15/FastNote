@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Radek\documents\visual studio 2017\Projects\FastNote\FastNote\App.xaml
-9-1177942133
+10-530870268
 
-21-5902922
+25-1377630682
 741223397449
-MainWindow.xaml;Styles\Buttons.xaml;Styles\Scroll.xaml;Styles\Colors.xaml;Styles\Fonts.xaml;Styles\Texts.xaml;UserControls\LeftToolbarControl.xaml;UserControls\NoteGroupListControl.xaml;UserControls\NoteBoxControl.xaml;
+MainWindow.xaml;Styles\Buttons.xaml;Styles\Scroll.xaml;Styles\Colors.xaml;Styles\Fonts.xaml;Styles\Texts.xaml;UserControls\LeftToolbarControl.xaml;UserControls\NoteGroupListControl.xaml;UserControls\NoteBoxControl.xaml;UserControls\UpdateIndicator.xaml;
 
-False
+True
 

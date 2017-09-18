@@ -4,21 +4,21 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FastNote.Core;
+using System.Windows;
+using System.Windows.Data;
 
 namespace FastNote
 {
-    class NoteGroupModelToVMConverter : BaseValueConverter<NoteGroupModelToVMConverter>
+    public class BoolToVisibilityConverter : BaseValueConverter<BoolToVisibilityConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return (bool) value ? Visibility.Visible : Visibility.Hidden;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var viewModel = value as NoteGroupViewModel;
-            return viewModel?.NoteGroup;
+            throw new NotImplementedException();
         }
     }
 }

@@ -32,6 +32,12 @@ namespace FastNote
         public CornerRadius CornerRadius => new CornerRadius(CornerRadiusValue);
 
         public bool IsActive => mWindow.IsActive;
+
+        public bool IsUpdatingData
+        {
+            get => ViewModelLocator.ApplicationViewModel.IsUpdatingData;
+            set => ViewModelLocator.ApplicationViewModel.IsUpdatingData = value;
+        }
         #endregion
 
         #region Public Commands
@@ -42,21 +48,27 @@ namespace FastNote
         public ICommand AdvancedSearchCommand { get; set; }
         #endregion
 
-        #region Constructor and it's helpers
+        #region Constructor
         public MainWindowViewModel(Window window)
         {
             mWindow = window;
             SetupEvents();
+            SubscribeToApplicationViewModelPropertyChanged();
             CreateCommands();
             FixMaximizeBug();
         }
-
         #region Contructor Helpers
         private void SetupEvents()
         {
             mWindow.Activated += (sender, e) => RaisePropertyChanged(nameof(IsActive));
             mWindow.Deactivated += (sender, e) => RaisePropertyChanged(nameof(IsActive));
             mWindow.StateChanged += (sender, e) => OnWindowResized();
+        }
+
+        private void SubscribeToApplicationViewModelPropertyChanged()
+        {
+            ViewModelLocator.ApplicationViewModel.PropertyChanged +=
+                (sender, e) => RaisePropertyChanged(e.PropertyName);
         }
 
         private void OnWindowResized()

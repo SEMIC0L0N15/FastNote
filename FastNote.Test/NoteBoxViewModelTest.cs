@@ -25,7 +25,7 @@ namespace FastNote.Test
                 PushNote();
 
                 AssertChildrenCountEquals(1);
-                AssertFirstItemContentEquals("Hello World!");
+                AssertFirstItemContentEquals("Hello World!"); 
             }
 
             [Test]

@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
+using FastNote.Core.Database;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 
@@ -33,6 +36,8 @@ namespace FastNote.Core
             mItemProvider = itemProvider;
             UpdateItems();
         }
+
+        public NoteGroupListViewModel() { }
         #endregion
 
         #region Methods
@@ -44,7 +49,7 @@ namespace FastNote.Core
 
         private IEnumerable<NoteGroupViewModel> ConvertToViewModels(IEnumerable<NoteGroup> models)
         {
-            return models.Select((noteGroup) => new NoteGroupViewModel(noteGroup));
+            return models.Select(noteGroup => new NoteGroupViewModel(noteGroup));
         }
         #endregion
     }

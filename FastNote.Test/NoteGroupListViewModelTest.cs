@@ -23,7 +23,7 @@ namespace FastNote.Test
             #endregion
 
             [Test]
-            public void WhenSelectedFirstGroup_FirstGroupItemsAppeasInNoteBox()
+            public void WhenSelectedFirstGroup_FirstGroupItemsAppearsInNoteBox()
             {
                 CreateGroupsAndItems();
                 ConfigureViewModels();
@@ -35,7 +35,7 @@ namespace FastNote.Test
             }
 
             [Test]
-            public void WhenSelectedSecondGroup_SecondGroupItemsAppeasInNoteBox()
+            public void WhenSelectedSecondGroup_SecondGroupItemsAppearsInNoteBox()
             {
                 CreateGroupsAndItems();
                 ConfigureViewModels();
@@ -110,7 +110,7 @@ namespace FastNote.Test
                 NoteItemProvider = A.Fake<INoteItemProvider>();
                 A.CallTo(() => NoteItemProvider.GetItems(NoteGroups[0])).Returns(FirstGroupItems);
                 A.CallTo(() => NoteItemProvider.GetItems(NoteGroups[1])).Returns(SecondGroupItems);
-                A.CallTo(() => NoteItemProvider.GetItems(null)).Returns(null);
+                A.CallTo(() => NoteItemProvider.GetItems(null)).Returns(new List<NoteItem>());
                 NoteBoxViewModel = new NoteBoxViewModel(NoteItemProvider);
             }
             #endregion

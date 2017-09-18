@@ -84,7 +84,13 @@
     </ApplicationDefinition>
     <Compile Include="Attached Properties\MarginSetter.cs" />
     <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
+    <Compile Include="AttachedProperties\StartFadeOut.cs" />
     <Compile Include="AttachedProperties\UIElementAttachedProperties.cs" />
+    <Compile Include="UserControls\UpdateIndicator.xaml.cs">
+      <DependentUpon>UpdateIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ValueConverters\BoolToVisibilityReverseConverter.cs" />
+    <Compile Include="ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Interaction\SetPropertyAction.cs" />
     <Compile Include="UserControls\LeftToolbarControl.xaml.cs">
       <DependentUpon>LeftToolbarControl.xaml</DependentUpon>
@@ -141,6 +147,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\NoteBoxControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UpdateIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

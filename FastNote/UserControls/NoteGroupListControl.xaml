@@ -28,6 +28,7 @@
                                             Style="{StaticResource TextButton}" 
                                             Content="{Binding Name}"
                                             BorderThickness="0 0 0 1"
+                                            BorderBrush="{StaticResource BackgroundVeryDarkBrush}"
                                             Click="Button_OnClick"/>
                                     
                                     <ControlTemplate.Triggers>

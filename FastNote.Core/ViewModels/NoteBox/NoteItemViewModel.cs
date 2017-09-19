@@ -35,6 +35,7 @@ namespace FastNote.Core
         #region Public Commands
         public ICommand EditNoteCommand { get; set; }
         public ICommand SubmitEditCommand { get; set; }
+        public ICommand DIscardEditCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -55,6 +56,7 @@ namespace FastNote.Core
         {
             EditNoteCommand = new RelayCommand(StartEditing);
             SubmitEditCommand = new RelayCommand(SubmitEdit);
+            DIscardEditCommand = new RelayCommand(DiscardEdit);
         }
         #endregion
 
@@ -67,6 +69,12 @@ namespace FastNote.Core
         public void SubmitEdit()
         {
             Content = TypedText;
+            IsBeingEdited = false;
+        }
+
+        public void DiscardEdit()
+        {
+            TypedText = Content;
             IsBeingEdited = false;
         }
         #endregion

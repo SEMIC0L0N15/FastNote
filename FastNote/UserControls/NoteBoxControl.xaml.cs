@@ -44,7 +44,11 @@ namespace FastNote
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                     listBoxItem.IsSelected ^= true;
-                e.Handled = true;
+            }
+            else
+            {
+                DeselectAndDiscardEditAllItems();
+                listBoxItem.IsSelected = true;
             }
         }
 
@@ -53,7 +57,6 @@ namespace FastNote
             ListBoxItem listBoxItem = GetAssociatedListBoxItem(sender);
             SetIsMouseDownProperty(listBoxItem, false);
         }
-
         #endregion
 
         #region Mouse Enter / Leave
@@ -117,20 +120,21 @@ namespace FastNote
         #region Deselecting
         private void Item_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            DeselectAllItems();
+            DeselectAndDiscardEditAllItems();
         }
 
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            DeselectAllItems();
+            DeselectAndDiscardEditAllItems();
         }
 
 
-        public void DeselectAllItems()
+        public void DeselectAndDiscardEditAllItems()
         {
             foreach (NoteItemViewModel item in ListBox.Items)
             {
                 item.IsSelected = false;
+                item.SubmitEdit();
             }
         }
         #endregion

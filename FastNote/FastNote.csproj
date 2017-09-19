@@ -83,8 +83,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Attached Properties\MarginSetter.cs" />
+    <Compile Include="AttachedBehaviors\DoubleClickTextBlockAttachedBehavior.cs" />
+    <Compile Include="AttachedBehaviors\SelectAllTextBoxBehavior.cs" />
     <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
+    <Compile Include="AttachedProperties\ListBoxItemAttachedProperties.cs" />
     <Compile Include="AttachedProperties\StartFadeOut.cs" />
+    <Compile Include="AttachedProperties\TextBoxAttachedProperties.cs" />
     <Compile Include="AttachedProperties\UIElementAttachedProperties.cs" />
     <Compile Include="UserControls\UpdateIndicator.xaml.cs">
       <DependentUpon>UpdateIndicator.xaml</DependentUpon>

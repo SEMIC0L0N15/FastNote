@@ -54,14 +54,53 @@
                         
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock x:Name="button"
-                                        Text="{Binding Content}"   
-                                        Foreground="White" 
-                                        FontSize="15"
-                                        Background="{TemplateBinding Tag}"
-                                        Margin="0"
-                                        Padding="12"
-                                        TextWrapping="Wrap"/>
+                                <Grid>
+                                    <TextBlock x:Name="TextBlock"
+                                               Text="{Binding Content}"   
+                                               Tag="{Binding IsBeingEdited, Mode=TwoWay}"
+                                               Foreground="White" 
+                                               FontSize="15"
+                                               Background="{TemplateBinding Tag}"
+                                               Margin="0"
+                                               Padding="12"
+                                               TextWrapping="Wrap">
+                                        <i:Interaction.Behaviors>
+                                            <local:DoubleClickTextBlockAttachedBehavior/>
+                                        </i:Interaction.Behaviors>
+                                    </TextBlock>
+
+                                    <TextBox Tag="{Binding Tag, ElementName=TextBlock}"
+                                             Text="{Binding TypedText, UpdateSourceTrigger=PropertyChanged}" 
+                                             Foreground="White"
+                                             FontSize="15"
+                                             Background="{StaticResource BackgroundUltraDarkBrush}"
+                                             Padding="10 12 12 12"
+                                             TextWrapping="Wrap"
+                                             BorderThickness="0"
+                                             FontFamily="{StaticResource LatoThin}"
+                                             local:IsBeingUpdated.Value="{Binding IsBeingEdited, Mode=TwoWay}">
+                                        
+                                        <i:Interaction.Behaviors>
+                                            <local:SelectAllTextBoxBehavior/>
+                                        </i:Interaction.Behaviors>
+
+                                        <TextBox.Style>
+                                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseTextBox}">
+                                                <Setter Property="Visibility" Value="Hidden"/>
+                                                
+                                                <Style.Triggers>
+                                                    <Trigger Property="local:IsBeingUpdated.Value" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                        
+                                        <TextBox.InputBindings>
+                                            <KeyBinding Key="Enter" Command="{Binding SubmitEditCommand}"/>
+                                        </TextBox.InputBindings>
+                                    </TextBox>
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
 
@@ -69,8 +108,9 @@
                             <Style TargetType="{x:Type ListBoxItem}">
 
                                 <Setter Property="Background" Value="{StaticResource BackgroundSuperDarkBrush}"/>
-                                <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
                                 <Setter Property="Focusable" Value="True"/>
+                                <Setter Property="Tag" Value="{Binding DataContext, ElementName=noteBoxControl}"/>
 
                                 <Setter Property="Template">
                                     <Setter.Value>
@@ -92,12 +132,79 @@
                                                     <Setter Property="Background" Value="{StaticResource  AzureDarkBrush}"/>
                                                     <Setter Property="BorderBrush" Value="{StaticResource AzureDarkBrush}"/>
                                                 </Trigger>
-                                                <Trigger Property="local:IsMouseDownProperty.Value" Value="True">
+                                                <Trigger Property="local:IsMouseDown.Value" Value="True">
                                                     <Setter Property="Background" Value="{StaticResource AzureDarkBrush}"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
 
                                         </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+
+                                        <ContextMenu x:Name="contextMenu"
+                                                     Foreground="White" 
+                                                     Grid.IsSharedSizeScope="True"
+                                                     Tag="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+
+                                            <ContextMenu.Style>
+                                                <Style TargetType="{x:Type ContextMenu}">
+
+                                                    <Setter Property="ItemContainerStyle">
+                                                        <Setter.Value>
+                                                            <Style TargetType="{x:Type MenuItem}">
+
+                                                                <Setter Property="Template">
+                                                                    <Setter.Value>
+                                                                        <ControlTemplate TargetType="{x:Type MenuItem}">
+
+                                                                            <Border x:Name="border" 
+                                                                                    Padding="7 7 100 7"
+                                                                                    Background="{StaticResource BackgroundDarkBrush}"
+                                                                                    BorderThickness="0"
+                                                                                    BorderBrush="{StaticResource ForegroundLightBrush}">
+                                                                                <TextBlock Text="{TemplateBinding Header}"/>
+                                                                            </Border>
+
+                                                                            <ControlTemplate.Triggers>
+                                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                                    <Setter TargetName="border" Property="Background" Value="{StaticResource AzureLightBrush}"/>
+                                                                                </Trigger>
+                                                                            </ControlTemplate.Triggers>
+
+                                                                        </ControlTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </Setter.Value>
+                                                    </Setter>
+
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type ContextMenu}">
+                                                                <Border Background="{StaticResource BackgroundDarkBrush}"
+                                                                        BorderThickness="0" 
+                                                                        BorderBrush="Black">
+                                                                    <StackPanel IsItemsHost="True"
+                                                                                KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ContextMenu.Style>
+
+                                            <MenuItem Header="Edytuj"
+                                                      Command="{Binding EditNoteCommand}"/>
+                                            <MenuItem Header="Przenieś"/>
+                                            <MenuItem DataContext="{Binding Tag, RelativeSource={RelativeSource FindAncestor, AncestorType=ContextMenu}}"
+                                                      Header="Usuń"
+                                                      Command="{Binding DeleteNoteCommand}"
+                                                      CommandParameter="{Binding SelectedItem, ElementName=ListBox}"/>
+
+                                        </ContextMenu>
                                     </Setter.Value>
                                 </Setter>
 
@@ -119,7 +226,7 @@
                      MaxHeight="200"
                      Padding="5"
                      Background="{StaticResource BackgroundUltraDarkBrush}"
-                     Tag="Napisz coś..." 
+                     local:TextPrompt.Value="Napisz coś..." 
                      AcceptsReturn="True"
                      VerticalScrollBarVisibility="Auto"
                      PreviewMouseDown="UIElement_OnMouseDown"
@@ -131,3 +238,4 @@
         </Grid>
 
 </UserControl>
+

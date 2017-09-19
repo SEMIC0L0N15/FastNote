@@ -8,7 +8,8 @@
     </ResourceDictionary.MergedDictionaries>
     
 
-    <Style TargetType="{x:Type TextBox}">
+    <Style x:Key="BaseTextBox" TargetType="{x:Type TextBox}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Background" Value="{StaticResource BackgroundSuperDarkBrush}"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontFamily" Value="{StaticResource LatoThin}"/>
@@ -56,7 +57,7 @@
 
                             <TextBlock IsHitTestVisible="False" 
                                        Foreground="{StaticResource ForegroundVeryLightBrush}" 
-                                       Text="{TemplateBinding Tag}"
+                                       Text="{TemplateBinding local:TextPrompt.Value}"
                                        Padding="{TemplateBinding Padding}">
 
                                 <TextBlock.Style>
@@ -80,6 +81,9 @@
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ForegroundVeryLightBrush}"/>
                         </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="BorderThickness" Value="0"></Setter>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                     
                     
@@ -90,7 +94,9 @@
 
     </Style>
     
-    <Style x:Key="SpinningIconText" TargetType="{x:Type TextBlock}" x:Name="style">
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseTextBox}"/>
+    
+    <Style x:Key="SpinningIconText" TargetType="{x:Type TextBlock}">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundVeryLightBrush}"/>

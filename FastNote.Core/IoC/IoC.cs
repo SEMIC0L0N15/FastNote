@@ -14,8 +14,8 @@ namespace FastNote.Core
             Kernel.Bind<INoteItemProvider>().To<LocalNoteItemProvider>();
             Kernel.Bind<INoteGroupProvider>().To<DesingNoteGroupProvider>();
             Kernel.Bind<INoteItemSaver>().To<LocalNoteItemSaver>();
-            Kernel.Bind<ApplicationViewModel>().ToConstant(new ApplicationViewModel());
 
+            Kernel.Bind<ApplicationViewModel>().ToConstant(new ApplicationViewModel());
         } 
 
         public static T Get<T>()

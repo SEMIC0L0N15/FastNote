@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using FastNote.Core.Database;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace FastNote.Core
@@ -26,6 +27,8 @@ namespace FastNote.Core
 
         #region Public Properties
         public string TypedText { get; set; }
+        public IList SelectedNoteItems { get; set; }
+
         public ObservableCollection<NoteItemViewModel> Items { get; set; } = 
             new ObservableCollection<NoteItemViewModel>();
 
@@ -44,8 +47,8 @@ namespace FastNote.Core
         #endregion
 
         #region Public Commands
-        [XmlIgnore]
         public ICommand PushNoteCommand { get; set; }
+        public ICommand DeleteNoteCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -54,7 +57,8 @@ namespace FastNote.Core
             mItemProvider = itemProvider;
             mItemSaver = itemSaver;
             CreateCommands();
-            SubscribeToSelectedGroupMessage();
+            RegisterToSelectedGroupMessage();
+            RegisterToNoteContentChanged();
         }
 
         public NoteBoxViewModel() { }
@@ -62,12 +66,19 @@ namespace FastNote.Core
         private void CreateCommands()
         {
             PushNoteCommand = new RelayCommand(PushNote);
+            DeleteNoteCommand = new RelayCommand(DeleteSelectedNotes);
         }
 
-        private void SubscribeToSelectedGroupMessage()
+        private void RegisterToSelectedGroupMessage()
         {
             Messenger.Default.Register<SelectedNoteGroupMessage>(this,
                 message => NoteGroup = message.SelectedGroup);
+        }
+
+        private void RegisterToNoteContentChanged()
+        {
+            Messenger.Default.Register<NoteItem>(this, 
+                message => SaveItems());
         }
         #endregion
 
@@ -91,6 +102,20 @@ namespace FastNote.Core
         {
             Items.Add(new NoteItemViewModel(new NoteItem(TypedText)));
             TypedText = string.Empty;
+        }
+        #endregion
+
+        #region DeleteSelectedNotes
+        public void DeleteSelectedNotes()
+        {
+            var tempItems = new ObservableCollection<NoteItemViewModel>(Items);
+
+            foreach (var item in tempItems)
+            {
+                if (item.IsSelected)
+                    Items.Remove(item);
+            }
+            SaveItems();
         }
         #endregion
 

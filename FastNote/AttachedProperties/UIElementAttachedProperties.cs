@@ -2,7 +2,7 @@
 
 namespace FastNote
 {
-    public class IsMouseDownProperty : BaseAttachedProperty<IsMouseDownProperty, bool>
+    public class IsMouseDown : BaseAttachedProperty<IsMouseDown, bool>
     {
         
     }

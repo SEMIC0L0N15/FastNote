@@ -42,7 +42,8 @@ namespace FastNote
 
             if (AcceptsClick(listBoxItem))
             {
-                listBoxItem.IsSelected ^= true;
+                if (e.LeftButton == MouseButtonState.Pressed)
+                    listBoxItem.IsSelected ^= true;
                 e.Handled = true;
             }
         }
@@ -100,7 +101,7 @@ namespace FastNote
 
         private static void SetIsMouseDownProperty(ListBoxItem listBoxItem, bool value)
         {
-            listBoxItem.SetValue(IsMouseDownProperty.ValueProperty, value);
+            listBoxItem.SetValue(IsMouseDown.ValueProperty, value);
         }
 
         private bool AcceptsClick(ListBoxItem listBoxItem)
@@ -158,6 +159,5 @@ namespace FastNote
             e.Handled = true;
         }
         #endregion
-        
     }
 }

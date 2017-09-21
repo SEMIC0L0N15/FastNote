@@ -12,8 +12,6 @@
              x:Name="noteBoxControl"
              Loaded="NoteBoxControl_OnLoaded"
              Tag="15 0 15 10">
-    <!-- DataContext="{x:Static core:NoteBoxDesignModel.Instance}" -->
-
 
     <Grid Background="{StaticResource BackgroundDarkerBrush}">
 
@@ -29,7 +27,7 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                           ScrollChanged="ScrollViewer_OnScrollChanged"
                           PreviewMouseWheel="UIElement_OnPreviewMouseWheel">
-                <Grid MouseDown="UIElement_OnMouseDown">
+                <Grid MouseDown="Grid_OnMouseDown">
 
                     <ListBox BorderThickness="0" 
                              x:Name="ListBox" 
@@ -38,7 +36,6 @@
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
                              Background="Transparent"
-                             LostFocus="Item_OnLostFocus"
                              Focusable="False">
 
 
@@ -47,11 +44,6 @@
                                 <VirtualizingStackPanel VerticalAlignment="Bottom"/>
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
-
-                        <ListBox.Resources>
-
-
-                        </ListBox.Resources>
 
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -67,7 +59,7 @@
                                                Padding="12"
                                                TextWrapping="Wrap">
                                         <i:Interaction.Behaviors>
-                                            <local:DoubleClickTextBlockAttachedBehavior/>
+                                            <local:DoubleClickTextBlockBehavior/>
                                         </i:Interaction.Behaviors>
                                         </TextBlock>
 
@@ -154,57 +146,8 @@
                                     <Setter.Value>
 
                                         <ContextMenu x:Name="contextMenu"
-                                                     Foreground="White" 
-                                                     Grid.IsSharedSizeScope="True"
                                                      Tag="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
-
-                                            <ContextMenu.Style>
-                                                <Style TargetType="{x:Type ContextMenu}">
-
-                                                    <Setter Property="ItemContainerStyle">
-                                                        <Setter.Value>
-                                                            <Style TargetType="{x:Type MenuItem}">
-
-                                                                <Setter Property="Template">
-                                                                    <Setter.Value>
-                                                                        <ControlTemplate TargetType="{x:Type MenuItem}">
-
-                                                                            <Border x:Name="border" 
-                                                                                    Padding="7 7 100 7"
-                                                                                    Background="{StaticResource BackgroundDarkBrush}"
-                                                                                    BorderThickness="0"
-                                                                                    BorderBrush="{StaticResource ForegroundLightBrush}">
-                                                                                <TextBlock Text="{TemplateBinding Header}"/>
-                                                                            </Border>
-
-                                                                            <ControlTemplate.Triggers>
-                                                                                <Trigger Property="IsMouseOver" Value="True">
-                                                                                    <Setter TargetName="border" Property="Background" Value="{StaticResource AzureLightBrush}"/>
-                                                                                </Trigger>
-                                                                            </ControlTemplate.Triggers>
-
-                                                                        </ControlTemplate>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Style>
-                                                        </Setter.Value>
-                                                    </Setter>
-
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="{x:Type ContextMenu}">
-                                                                <Border Background="{StaticResource BackgroundDarkBrush}"
-                                                                        BorderThickness="0" 
-                                                                        BorderBrush="Black">
-                                                                    <StackPanel IsItemsHost="True"
-                                                                                KeyboardNavigation.DirectionalNavigation="Cycle"/>
-                                                                </Border>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </ContextMenu.Style>
-
+                             
                                             <MenuItem Header="Edytuj"
                                                       Command="{Binding EditNoteCommand}"/>
                                             <MenuItem Header="Przenieś"/>
@@ -238,7 +181,7 @@
                      local:TextPrompt.Value="Napisz coś..." 
                      AcceptsReturn="True"
                      VerticalScrollBarVisibility="Auto"
-                     PreviewMouseDown="UIElement_OnMouseDown"
+                     PreviewMouseDown="Grid_OnMouseDown"
                      Text="{Binding TypedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding PushNoteCommand}"/>

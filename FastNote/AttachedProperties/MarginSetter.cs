@@ -31,7 +31,7 @@ namespace FastNote
     
         static void panel_Loaded(object sender, RoutedEventArgs e)
         {            
-            Panel panel = sender as Panel;
+            var panel = sender as Panel;
     
             foreach (var child in panel.Children)
             {         

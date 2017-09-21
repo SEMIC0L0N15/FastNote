@@ -8,7 +8,6 @@ namespace FastNote.Core
     {
         #region Public Properties
         public string Name { get; set; }
-        public List<NoteItem> Notes { get; set; } = new List<NoteItem>();
         #endregion
 
         #region Constructor
@@ -17,17 +16,7 @@ namespace FastNote.Core
             Name = name;
         }
 
-        public NoteGroup()
-        {
-            
-        }
-        #endregion
-
-        #region Methods
-        public void AddNote(NoteItem noteItem)
-        {
-            Notes.Add(noteItem);
-        }
+        public NoteGroup() { }
         #endregion
     }
 }

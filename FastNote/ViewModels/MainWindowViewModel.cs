@@ -57,18 +57,13 @@ namespace FastNote
             CreateCommands();
             FixMaximizeBug();
         }
+
         #region Contructor Helpers
         private void SetupEvents()
         {
             mWindow.Activated += (sender, e) => RaisePropertyChanged(nameof(IsActive));
             mWindow.Deactivated += (sender, e) => RaisePropertyChanged(nameof(IsActive));
             mWindow.StateChanged += (sender, e) => OnWindowResized();
-        }
-
-        private void SubscribeToApplicationViewModelPropertyChanged()
-        {
-            ViewModelLocator.ApplicationViewModel.PropertyChanged +=
-                (sender, e) => RaisePropertyChanged(e.PropertyName);
         }
 
         private void OnWindowResized()
@@ -81,6 +76,12 @@ namespace FastNote
             RaisePropertyChanged(nameof(ResizeBorder));
             RaisePropertyChanged(nameof(ResizeBorderThickness));
             RaisePropertyChanged(nameof(IsActive));
+        }
+
+        private void SubscribeToApplicationViewModelPropertyChanged()
+        {
+            ViewModelLocator.ApplicationViewModel.PropertyChanged +=
+                (sender, e) => RaisePropertyChanged(e.PropertyName);
         }
 
         private void CreateCommands()

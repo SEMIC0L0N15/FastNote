@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using FastNote.Core.Database;
+using FastNote.Core.Message;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -58,7 +59,7 @@ namespace FastNote.Core
             mItemSaver = itemSaver;
             CreateCommands();
             RegisterToSelectedGroupMessage();
-            RegisterToNoteContentChanged();
+            RegisterToNoteContentChangedMessage();
         }
 
         public NoteBoxViewModel() { }
@@ -75,9 +76,9 @@ namespace FastNote.Core
                 message => NoteGroup = message.SelectedGroup);
         }
 
-        private void RegisterToNoteContentChanged()
+        private void RegisterToNoteContentChangedMessage()
         {
-            Messenger.Default.Register<NoteItem>(this, 
+            Messenger.Default.Register<NoteContentChangedMessage>(this, 
                 message => SaveItems());
         }
         #endregion
@@ -124,6 +125,11 @@ namespace FastNote.Core
         {
             mItemSaver?.SaveItems(ConvertToModels(Items).ToList(), NoteGroup.Name);
         }
+
+        private static IEnumerable<NoteItem> ConvertToModels(IEnumerable<NoteItemViewModel> viewModels)
+        {
+            return viewModels.Select(vm => vm.NoteItem);
+        }
         #endregion
 
         #region UpdateItems
@@ -139,11 +145,6 @@ namespace FastNote.Core
         private static IEnumerable<NoteItemViewModel> ConvertToViewModels(IEnumerable<NoteItem> models)
         {
             return models.Select((noteItem) => new NoteItemViewModel(noteItem));
-        }
-
-        private static IEnumerable<NoteItem> ConvertToModels(IEnumerable<NoteItemViewModel> viewModels)
-        {
-            return viewModels.Select(vm => vm.NoteItem);
         }
         #endregion
 

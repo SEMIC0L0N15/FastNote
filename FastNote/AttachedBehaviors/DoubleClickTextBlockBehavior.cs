@@ -5,7 +5,7 @@ using System.Windows.Interactivity;
 
 namespace FastNote
 {
-    public class DoubleClickTextBlockAttachedBehavior : Behavior<TextBlock>
+    public class DoubleClickTextBlockBehavior : Behavior<TextBlock>
     {
         protected override void OnAttached()
         {

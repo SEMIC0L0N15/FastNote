@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Remoting.Channels;
 using System.Windows.Input;
+using FastNote.Core.Message;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -21,7 +22,7 @@ namespace FastNote.Core
             set
             {
                 NoteItem.Content = value;
-                Messenger.Default.Send<NoteItem>(NoteItem);
+                Messenger.Default.Send<NoteContentChangedMessage>(new NoteContentChangedMessage(NoteItem));
             }
         }
 
@@ -78,6 +79,5 @@ namespace FastNote.Core
             IsBeingEdited = false;
         }
         #endregion
-
     }
 }

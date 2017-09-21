@@ -26,8 +26,7 @@
                         To="1" 
                         Duration="0:0:0.6"
                         Storyboard.TargetProperty="Opacity"
-                        AutoReverse="True"
-                        Completed="FadeIn_OnCompleted"/>
+                        AutoReverse="True"/>
                 </Storyboard>
 
                 <Storyboard x:Key="FadeOutStoryboard">
@@ -35,8 +34,7 @@
                         From="1" 
                         To="0" 
                         Duration="0:0:0.2"
-                        Storyboard.TargetProperty="Opacity"
-                        Completed="FadeOut_OnCompleted"/>
+                        Storyboard.TargetProperty="Opacity"/>
                 </Storyboard>
             </TextBlock.Resources>
             

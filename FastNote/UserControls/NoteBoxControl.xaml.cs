@@ -118,12 +118,7 @@ namespace FastNote
         #endregion
 
         #region Deselecting
-        private void Item_OnLostFocus(object sender, RoutedEventArgs e)
-        {
-            DeselectAndDiscardEditAllItems();
-        }
-
-        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void Grid_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             DeselectAndDiscardEditAllItems();
         }
@@ -142,7 +137,7 @@ namespace FastNote
         #region Scrolling
         private void ScrollViewer_OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (!(sender is ScrollViewer scrollViewer)) return;
+            var scrollViewer = (ScrollViewer)sender;
 
             if (e.ExtentHeightChange == 0)
             {
@@ -158,8 +153,8 @@ namespace FastNote
 
         private void UIElement_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            var scv = (ScrollViewer)sender;
-            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            var scrollViewer = (ScrollViewer)sender;
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
             e.Handled = true;
         }
         #endregion

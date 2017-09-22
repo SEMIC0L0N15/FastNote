@@ -168,6 +168,15 @@
         </Style.Triggers>-->
 
     </Style>
+    
+    <Style x:Key="ItemTextBlock" TargetType="{x:Type TextBlock}">
+        <Setter Property="Background" Value="{StaticResource BackgroundSuperDarkBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontFamily" Value="{StaticResource LatoThin}"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
 
 
 </ResourceDictionary>

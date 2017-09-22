@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,7 +13,9 @@ namespace FastNote
     public partial class NoteBoxControl : UserControl
     {
         #region Private Members
-        private bool mAutoScroll = true; 
+        private bool mAutoScroll = true;
+        private Point mStartPos = new Point(0,0);
+        private Point mRelativeStartPos;
         #endregion
 
         #region Constructor
@@ -33,16 +36,14 @@ namespace FastNote
         #region Selecting
 
         #region Mouse Down / Up
-        private void Item_OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void Item_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             ListBoxItem listBoxItem = GetAssociatedListBoxItem(sender);
 
-            if (IsShiftPressed())
-                SetIsMouseDownProperty(listBoxItem, true);
 
             if (AcceptsClick(listBoxItem))
             {
-                if (e.LeftButton == MouseButtonState.Pressed)
+                //if (e.LeftButton == MouseButtonState.Pressed)
                     listBoxItem.IsSelected ^= true;
             }
             else
@@ -50,12 +51,6 @@ namespace FastNote
                 DeselectAndDiscardEditAllItems();
                 listBoxItem.IsSelected = true;
             }
-        }
-
-        private void Item_OnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            ListBoxItem listBoxItem = GetAssociatedListBoxItem(sender);
-            SetIsMouseDownProperty(listBoxItem, false);
         }
         #endregion
 
@@ -76,9 +71,6 @@ namespace FastNote
             {
                 ListBoxItem listBoxItem = GetAssociatedListBoxItem(sender);
 
-                if (IsShiftPressed())
-                    SetIsMouseDownProperty(listBoxItem, isMouseDown);
-
                 if (AcceptsClick(listBoxItem))
                 {
                     listBoxItem.IsSelected = true;
@@ -97,22 +89,22 @@ namespace FastNote
             return listBoxItem;
         }
 
+        private bool AcceptsClick(ListBoxItem listBoxItem)
+        {
+            return ListBox.SelectionMode == SelectionMode.Multiple ||
+                   (ListBox.SelectionMode == SelectionMode.Extended && IsShiftPressed()) ||
+                   listBoxItem.IsSelected;
+        }
+
         private static bool IsShiftPressed()
         {
             return Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
         }
 
-        private static void SetIsMouseDownProperty(ListBoxItem listBoxItem, bool value)
+        private static bool IsControlPressed()
         {
-            listBoxItem.SetValue(IsMouseDown.ValueProperty, value);
+            return Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
         }
-
-        private bool AcceptsClick(ListBoxItem listBoxItem)
-        {
-            return ListBox.SelectionMode == SelectionMode.Multiple ||
-                   (ListBox.SelectionMode == SelectionMode.Extended && Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)) ||
-                   listBoxItem.IsSelected;
-        } 
         #endregion
 
         #endregion
@@ -158,5 +150,83 @@ namespace FastNote
             e.Handled = true;
         }
         #endregion
+
+        private void ListBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            mStartPos = e.GetPosition(BackgroundGrid);
+            mRelativeStartPos = e.GetPosition( (IInputElement) e.OriginalSource);
+            ViewModelLocator.ApplicationViewModel.IsDragActive = true;
+        }
+
+        private void ListBox_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            ViewModelLocator.ApplicationViewModel.IsDragActive = false;
+        }
+
+        private void ListBox_OnPreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!ViewModelLocator.ApplicationViewModel.IsDragActive || 
+                MovableTextBlock.Visibility == Visibility.Visible || 
+                !(e.OriginalSource is TextBlock))
+                return;
+
+            Point mousePos = e.GetPosition(BackgroundGrid);
+            Vector diff = mStartPos - mousePos;
+
+            if (e.LeftButton == MouseButtonState.Pressed &&
+                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+            {
+                MovableTextBlock.Visibility = Visibility.Visible;
+
+
+                var listBox = sender as ListBox;
+                var listBoxItem = FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
+
+                var noteItemViewModel = listBoxItem.Content as NoteItemViewModel;
+
+                var dataObject = new DataObject("myFormat", noteItemViewModel);
+
+                ViewModelLocator.ApplicationViewModel.CanHighlight = false;
+                MovableTextBlock.Text = noteItemViewModel.Content;
+                noteItemViewModel.IsSelected = false;
+
+                if (!IsControlPressed())
+                    ((NoteBoxViewModel)NoteBox.DataContext).Items.Remove(noteItemViewModel);
+
+                //Task.Run(() => DragDrop.DoDragDrop(listBox, dataObject, DragDropEffects.Move));
+            }
+        }
+
+        private static T FindAnchestor<T>(DependencyObject current)
+            where T : DependencyObject
+        {
+            do
+            {
+                if (current is T)
+                {
+                    return (T)current;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+            while (current != null);
+            return null;
+        }
+
+        public void Grid_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            //if (MovableTextBlock.Visibility == Visibility.Hidden)
+            //    return;
+
+            MovableTextBlock.Margin = new Thickness(e.GetPosition(BackgroundGrid).X - mStartPos.X, e.GetPosition(BackgroundGrid).Y - mRelativeStartPos.Y, 0, 0);
+            //MovableTextBlock.UpdateLayout();
+        }
+
+        private void ListBox_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MovableTextBlock.Visibility = Visibility.Hidden;
+            ViewModelLocator.ApplicationViewModel.IsDragActive = false;
+            ViewModelLocator.ApplicationViewModel.CanHighlight = true;
+        }
     }
 }

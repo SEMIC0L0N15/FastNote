@@ -30,5 +30,27 @@ namespace FastNote
         {
             ((ListBox) sender).SelectedIndex = 1;
         }
+
+        private void ListBox_OnDragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent("myFormat") ||
+                sender == e.Source)
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
+
+        private void ListBox_OnDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("myFormat"))
+            {
+                var listBox = sender as ListBox;
+                var noteItemViewModel = e.Data.GetData("myFormat") as NoteItemViewModel;
+
+                var noteGroupViewModel = new NoteGroupViewModel(new NoteGroup(noteItemViewModel.Content));
+
+                ((NoteGroupListViewModel)listBox.DataContext).Items.Add(noteGroupViewModel);
+            }
+        }
     }
 }

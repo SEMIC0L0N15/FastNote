@@ -16,4 +16,8 @@
     public class StartFadeOut : BaseAttachedProperty<StartFadeOut, bool> { } 
     #endregion
 
+    #region ListBox Properties
+    public class CanHighlight : BaseAttachedProperty<CanHighlight, bool> { }
+    #endregion
+
 }

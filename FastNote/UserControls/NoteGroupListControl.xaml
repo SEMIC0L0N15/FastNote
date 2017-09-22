@@ -16,22 +16,40 @@
                      BorderThickness="0"
                      ItemsSource="{Binding Items}"
                      Loaded="FrameworkElement_OnLoaded"
+                     DragEnter="ListBox_OnDragEnter"
+                     Drop="ListBox_OnDrop"
+                     AllowDrop="False"
                      SelectedItem="{Binding SelectedGroup, Mode=OneWayToSource, 
                                     Converter={local:NoteGroupModelToVMConverter}}">
 
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
+
+                        <Setter Property="local:CanHighlight.Value"
+                                Value="{Binding CanHighlight, Source={x:Static core:ViewModelLocator.ApplicationViewModel}}" />
+
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Button x:Name="button"
-                                            Style="{StaticResource TextButton}" 
-                                            Content="{Binding Name}"
-                                            BorderThickness="0 0 0 1"
-                                            BorderBrush="{StaticResource BackgroundVeryDarkBrush}"
-                                            Click="Button_OnClick"/>
-                                    
+                                    <Border BorderThickness="0 0 0 1"
+                                            BorderBrush="{StaticResource BackgroundVeryDarkBrush}">
+                                        <TextBlock x:Name="button"
+                                                   Text="{Binding Name}"
+                                                   Style="{StaticResource ItemTextBlock}"
+                                                   Padding="8"
+                                                   MouseDown="Button_OnClick"/>
+                                    </Border>
+
                                     <ControlTemplate.Triggers>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            
+                                            <Setter Property="Background" Value="{StaticResource AzureRegularBrush}"></Setter>
+                                            
+                                        </MultiTrigger>
+                                        
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter TargetName="button" Property="Background" Value="{StaticResource AzureDarkBrush}"></Setter>
                                         </Trigger>

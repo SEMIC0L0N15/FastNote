@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using FastNote.Core.Database;
@@ -28,8 +29,6 @@ namespace FastNote.Core
 
         #region Public Properties
         public string TypedText { get; set; }
-        public IList SelectedNoteItems { get; set; }
-
         public ObservableCollection<NoteItemViewModel> Items { get; set; } = 
             new ObservableCollection<NoteItemViewModel>();
 

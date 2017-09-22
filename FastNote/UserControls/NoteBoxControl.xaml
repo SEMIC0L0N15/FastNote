@@ -9,55 +9,58 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="500"
              DataContext="{x:Static core:NoteBoxDesignModel.Instance}"
-             x:Name="noteBoxControl"
+             x:Name="NoteBox"
              Loaded="NoteBoxControl_OnLoaded"
              Tag="15 0 15 10">
 
-    <Grid Background="{StaticResource BackgroundDarkerBrush}">
+    <Grid MouseMove="ListBox_OnPreviewMouseMove" x:Name="BackgroundGrid"
+          PreviewMouseLeftButtonUp="ListBox_OnMouseLeftButtonUp"
+          PreviewMouseMove="Grid_OnMouseMove">
+        
+        <Grid Background="{StaticResource BackgroundDarkerBrush}">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Border Margin="15 20 15 10" Grid.Row="0" 
+            <Border Margin="15 20 15 10" Grid.Row="0" 
                 BorderBrush="{StaticResource BorderLightBrush}" 
                 BorderThickness="1">
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
                           ScrollChanged="ScrollViewer_OnScrollChanged"
                           PreviewMouseWheel="UIElement_OnPreviewMouseWheel">
-                <Grid MouseDown="Grid_OnMouseDown">
+                    <Grid MouseDown="Grid_OnMouseDown">
 
-                    <ListBox BorderThickness="0" 
+                        <ListBox BorderThickness="0" 
                              x:Name="ListBox" 
                              SelectionMode="Extended"
                              ItemsSource="{Binding Items}"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
                              Background="Transparent"
-                             Focusable="False">
+                             Focusable="False"
+                             PreviewMouseLeftButtonDown="ListBox_OnPreviewMouseLeftButtonDown"
+                             MouseLeave="ListBox_OnMouseLeave">
 
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel VerticalAlignment="Bottom"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
 
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel VerticalAlignment="Bottom"/>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
                                     <Grid>
-                                        
+
                                         <TextBlock x:Name="TextBlock"
-                                               Text="{Binding Content}"   
-                                               Tag="{Binding IsBeingEdited, Mode=TwoWay}"
-                                               Foreground="White" 
-                                               FontSize="15"
-                                               Background="{TemplateBinding Tag}"
-                                               Margin="0"
-                                               Padding="12"
-                                               TextWrapping="Wrap">
+                                                   Style="{StaticResource ItemTextBlock}"
+                                                   Text="{Binding Content}"   
+                                                   Tag="{Binding IsBeingEdited, Mode=TwoWay}"
+                                                   Background="{TemplateBinding Tag}"
+                                                   Padding="12">
+                                               
                                         <i:Interaction.Behaviors>
                                             <local:DoubleClickTextBlockBehavior/>
                                         </i:Interaction.Behaviors>
@@ -65,13 +68,10 @@
 
                                         <TextBox Tag="{Binding Tag, ElementName=TextBlock}"
                                              Text="{Binding TypedText, UpdateSourceTrigger=PropertyChanged}" 
-                                             Foreground="White"
                                              FontSize="15"
                                              Background="{StaticResource BackgroundUltraDarkBrush}"
                                              Padding="10 12 12 12"
-                                             TextWrapping="Wrap"
                                              BorderThickness="0"
-                                             FontFamily="{StaticResource LatoThin}"
                                              local:IsBeingUpdated.Value="{Binding IsBeingEdited, Mode=TwoWay}"
                                              AcceptsReturn="True">
 
@@ -97,83 +97,91 @@
                                             </TextBox.InputBindings>
                                         </TextBox>
                                     </Grid>
-                                    
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
 
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}">
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
 
-                                <Setter Property="Background" Value="{StaticResource BackgroundSuperDarkBrush}"/>
-                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
-                                <Setter Property="Focusable" Value="False"/>
-                                <Setter Property="Tag" Value="{Binding DataContext, ElementName=noteBoxControl}"/>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
 
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Background" Value="{StaticResource BackgroundSuperDarkBrush}"/>
+                                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                                    <Setter Property="Focusable" Value="False"/>
+                                    <Setter Property="Tag" Value="{Binding DataContext, ElementName=NoteBox}"/>
+                                    <Setter Property="local:CanHighlight.Value" Value="{Binding CanHighlight, 
+                                        Source={x:Static core:ViewModelLocator.ApplicationViewModel}}"/>
 
-                                            <Border BorderThickness="0 0 0 0"
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+
+                                                <Border BorderThickness="0 0 0 0"
                                                     Background="{DynamicResource BackgroundVeryDarkBrush}"
                                                     Margin="0 1 0 0">
-                                                <ContentPresenter x:Name="presenter" 
-                                                              MouseDown="Item_OnMouseDown"
+                                                    <ContentPresenter x:Name="presenter" 
                                                               MouseUp="Item_OnMouseUp"
                                                               MouseEnter="Presenter_OnMouseEnter"
                                                               MouseLeave="Presenter_OnMouseLeave"
                                                               Focusable="False"
                                                               Tag="{TemplateBinding Background}"/>
-                                            </Border>
+                                                </Border>
 
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="{StaticResource AzureRegularBrush}"/>
-                                                </Trigger>
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="{StaticResource  AzureDarkBrush}"/>
-                                                    <Setter Property="BorderBrush" Value="{StaticResource AzureDarkBrush}"/>
-                                                </Trigger>
-                                                <Trigger Property="local:IsMouseDown.Value" Value="True">
-                                                    <Setter Property="Background" Value="{StaticResource AzureDarkBrush}"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
+                                                <ControlTemplate.Triggers>
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="IsMouseOver" Value="True"/>
+                                                            <Condition Property="local:CanHighlight.Value" Value="True"/>
+                                                        </MultiTrigger.Conditions>
 
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
+                                                        <Setter Property="Background"
+                                                                Value="{StaticResource AzureRegularBrush}" />
+                                                    </MultiTrigger>
+                                                  
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource  AzureDarkBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{StaticResource AzureDarkBrush}"/>
+                                                    </Trigger>
+                                                    <Trigger Property="local:IsMouseDown.Value" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource AzureDarkBrush}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
 
-                                <Setter Property="ContextMenu">
-                                    <Setter.Value>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
 
-                                        <ContextMenu x:Name="contextMenu"
+                                    <Setter Property="ContextMenu">
+                                        <Setter.Value>
+
+                                            <ContextMenu x:Name="contextMenu"
                                                      Tag="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
-                             
-                                            <MenuItem Header="Edytuj"
+
+                                                <MenuItem Header="Edytuj"
                                                       Command="{Binding EditNoteCommand}"/>
-                                            <MenuItem Header="Przenieś"/>
-                                            <MenuItem DataContext="{Binding Tag, RelativeSource={RelativeSource FindAncestor, AncestorType=ContextMenu}}"
+                                                <MenuItem Header="Przenieś"/>
+                                                <MenuItem DataContext="{Binding Tag, RelativeSource={RelativeSource FindAncestor, AncestorType=ContextMenu}}"
                                                       Header="Usuń"
                                                       Command="{Binding DeleteNoteCommand}"
                                                       CommandParameter="{Binding SelectedItem, ElementName=ListBox}"/>
 
-                                        </ContextMenu>
-                                    </Setter.Value>
-                                </Setter>
+                                            </ContextMenu>
+                                        </Setter.Value>
+                                    </Setter>
 
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-
-
-                    </ListBox>
-                </Grid>
-            </ScrollViewer>
-        </Border>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
 
 
+                        </ListBox>
+                    </Grid>
+                </ScrollViewer>
+            </Border>
 
-        <TextBox Grid.Row="1" 
+
+
+            <TextBox Grid.Row="1" 
                      x:Name="TextBox"
-                     Margin="{Binding Tag, ElementName=noteBoxControl}" 
+                     Margin="{Binding Tag, ElementName=NoteBox}" 
                      MinHeight="70"
                      MaxHeight="200"
                      Padding="5"
@@ -183,10 +191,22 @@
                      VerticalScrollBarVisibility="Auto"
                      PreviewMouseDown="Grid_OnMouseDown"
                      Text="{Binding TypedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <TextBox.InputBindings>
-                <KeyBinding Key="Enter" Command="{Binding PushNoteCommand}"/>
-            </TextBox.InputBindings>
-        </TextBox>
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding PushNoteCommand}"/>
+                </TextBox.InputBindings>
+            </TextBox>
+        </Grid>
+        
+        <TextBlock x:Name="MovableTextBlock"
+                   Style="{StaticResource ItemTextBlock}"
+                   Text="Cześc, Perl" 
+                   Background="{StaticResource AzureRegularBrush}"
+                   Width="{Binding ActualWidth, ElementName=ListBox}"
+                   VerticalAlignment="Top" HorizontalAlignment="Left"
+                   Margin="0"
+                   Padding="15"
+                   Visibility="Hidden"/>
+        
     </Grid>
 
 </UserControl>

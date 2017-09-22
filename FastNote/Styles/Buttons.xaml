@@ -142,7 +142,9 @@
                                    Foreground="{TemplateBinding Foreground}"
                                    FontSize="{TemplateBinding FontSize}"
                                    VerticalAlignment="Center" 
-                                   HorizontalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   Background="Transparent"
+                                   Padding="0"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

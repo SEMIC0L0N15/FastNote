@@ -26,7 +26,9 @@
                                  BorderBrush="Black"
                                  Padding="0 0 0 0">
 
-                            <Grid MouseDown="Border_MouseDown" Focusable="True">
+                            <Grid MouseDown="Border_MouseDown" 
+                                  MouseUp="Grid_OnMouseUp"
+                                  Focusable="True">
                                 <Border Padding="{Binding OuterMarginThickness, FallbackValue=0}">
 
                                     <Grid>

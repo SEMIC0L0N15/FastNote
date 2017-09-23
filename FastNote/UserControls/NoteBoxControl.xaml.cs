@@ -13,16 +13,19 @@ namespace FastNote
     public partial class NoteBoxControl : UserControl
     {
         #region Private Members
-        private bool mAutoScroll = true;
-        private Point mStartPos = new Point(0,0);
-        private Point mRelativeStartPos;
+        private bool autoScroll = true;
+        private Point startPosition;
+        #endregion
+
+        #region Public Properties
+        public NoteBoxViewModel ViewModel => (NoteBoxViewModel) DataContext;
         #endregion
 
         #region Constructor
         public NoteBoxControl()
         {
             InitializeComponent();
-            this.DataContext = ViewModelLocator.GetNoteBoxViewModel();
+            DataContext = ViewModelLocator.GetNoteBoxViewModel();
         }
         #endregion
 
@@ -57,15 +60,15 @@ namespace FastNote
         #region Mouse Enter / Leave
         private void Presenter_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            HandleMouseEnterLeave(sender, e, true);
+            HandleMouseEnterLeave(sender, e);
         }
 
         private void Presenter_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            HandleMouseEnterLeave(sender, e, false);
+            HandleMouseEnterLeave(sender, e);
         }
 
-        private void HandleMouseEnterLeave(object sender, MouseEventArgs e, bool isMouseDown)
+        private void HandleMouseEnterLeave(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
@@ -134,12 +137,12 @@ namespace FastNote
             if (e.ExtentHeightChange == 0)
             {
                 if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
-                    mAutoScroll = true;
+                    autoScroll = true;
                 else
-                    mAutoScroll = false;
+                    autoScroll = false;
             }
 
-            if (mAutoScroll && e.ExtentHeightChange != 0)
+            if (autoScroll && e.ExtentHeightChange != 0)
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
         }
 
@@ -153,14 +156,21 @@ namespace FastNote
 
         private void ListBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            mStartPos = e.GetPosition(BackgroundGrid);
-            mRelativeStartPos = e.GetPosition( (IInputElement) e.OriginalSource);
-            ViewModelLocator.ApplicationViewModel.IsDragActive = true;
+            startPosition = e.GetPosition((IInputElement) e.OriginalSource);
+            //TODO provide NoteItem object
+            ViewModelLocator.ApplicationViewModel.DraggingObject = true;
+        }
+
+        public void ListBox_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MovableTextBlock.Visibility = Visibility.Hidden;
+            ViewModelLocator.ApplicationViewModel.DraggingObject = null;
+            ViewModelLocator.ApplicationViewModel.CanHighlight = true;
         }
 
         private void ListBox_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            ViewModelLocator.ApplicationViewModel.IsDragActive = false;
+            //ViewModelLocator.ApplicationViewModel.IsDragActive = false;
         }
 
         private void ListBox_OnPreviewMouseMove(object sender, MouseEventArgs e)
@@ -170,8 +180,8 @@ namespace FastNote
                 !(e.OriginalSource is TextBlock))
                 return;
 
-            Point mousePos = e.GetPosition(BackgroundGrid);
-            Vector diff = mStartPos - mousePos;
+            Point mousePos = e.GetPosition((IInputElement) e.OriginalSource);
+            Vector diff = startPosition - mousePos;
 
             if (e.LeftButton == MouseButtonState.Pressed &&
                 (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
@@ -192,9 +202,7 @@ namespace FastNote
                 noteItemViewModel.IsSelected = false;
 
                 if (!IsControlPressed())
-                    ((NoteBoxViewModel)NoteBox.DataContext).Items.Remove(noteItemViewModel);
-
-                //Task.Run(() => DragDrop.DoDragDrop(listBox, dataObject, DragDropEffects.Move));
+                    ((NoteBoxViewModel)NoteBox.DataContext).DeleteNote(noteItemViewModel);
             }
         }
 
@@ -215,18 +223,8 @@ namespace FastNote
 
         public void Grid_OnMouseMove(object sender, MouseEventArgs e)
         {
-            //if (MovableTextBlock.Visibility == Visibility.Hidden)
-            //    return;
-
-            MovableTextBlock.Margin = new Thickness(e.GetPosition(BackgroundGrid).X - mStartPos.X, e.GetPosition(BackgroundGrid).Y - mRelativeStartPos.Y, 0, 0);
-            //MovableTextBlock.UpdateLayout();
-        }
-
-        private void ListBox_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            MovableTextBlock.Visibility = Visibility.Hidden;
-            ViewModelLocator.ApplicationViewModel.IsDragActive = false;
-            ViewModelLocator.ApplicationViewModel.CanHighlight = true;
+            MovableTextBlock.Margin = new Thickness(e.GetPosition(BackgroundGrid).X - startPosition.X, 
+                                                    e.GetPosition(BackgroundGrid).Y - startPosition.Y, 0, 0);
         }
     }
 }

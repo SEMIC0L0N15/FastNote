@@ -6,7 +6,7 @@ namespace FastNote.Core.Database
     {
         public static async Task UpdateLocalDataFromDatabase()
         {
-            ViewModelLocator.ApplicationViewModel.IsUpdatingData = true;
+            //ViewModelLocator.ApplicationViewModel.IsUpdatingData = true;
             await Task.Delay(3000);
             ViewModelLocator.ApplicationViewModel.IsUpdatingData = false;
         }

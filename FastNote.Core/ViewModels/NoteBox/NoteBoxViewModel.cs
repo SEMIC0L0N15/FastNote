@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,26 +22,27 @@ namespace FastNote.Core
     [Serializable]
     public class NoteBoxViewModel : ViewModelBase
     {
-        #region Private Members
-        private NoteGroup mNoteGroup;
-        private INoteItemProvider mItemProvider;
-        private INoteItemSaver mItemSaver;
+        #region Private and Protected Members
+        protected NoteGroup noteGroup = new NoteGroup();
         #endregion
 
         #region Public Properties
         public string TypedText { get; set; }
-        public ObservableCollection<NoteItemViewModel> Items { get; set; } = 
-            new ObservableCollection<NoteItemViewModel>();
+        public List<NoteItemViewModel> Items { get; set; } = 
+            new List<NoteItemViewModel>();
 
-        public NoteGroup NoteGroup
+        public virtual NoteGroup NoteGroup
         {
-            get => mNoteGroup;
+            get => noteGroup;
             set
             {
                 if (value != null)
                 {
-                    mNoteGroup = value;
-                    UpdateItems(); 
+                    noteGroup.PropertyChanged -= OnNotesGroupChanged;
+                    noteGroup = value;
+                    noteGroup.UpdateNotes();
+                    noteGroup.PropertyChanged += OnNotesGroupChanged;
+                    RefreshItems(); 
                 }
             }
         }
@@ -52,16 +54,12 @@ namespace FastNote.Core
         #endregion
 
         #region Constructor
-        public NoteBoxViewModel(INoteItemProvider itemProvider, INoteItemSaver itemSaver = null)
+        public NoteBoxViewModel()
         {
-            mItemProvider = itemProvider;
-            mItemSaver = itemSaver;
             CreateCommands();
             RegisterToSelectedGroupMessage();
             RegisterToNoteContentChangedMessage();
         }
-
-        public NoteBoxViewModel() { }
 
         private void CreateCommands()
         {
@@ -84,7 +82,7 @@ namespace FastNote.Core
 
         #region Methods
 
-        #region PushNote
+        #region Adding Notes
         public void PushNote()
         {
             if (NoTextTyped())
@@ -100,12 +98,12 @@ namespace FastNote.Core
 
         private void FlushTypedText()
         {
-            Items.Add(new NoteItemViewModel(new NoteItem(TypedText)));
+            NoteGroup.AddNote(new NoteItem(TypedText));
             TypedText = string.Empty;
         }
         #endregion
 
-        #region DeleteSelectedNotes
+        #region Deleting Notes
         public void DeleteSelectedNotes()
         {
             var tempItems = new ObservableCollection<NoteItemViewModel>(Items);
@@ -113,40 +111,51 @@ namespace FastNote.Core
             foreach (var item in tempItems)
             {
                 if (item.IsSelected)
-                    Items.Remove(item);
+                    DeleteNote(item);
             }
-            SaveItems();
+        }
+
+        public void DeleteNote(NoteItemViewModel note)
+        {
+            NoteGroup.DeleteNote(note.NoteItem);
+            RefreshItems();
         }
         #endregion
 
-        #region SaveItems
+        #region Saving Notes
         public void SaveItems()
         {
-            mItemSaver?.SaveItems(ConvertToModels(Items).ToList(), NoteGroup.Name);
-        }
-
-        private static IEnumerable<NoteItem> ConvertToModels(IEnumerable<NoteItemViewModel> viewModels)
-        {
-            return viewModels.Select(vm => vm.NoteItem);
+            NoteGroup.SaveNotes();
         }
         #endregion
 
-        #region UpdateItems
-        public void UpdateItems()
+        #region Refreshing Notes
+        public void RefreshItems()
         {
-            var providedItems = mItemProvider.GetItems(NoteGroup);
-
-            Items = new ObservableCollection<NoteItemViewModel>(
-                ConvertToViewModels(providedItems));
-            
-        }
-
-        private static IEnumerable<NoteItemViewModel> ConvertToViewModels(IEnumerable<NoteItem> models)
-        {
-            return models.Select((noteItem) => new NoteItemViewModel(noteItem));
+            // using private member instead of property due to stack overflow problem
+            Items = ConvertToViewModels(noteGroup.GetNotes());
         }
         #endregion
 
+        #endregion
+
+        #region Helpers
+        private static List<NoteItemViewModel> ConvertToViewModels(IEnumerable<NoteItem> models)
+        {
+            return models.Select((noteItem) => new NoteItemViewModel(noteItem)).ToList();
+        }
+
+        private static List<NoteItem> ConvertToModels(IEnumerable<NoteItemViewModel> viewModels)
+        {
+            return viewModels.Select(vm => vm.NoteItem).ToList();
+        }
+        #endregion
+
+        #region Event Handlers
+        public void OnNotesGroupChanged(object sender, PropertyChangedEventArgs e)
+        {
+            RefreshItems();
+        }
         #endregion
     }
 }

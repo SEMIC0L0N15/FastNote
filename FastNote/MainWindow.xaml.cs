@@ -37,5 +37,10 @@ namespace FastNote
         {
             NoteBox.Grid_OnMouseMove(sender, e);
         }
+
+        private void Grid_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            NoteBox.ListBox_OnMouseLeftButtonUp(sender, e);
+        }
     }
 }

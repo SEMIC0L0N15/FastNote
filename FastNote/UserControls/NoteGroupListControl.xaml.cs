@@ -2,6 +2,7 @@
 using System.Windows;
 using FastNote.Core;
 using System.Windows.Controls;
+using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 
@@ -9,10 +10,13 @@ namespace FastNote
 {
     public partial class NoteGroupListControl : UserControl
     {
+        private bool isDragOn;
+        public NoteGroupListViewModel ViewModel => (NoteGroupListViewModel) DataContext;
+
         public NoteGroupListControl()
         {
             InitializeComponent();
-            this.DataContext = ViewModelLocator.GetNoteGroupListViewModel();
+            DataContext = ViewModelLocator.GetNoteGroupListViewModel();
         }
 
         private void Button_OnClick(object sender, RoutedEventArgs e)
@@ -31,25 +35,28 @@ namespace FastNote
             ((ListBox) sender).SelectedIndex = 1;
         }
 
-        private void ListBox_OnDragEnter(object sender, DragEventArgs e)
+        private void ListBoxItem_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            if (!e.Data.GetDataPresent("myFormat") ||
-                sender == e.Source)
+            if (ViewModelLocator.ApplicationViewModel.IsDragActive)
             {
-                e.Effects = DragDropEffects.None;
+                isDragOn = true;
             }
         }
 
-        private void ListBox_OnDrop(object sender, DragEventArgs e)
+        private void ListBoxItem_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            if (e.Data.GetDataPresent("myFormat"))
+            isDragOn = false;
+        }
+
+        private void ListBoxItem_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (isDragOn)
             {
-                var listBox = sender as ListBox;
-                var noteItemViewModel = e.Data.GetData("myFormat") as NoteItemViewModel;
+                var listBoxItem = (ListBoxItem) sender;
+                var noteGroupViewModel = (NoteGroupViewModel) listBoxItem.Content;
 
-                var noteGroupViewModel = new NoteGroupViewModel(new NoteGroup(noteItemViewModel.Content));
-
-                ((NoteGroupListViewModel)listBox.DataContext).Items.Add(noteGroupViewModel);
+                //TODO get DraggingItem
+                noteGroupViewModel.NoteGroup.AddNote(new NoteItem("czesc"));
             }
         }
     }

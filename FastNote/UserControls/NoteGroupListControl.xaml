@@ -16,14 +16,16 @@
                      BorderThickness="0"
                      ItemsSource="{Binding Items}"
                      Loaded="FrameworkElement_OnLoaded"
-                     DragEnter="ListBox_OnDragEnter"
-                     Drop="ListBox_OnDrop"
-                     AllowDrop="False"
+                     AllowDrop="True"
                      SelectedItem="{Binding SelectedGroup, Mode=OneWayToSource, 
                                     Converter={local:NoteGroupModelToVMConverter}}">
 
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
+                        
+                        <EventSetter Event="MouseEnter" Handler="ListBoxItem_OnMouseEnter"/>
+                        <EventSetter Event="MouseLeave" Handler="ListBoxItem_OnMouseLeave"/>
+                        <EventSetter Event="MouseLeftButtonUp" Handler="ListBoxItem_OnMouseLeftButtonUp"/>
 
                         <Setter Property="local:CanHighlight.Value"
                                 Value="{Binding CanHighlight, Source={x:Static core:ViewModelLocator.ApplicationViewModel}}" />

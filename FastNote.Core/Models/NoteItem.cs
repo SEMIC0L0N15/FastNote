@@ -14,11 +14,12 @@ namespace FastNote.Core
         public NoteItem(string content)
         {
             Content = content;
+            CreationDate = DateTime.Now;
         }
 
         public NoteItem()
         {
-            
+            CreationDate = DateTime.Now;
         }
         #endregion
     }

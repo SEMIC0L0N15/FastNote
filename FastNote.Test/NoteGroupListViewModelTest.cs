@@ -111,7 +111,7 @@ namespace FastNote.Test
                 A.CallTo(() => NoteItemProvider.GetItems(NoteGroups[0])).Returns(FirstGroupItems);
                 A.CallTo(() => NoteItemProvider.GetItems(NoteGroups[1])).Returns(SecondGroupItems);
                 A.CallTo(() => NoteItemProvider.GetItems(null)).Returns(new List<NoteItem>());
-                NoteBoxViewModel = new NoteBoxViewModel(NoteItemProvider);
+                NoteBoxViewModel = new NoteBoxViewModel();
             }
             #endregion
 

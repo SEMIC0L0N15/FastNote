@@ -56,7 +56,7 @@ namespace FastNote.Test
                 var itemsProvider = A.Fake<INoteItemProvider>();
                 A.CallTo(() => itemsProvider.GetItems(null)).Returns(new List<NoteItem>());
 
-                ViewModel = new NoteBoxViewModel(itemsProvider);
+                ViewModel = new NoteBoxViewModel();
             }
 
             private void SetTypedText(string text)

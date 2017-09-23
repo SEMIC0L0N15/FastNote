@@ -14,7 +14,7 @@
              Tag="15 0 15 10">
 
     <Grid MouseMove="ListBox_OnPreviewMouseMove" x:Name="BackgroundGrid"
-          PreviewMouseLeftButtonUp="ListBox_OnMouseLeftButtonUp"
+          MouseLeftButtonUp="ListBox_OnMouseLeftButtonUp"
           PreviewMouseMove="Grid_OnMouseMove">
         
         <Grid Background="{StaticResource BackgroundDarkerBrush}">
@@ -204,8 +204,9 @@
                    Width="{Binding ActualWidth, ElementName=ListBox}"
                    VerticalAlignment="Top" HorizontalAlignment="Left"
                    Margin="0"
-                   Padding="15"
-                   Visibility="Hidden"/>
+                   Visibility="Hidden"
+                   Padding="12"
+                   IsHitTestVisible="False"/>
         
     </Grid>
 

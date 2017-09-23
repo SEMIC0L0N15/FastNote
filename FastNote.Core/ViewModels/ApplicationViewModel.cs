@@ -6,6 +6,7 @@ namespace FastNote.Core
     {
         public bool IsUpdatingData { get; set; }
         public bool CanHighlight { get; set; } = true;
-        public bool IsDragActive { get; set; }
+        public bool IsDragActive => DraggingObject != null;
+        public object DraggingObject { get; set; }
     }
 }

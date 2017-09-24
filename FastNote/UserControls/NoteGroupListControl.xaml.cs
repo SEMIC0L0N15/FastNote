@@ -55,8 +55,13 @@ namespace FastNote
                 var listBoxItem = (ListBoxItem) sender;
                 var noteGroupViewModel = (NoteGroupViewModel) listBoxItem.Content;
 
-                //TODO get DraggingItem
-                noteGroupViewModel.NoteGroup.AddNote(new NoteItem("czesc"));
+                var noteItem = ViewModelLocator.ApplicationViewModel.DraggingObject as NoteItem;
+
+                if (noteItem != null)
+                {
+                    noteGroupViewModel.NoteGroup.AddNote(noteItem);
+                    isDragOn = false;
+                }
             }
         }
     }

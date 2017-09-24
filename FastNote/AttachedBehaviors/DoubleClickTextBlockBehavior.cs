@@ -24,7 +24,7 @@ namespace FastNote
             if (e.ClickCount >= 2)
             {
                 AssociatedObject.Tag = true;
-                e.Handled = true;
+                //e.Handled = true;
             }
         }
         

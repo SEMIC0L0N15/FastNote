@@ -38,10 +38,12 @@ namespace FastNote.Core
             {
                 if (value != null)
                 {
-                    noteGroup.PropertyChanged -= OnNotesGroupChanged;
+                    noteGroup.PropertyChanged -= OnNoteGroupPropertyChanged;
+
                     noteGroup = value;
+
                     noteGroup.UpdateNotes();
-                    noteGroup.PropertyChanged += OnNotesGroupChanged;
+                    noteGroup.PropertyChanged += OnNoteGroupPropertyChanged;
                     RefreshItems(); 
                 }
             }
@@ -118,7 +120,6 @@ namespace FastNote.Core
         public void DeleteNote(NoteItemViewModel note)
         {
             NoteGroup.DeleteNote(note.NoteItem);
-            RefreshItems();
         }
         #endregion
 
@@ -152,7 +153,7 @@ namespace FastNote.Core
         #endregion
 
         #region Event Handlers
-        public void OnNotesGroupChanged(object sender, PropertyChangedEventArgs e)
+        public void OnNoteGroupPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             RefreshItems();
         }

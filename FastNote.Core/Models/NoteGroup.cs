@@ -27,6 +27,7 @@ namespace FastNote.Core
         public void AddNote(NoteItem noteItem)
         {
             Notes.Add(noteItem);
+            SaveNotes();
             RaisePropertyChanged(nameof(Notes));
         }
 

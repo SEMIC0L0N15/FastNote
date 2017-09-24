@@ -8,12 +8,11 @@
              xmlns:core="clr-namespace:FastNote.Core;assembly=FastNote.Core"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="500"
-             DataContext="{x:Static core:NoteBoxDesignModel.Instance}"
              x:Name="NoteBox"
              Loaded="NoteBoxControl_OnLoaded"
              Tag="15 0 15 10">
 
-    <Grid MouseMove="ListBox_OnPreviewMouseMove" x:Name="BackgroundGrid"
+    <Grid x:Name="BackgroundGrid"
           MouseLeftButtonUp="ListBox_OnMouseLeftButtonUp"
           PreviewMouseMove="Grid_OnMouseMove">
         
@@ -31,7 +30,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto"
                           ScrollChanged="ScrollViewer_OnScrollChanged"
                           PreviewMouseWheel="UIElement_OnPreviewMouseWheel">
-                    <Grid MouseDown="Grid_OnMouseDown">
+                    <Grid MouseDown="Background_OnMouseDown">
 
                         <ListBox BorderThickness="0" 
                              x:Name="ListBox" 
@@ -40,9 +39,7 @@
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
                              Background="Transparent"
-                             Focusable="False"
-                             PreviewMouseLeftButtonDown="ListBox_OnPreviewMouseLeftButtonDown"
-                             MouseLeave="ListBox_OnMouseLeave">
+                             Focusable="False">
 
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -61,9 +58,9 @@
                                                    Background="{TemplateBinding Tag}"
                                                    Padding="12">
                                                
-                                        <i:Interaction.Behaviors>
-                                            <local:DoubleClickTextBlockBehavior/>
-                                        </i:Interaction.Behaviors>
+                                            <i:Interaction.Behaviors>
+                                                <local:DoubleClickTextBlockBehavior/>
+                                            </i:Interaction.Behaviors>
                                         </TextBlock>
 
                                         <TextBox Tag="{Binding Tag, ElementName=TextBlock}"
@@ -93,7 +90,7 @@
 
                                             <TextBox.InputBindings>
                                                 <KeyBinding Key="Enter" Command="{Binding SubmitEditCommand}"/>
-                                                <KeyBinding Key="Escape" Command="{Binding DIscardEditCommand}"/>
+                                                <KeyBinding Key="Escape" Command="{Binding DiscardEditCommand}"/>
                                             </TextBox.InputBindings>
                                         </TextBox>
                                     </Grid>
@@ -108,8 +105,15 @@
                                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
                                     <Setter Property="Focusable" Value="False"/>
                                     <Setter Property="Tag" Value="{Binding DataContext, ElementName=NoteBox}"/>
-                                    <Setter Property="local:CanHighlight.Value" Value="{Binding CanHighlight, 
-                                        Source={x:Static core:ViewModelLocator.ApplicationViewModel}}"/>
+                                    <Setter Property="local:CanHighlight.Value" Value="{Binding IsDragActive, 
+                                        Source={x:Static core:ViewModelLocator.ApplicationViewModel}, 
+                                        Converter={local:ReverseBoolConverter}}"/>
+                                    
+                                    <EventSetter Event="PreviewMouseMove" Handler="ListBoxItem_OnPreviewMouseMove"/>
+                                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBoxItem_OnPreviewMouseLeftButtonDown"></EventSetter>
+                                    <EventSetter Event="MouseUp" Handler="ListBoxItem_OnMouseUp"/>
+                                    <EventSetter Event="MouseEnter" Handler="ListBoxItem_OnMouseEnter"/>
+                                    <EventSetter Event="MouseLeave" Handler="ListBoxItem_OnMouseLeave"/>
 
                                     <Setter Property="Template">
                                         <Setter.Value>
@@ -119,9 +123,6 @@
                                                     Background="{DynamicResource BackgroundVeryDarkBrush}"
                                                     Margin="0 1 0 0">
                                                     <ContentPresenter x:Name="presenter" 
-                                                              MouseUp="Item_OnMouseUp"
-                                                              MouseEnter="Presenter_OnMouseEnter"
-                                                              MouseLeave="Presenter_OnMouseLeave"
                                                               Focusable="False"
                                                               Tag="{TemplateBinding Background}"/>
                                                 </Border>
@@ -189,7 +190,7 @@
                      local:TextPrompt.Value="Napisz coś..." 
                      AcceptsReturn="True"
                      VerticalScrollBarVisibility="Auto"
-                     PreviewMouseDown="Grid_OnMouseDown"
+                     PreviewMouseDown="Background_OnMouseDown"
                      Text="{Binding TypedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding PushNoteCommand}"/>
@@ -197,7 +198,7 @@
             </TextBox>
         </Grid>
         
-        <TextBlock x:Name="MovableTextBlock"
+        <TextBlock x:Name="DraggableTile"
                    Style="{StaticResource ItemTextBlock}"
                    Text="Cześc, Perl" 
                    Background="{StaticResource AzureRegularBrush}"

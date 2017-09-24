@@ -39,14 +39,16 @@ namespace FastNote
         #region Selecting
 
         #region Mouse Down / Up
-        private void Item_OnMouseUp(object sender, MouseButtonEventArgs e)
+        private void ListBoxItem_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            ListBoxItem listBoxItem = GetAssociatedListBoxItem(sender);
+            HandleMouseUp((ListBoxItem) sender, e);
+        }
 
-
+        private void HandleMouseUp(ListBoxItem listBoxItem, MouseButtonEventArgs e)
+        {
             if (AcceptsClick(listBoxItem))
             {
-                //if (e.LeftButton == MouseButtonState.Pressed)
+                if (e.ChangedButton == MouseButton.Left)
                     listBoxItem.IsSelected ^= true;
             }
             else
@@ -58,22 +60,20 @@ namespace FastNote
         #endregion
 
         #region Mouse Enter / Leave
-        private void Presenter_OnMouseEnter(object sender, MouseEventArgs e)
+        private void ListBoxItem_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            HandleMouseEnterLeave(sender, e);
+            HandleMouseEnterLeave((ListBoxItem) sender, e);
         }
 
-        private void Presenter_OnMouseLeave(object sender, MouseEventArgs e)
+        private void ListBoxItem_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            HandleMouseEnterLeave(sender, e);
+            HandleMouseEnterLeave((ListBoxItem) sender, e);
         }
 
-        private void HandleMouseEnterLeave(object sender, MouseEventArgs e)
+        private void HandleMouseEnterLeave(ListBoxItem listBoxItem, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                ListBoxItem listBoxItem = GetAssociatedListBoxItem(sender);
-
                 if (AcceptsClick(listBoxItem))
                 {
                     listBoxItem.IsSelected = true;
@@ -85,18 +85,21 @@ namespace FastNote
         #endregion
 
         #region Common Helpers
-        private static ListBoxItem GetAssociatedListBoxItem(object sender)
+        private static ListBoxItem GetAssociatedListBoxItem(FrameworkElement contentElement)
         {
-            var contentElement = sender as FrameworkElement;
             var listBoxItem = contentElement.TemplatedParent as ListBoxItem;
             return listBoxItem;
         }
 
         private bool AcceptsClick(ListBoxItem listBoxItem)
         {
+            NoteItemViewModel viewModel = GetNoteItemViewModelFrom(listBoxItem);
+            bool isBeingEdited = viewModel?.IsBeingEdited ?? false;
+
             return ListBox.SelectionMode == SelectionMode.Multiple ||
                    (ListBox.SelectionMode == SelectionMode.Extended && IsShiftPressed()) ||
-                   listBoxItem.IsSelected;
+                   listBoxItem.IsSelected ||
+                   isBeingEdited;
         }
 
         private static bool IsShiftPressed()
@@ -113,7 +116,7 @@ namespace FastNote
         #endregion
 
         #region Deselecting
-        private void Grid_OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void Background_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             DeselectAndDiscardEditAllItems();
         }
@@ -154,77 +157,120 @@ namespace FastNote
         }
         #endregion
 
-        private void ListBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        #region Drag and Drop
+
+        #region Event Handlers
+        private void ListBoxItem_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            startPosition = e.GetPosition((IInputElement) e.OriginalSource);
-            //TODO provide NoteItem object
-            ViewModelLocator.ApplicationViewModel.DraggingObject = true;
+            InitDragAndDrop((ListBoxItem) sender, e);
         }
 
         public void ListBox_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            MovableTextBlock.Visibility = Visibility.Hidden;
-            ViewModelLocator.ApplicationViewModel.DraggingObject = null;
-            ViewModelLocator.ApplicationViewModel.CanHighlight = true;
-        }
-
-        private void ListBox_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            //ViewModelLocator.ApplicationViewModel.IsDragActive = false;
-        }
-
-        private void ListBox_OnPreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            if (!ViewModelLocator.ApplicationViewModel.IsDragActive || 
-                MovableTextBlock.Visibility == Visibility.Visible || 
-                !(e.OriginalSource is TextBlock))
-                return;
-
-            Point mousePos = e.GetPosition((IInputElement) e.OriginalSource);
-            Vector diff = startPosition - mousePos;
-
-            if (e.LeftButton == MouseButtonState.Pressed &&
-                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
-            {
-                MovableTextBlock.Visibility = Visibility.Visible;
-
-
-                var listBox = sender as ListBox;
-                var listBoxItem = FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
-
-                var noteItemViewModel = listBoxItem.Content as NoteItemViewModel;
-
-                var dataObject = new DataObject("myFormat", noteItemViewModel);
-
-                ViewModelLocator.ApplicationViewModel.CanHighlight = false;
-                MovableTextBlock.Text = noteItemViewModel.Content;
-                noteItemViewModel.IsSelected = false;
-
-                if (!IsControlPressed())
-                    ((NoteBoxViewModel)NoteBox.DataContext).DeleteNote(noteItemViewModel);
-            }
-        }
-
-        private static T FindAnchestor<T>(DependencyObject current)
-            where T : DependencyObject
-        {
-            do
-            {
-                if (current is T)
-                {
-                    return (T)current;
-                }
-                current = VisualTreeHelper.GetParent(current);
-            }
-            while (current != null);
-            return null;
+            EndDragAndDrop();
         }
 
         public void Grid_OnMouseMove(object sender, MouseEventArgs e)
         {
-            MovableTextBlock.Margin = new Thickness(e.GetPosition(BackgroundGrid).X - startPosition.X, 
-                                                    e.GetPosition(BackgroundGrid).Y - startPosition.Y, 0, 0);
+            UpdateDraggableTilePosition(e);
         }
+
+        private void ListBoxItem_OnPreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.OriginalSource is TextBlock)
+            {
+                StartDragAndDropIfPossible((ListBoxItem) sender, e);
+            }
+        }
+        #endregion
+
+        #region Init/End DragAndDrop
+        private void InitDragAndDrop(ListBoxItem listBoxItem, MouseButtonEventArgs e)
+        {
+            startPosition = e.GetPosition((IInputElement)e.OriginalSource);
+
+            NoteItemViewModel noteItemViewModel = GetNoteItemViewModelFrom(listBoxItem);
+            NoteItem noteItem = noteItemViewModel.NoteItem;
+
+            ViewModelLocator.ApplicationViewModel.DraggingObject = noteItem;
+        }
+
+        private void EndDragAndDrop()
+        {
+            HideDraggableTile();
+            ViewModelLocator.ApplicationViewModel.DraggingObject = null;
+        } 
+        #endregion
+
+        #region DraggableTile
+        private void UpdateDraggableTilePosition(MouseEventArgs e)
+        {
+            DraggableTile.Margin = new Thickness(
+                e.GetPosition(BackgroundGrid).X - startPosition.X,
+                e.GetPosition(BackgroundGrid).Y - startPosition.Y, 0, 0);
+        }
+
+        private void ShowDraggableTile()
+        {
+            DraggableTile.Visibility = Visibility.Visible;
+        }
+
+        private void HideDraggableTile()
+        {
+            DraggableTile.Visibility = Visibility.Hidden;
+        } 
+        #endregion
+
+        #region StartDragAndDropIfPossible
+        private void StartDragAndDropIfPossible(ListBoxItem listBoxItem, MouseEventArgs e)
+        {
+            if (ShouldStartDragAndDrop() && DraggedEnoughDistance(e))
+            {
+                ShowDraggableTile();
+
+                NoteItemViewModel noteItemViewModel = GetNoteItemViewModelFrom(listBoxItem);
+                StartDragAndDrop(noteItemViewModel);
+            }
+        }
+
+        private bool ShouldStartDragAndDrop()
+        {
+            return ViewModelLocator.ApplicationViewModel.IsDragActive &&
+                   DraggableTile.Visibility != Visibility.Visible;
+        }
+
+        private bool DraggedEnoughDistance(MouseEventArgs e)
+        {
+            Point mousePos = e.GetPosition((IInputElement)e.OriginalSource);
+            Vector distance = startPosition - mousePos;
+
+            return (Math.Abs(distance.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(distance.Y) > SystemParameters.MinimumVerticalDragDistance) &&
+                    LeftMouseButtonPressed(e);
+        }
+
+        private bool LeftMouseButtonPressed(MouseEventArgs e)
+        {
+            return e.LeftButton == MouseButtonState.Pressed;
+        }
+
+        private void StartDragAndDrop(NoteItemViewModel noteItemViewModel)
+        {
+            DraggableTile.Text = noteItemViewModel.Content;
+            noteItemViewModel.IsSelected = false;
+
+            if (!IsControlPressed())
+                ((NoteBoxViewModel)NoteBox.DataContext).DeleteNote(noteItemViewModel);
+        }
+        #endregion
+
+        #endregion
+
+        #region NoteItemViewModel Getters
+        private static NoteItemViewModel GetNoteItemViewModelFrom(ListBoxItem listBoxItem)
+        {
+            return listBoxItem.DataContext as NoteItemViewModel;
+        }
+        #endregion
     }
 }

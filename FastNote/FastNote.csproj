@@ -82,6 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AttachedBehaviors\AcceptDropBehavior.cs" />
+    <Compile Include="AttachedBehaviors\BaseAttachedBehavior.cs" />
+    <Compile Include="AttachedBehaviors\NoteBoxAcceptDropBehavior.cs" />
+    <Compile Include="AttachedBehaviors\NoteGroupAcceptDropBehavior.cs" />
     <Compile Include="AttachedProperties\AttachedProperties.cs" />
     <Compile Include="AttachedProperties\MarginSetter.cs" />
     <Compile Include="AttachedBehaviors\DoubleClickTextBlockBehavior.cs" />
@@ -107,6 +111,7 @@
     <Compile Include="ValueConverters\NoteGroupModelToVMConverter.cs" />
     <Compile Include="ValueConverters\ReverseBoolConverter.cs" />
     <Compile Include="ValueConverters\StringToItsLengthConverter.cs" />
+    <Compile Include="ViewModels\BoolToPaddingConverter.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="WindowHelpers\WindowResizer.cs" />
     <Page Include="MainWindow.xaml">

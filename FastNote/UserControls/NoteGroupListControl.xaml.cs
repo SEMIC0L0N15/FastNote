@@ -55,9 +55,7 @@ namespace FastNote
                 var listBoxItem = (ListBoxItem) sender;
                 var noteGroupViewModel = (NoteGroupViewModel) listBoxItem.Content;
 
-                var noteItem = ViewModelLocator.ApplicationViewModel.DraggingObject as NoteItem;
-
-                if (noteItem != null)
+                if (ViewModelLocator.ApplicationViewModel.DraggingObject is NoteItem noteItem)
                 {
                     noteGroupViewModel.NoteGroup.AddNote(noteItem);
                     isDragOn = false;

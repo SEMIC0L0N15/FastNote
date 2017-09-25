@@ -39,7 +39,8 @@
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
                              Background="Transparent"
-                             Focusable="False">
+                             Focusable="False"
+                             local:NoteBoxAcceptDropBehavior.Value="True">
 
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -197,18 +198,24 @@
                 </TextBox.InputBindings>
             </TextBox>
         </Grid>
-        
-        <TextBlock x:Name="DraggableTile"
-                   Style="{StaticResource ItemTextBlock}"
-                   Text="Cześc, Perl" 
-                   Background="{StaticResource AzureRegularBrush}"
-                   Width="{Binding ActualWidth, ElementName=ListBox}"
+
+        <Border CornerRadius="10" x:Name="DraggableTile"
+                VerticalAlignment="Top" HorizontalAlignment="Left"
+                Visibility="Hidden" Background="{StaticResource AzureRegularBrush}"
+                BorderThickness="1" BorderBrush="{StaticResource ForegroundLightBrush}"
+                IsHitTestVisible="False">
+            <TextBlock
+                   Text="{Binding Tag, ElementName=DraggableTile}" 
+                   Background="Transparent"
                    VerticalAlignment="Top" HorizontalAlignment="Left"
-                   Margin="0"
-                   Visibility="Hidden"
+                   Visibility="{Binding Visibility, ElementName=DraggableTile}"
                    Padding="12"
-                   IsHitTestVisible="False"/>
-        
+                   IsHitTestVisible="False"
+                   ClipToBounds="True"
+                   Style="{StaticResource ItemTextBlock}"/>
+
+        </Border>
+
     </Grid>
 
 </UserControl>

@@ -199,6 +199,7 @@ namespace FastNote
         {
             HideDraggableTile();
             ViewModelLocator.ApplicationViewModel.DraggingObject = null;
+            ViewModelLocator.ApplicationViewModel.IsDragActive = false;
         } 
         #endregion
 
@@ -206,8 +207,8 @@ namespace FastNote
         private void UpdateDraggableTilePosition(MouseEventArgs e)
         {
             DraggableTile.Margin = new Thickness(
-                e.GetPosition(BackgroundGrid).X - startPosition.X,
-                e.GetPosition(BackgroundGrid).Y - startPosition.Y, 0, 0);
+                e.GetPosition(BackgroundGrid).X - DraggableTile.ActualWidth/2,
+                e.GetPosition(BackgroundGrid).Y - DraggableTile.ActualHeight/2, 0, 0);
         }
 
         private void ShowDraggableTile()
@@ -235,7 +236,7 @@ namespace FastNote
 
         private bool ShouldStartDragAndDrop()
         {
-            return ViewModelLocator.ApplicationViewModel.IsDragActive &&
+            return ViewModelLocator.ApplicationViewModel.DraggingObject != null &&
                    DraggableTile.Visibility != Visibility.Visible;
         }
 
@@ -256,11 +257,13 @@ namespace FastNote
 
         private void StartDragAndDrop(NoteItemViewModel noteItemViewModel)
         {
-            DraggableTile.Text = noteItemViewModel.Content;
+            DraggableTile.Tag = noteItemViewModel.Content;
             noteItemViewModel.IsSelected = false;
 
             if (!IsControlPressed())
                 ((NoteBoxViewModel)NoteBox.DataContext).DeleteNote(noteItemViewModel);
+
+            ViewModelLocator.ApplicationViewModel.IsDragActive = true;
         }
         #endregion
 

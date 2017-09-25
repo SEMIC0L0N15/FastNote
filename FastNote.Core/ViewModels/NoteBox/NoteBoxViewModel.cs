@@ -100,8 +100,13 @@ namespace FastNote.Core
 
         private void FlushTypedText()
         {
-            NoteGroup.AddNote(new NoteItem(TypedText));
+            AddNote(new NoteItem(TypedText));
             TypedText = string.Empty;
+        }
+
+        public void AddNote(NoteItem noteItem)
+        {
+            NoteGroup.AddNote(noteItem);
         }
         #endregion
 

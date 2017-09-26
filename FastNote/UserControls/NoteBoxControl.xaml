@@ -14,7 +14,9 @@
 
     <Grid x:Name="BackgroundGrid"
           MouseLeftButtonUp="ListBox_OnMouseLeftButtonUp"
-          PreviewMouseMove="Grid_OnMouseMove">
+          PreviewMouseMove="Grid_OnMouseMove"
+          Focusable="True"
+          KeyDown="BackgroundGrid_OnKeyDown">
         
         <Grid Background="{StaticResource BackgroundDarkerBrush}">
 
@@ -58,10 +60,6 @@
                                                    Tag="{Binding IsBeingEdited, Mode=TwoWay}"
                                                    Background="{TemplateBinding Tag}"
                                                    Padding="12">
-                                               
-                                            <i:Interaction.Behaviors>
-                                                <local:DoubleClickTextBlockBehavior/>
-                                            </i:Interaction.Behaviors>
                                         </TextBlock>
 
                                         <TextBox Tag="{Binding Tag, ElementName=TextBlock}"
@@ -71,12 +69,11 @@
                                              Padding="10 12 12 12"
                                              BorderThickness="0"
                                              local:IsBeingUpdated.Value="{Binding IsBeingEdited, Mode=TwoWay}"
-                                             AcceptsReturn="True">
+                                             AcceptsReturn="True"
+                                             local:ItemEditorEditWithArrowsBehavior.Value="True"
+                                             local:SelectAllTextBehavior.Value="True">
 
-                                            <i:Interaction.Behaviors>
-                                                <local:SelectAllTextBoxBehavior/>
-                                            </i:Interaction.Behaviors>
-
+                                            
                                             <TextBox.Style>
                                                 <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseTextBox}">
                                                     <Setter Property="Visibility" Value="Hidden"/>
@@ -106,9 +103,12 @@
                                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
                                     <Setter Property="Focusable" Value="False"/>
                                     <Setter Property="Tag" Value="{Binding DataContext, ElementName=NoteBox}"/>
-                                    <Setter Property="local:CanHighlight.Value" Value="{Binding IsDragActive, 
+                                    <Setter Property="local:CanHighlight.Value"
+                                            Value="{Binding IsDragActive, 
                                         Source={x:Static core:ViewModelLocator.ApplicationViewModel}, 
-                                        Converter={local:ReverseBoolConverter}}"/>
+                                        Converter={local:ReverseBoolConverter}}" />
+
+                                    <Setter Property="local:DoubleClickTextBlockBehavior.Value" Value="True"/>
                                     
                                     <EventSetter Event="PreviewMouseMove" Handler="ListBoxItem_OnPreviewMouseMove"/>
                                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBoxItem_OnPreviewMouseLeftButtonDown"></EventSetter>
@@ -116,7 +116,7 @@
                                     <EventSetter Event="MouseEnter" Handler="ListBoxItem_OnMouseEnter"/>
                                     <EventSetter Event="MouseLeave" Handler="ListBoxItem_OnMouseLeave"/>
 
-                                    <Setter Property="Template">
+                                        <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
 
@@ -192,6 +192,7 @@
                      AcceptsReturn="True"
                      VerticalScrollBarVisibility="Auto"
                      PreviewMouseDown="Background_OnMouseDown"
+                     local:MainTextBoxEditWithArrowsBehavior.Value="True"
                      Text="{Binding TypedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding PushNoteCommand}"/>
@@ -199,11 +200,11 @@
             </TextBox>
         </Grid>
 
-        <Border CornerRadius="10" x:Name="DraggableTile"
+        <Border CornerRadius="5" x:Name="DraggableTile"
                 VerticalAlignment="Top" HorizontalAlignment="Left"
                 Visibility="Hidden" Background="{StaticResource AzureRegularBrush}"
                 BorderThickness="1" BorderBrush="{StaticResource ForegroundLightBrush}"
-                IsHitTestVisible="False">
+                IsHitTestVisible="False" Opacity="0.7">
             <TextBlock
                    Text="{Binding Tag, ElementName=DraggableTile}" 
                    Background="Transparent"

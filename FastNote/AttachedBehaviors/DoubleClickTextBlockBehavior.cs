@@ -1,31 +1,27 @@
-﻿using System;
+﻿using FastNote.Core;
+using System;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
 namespace FastNote
 {
-    public class DoubleClickTextBlockBehavior : Behavior<TextBlock>
+    public class DoubleClickTextBlockBehavior : BaseAttachedBehavior<DoubleClickTextBlockBehavior, ListBoxItem>
     {
-        protected override void OnAttached()
+        protected override void OnAttached(ListBoxItem associatedObject)
         {
-            base.OnAttached();
-            AssociatedObject.MouseDown += OnMouseDown;
+            associatedObject.MouseDoubleClick += OnMouseDown;
         }
 
-        protected override void OnDetaching()
+        protected override void OnDetaching(ListBoxItem associatedObject)
         {
-            base.OnDetaching();
-            AssociatedObject.MouseDown -= OnMouseDown;
+            associatedObject.MouseDoubleClick -= OnMouseDown;
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount >= 2)
-            {
-                AssociatedObject.Tag = true;
-                //e.Handled = true;
-            }
+            var associatedObject = (ListBoxItem) sender;
+            ((NoteItemViewModel) associatedObject.DataContext).StartEditing();
         }
         
     }

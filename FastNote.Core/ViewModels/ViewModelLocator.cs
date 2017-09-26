@@ -4,10 +4,10 @@ namespace FastNote.Core
 {
     public static class ViewModelLocator
     {
-        public static NoteBoxViewModel GetNoteBoxViewModel() => 
+        public static NoteBoxViewModel NoteBoxViewModel =>
             IsInDesignMode() ? new NoteBoxDesignModel() : IoC.Get<NoteBoxViewModel>();
 
-        public static NoteGroupListViewModel GetNoteGroupListViewModel() => 
+        public static NoteGroupListViewModel NoteGroupListViewModel =>
             IsInDesignMode() ? new NoteGroupListDesignModel() : IoC.Get<NoteGroupListViewModel>();
 
         public static ApplicationViewModel ApplicationViewModel => 

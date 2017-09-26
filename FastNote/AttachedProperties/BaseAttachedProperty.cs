@@ -52,8 +52,8 @@ namespace FastNote
         #endregion
 
         #region Event Handlers
-        public virtual void OnValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) { }
-        public virtual void OnValueUpdated(DependencyObject sender, object value) { }
+        public virtual void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) { }
+        public virtual void OnValueUpdated(DependencyObject d, object value) { }
         #endregion
     }
 }

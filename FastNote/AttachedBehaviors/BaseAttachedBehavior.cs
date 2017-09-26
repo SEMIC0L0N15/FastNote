@@ -6,21 +6,18 @@ namespace FastNote
         where TSelf: new()
         where T: DependencyObject
     {
-        protected T AssociatedObject { get; private set; }
 
-        public override void OnValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        public sealed override void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            AssociatedObject = (T) sender;
-
             if ((bool) e.NewValue)
-                OnAttached();
+                OnAttached((T) d);
             else
-                OnDetaching();
+                OnDetaching((T) d);
         }
 
-        public override void OnValueUpdated(DependencyObject sender, object value) { }
+        public sealed override void OnValueUpdated(DependencyObject d, object value) { }
 
-        protected virtual void OnAttached() { }
-        protected virtual void OnDetaching() { }
+        protected virtual void OnAttached(T associatedObject) { }
+        protected virtual void OnDetaching(T associatedObjecy) { }
     }
 }

@@ -61,7 +61,25 @@
                                                 <Condition Binding="{Binding IsDragActive, Source={x:Static core:ViewModelLocator.ApplicationViewModel}}" Value="True"/>
                                             </MultiDataTrigger.Conditions>
                                             
-                                            <Setter TargetName="TextBlock" Property="Padding" Value="8 20 8 20"/>
+                                            <!--<MultiDataTrigger.EnterActions>
+                                                <BeginStoryboard x:Name="BeginExpand">
+                                                    <Storyboard>
+                                                        <ThicknessAnimation To="8 8 8 32" Duration="0:0:0.2"  Storyboard.TargetProperty="Padding" Storyboard.TargetName="TextBlock"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiDataTrigger.EnterActions>
+                                            
+                                            <MultiDataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ThicknessAnimation To="8" Duration="0:0:0.2"
+                                                                            Storyboard.TargetProperty="Padding"
+                                                                            Storyboard.TargetName="TextBlock" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiDataTrigger.ExitActions>-->
+                                            
+                                            
                                             <Setter TargetName="TextBlock" Property="Background"
                                                     Value="{StaticResource AzureLightBrush}" />
                                             

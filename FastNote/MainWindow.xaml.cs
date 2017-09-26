@@ -42,5 +42,10 @@ namespace FastNote
         {
             NoteBox.ListBox_OnMouseLeftButtonUp(sender, e);
         }
+
+        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            
+        }
     }
 }

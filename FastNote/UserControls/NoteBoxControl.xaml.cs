@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +26,7 @@ namespace FastNote
         public NoteBoxControl()
         {
             InitializeComponent();
-            DataContext = ViewModelLocator.GetNoteBoxViewModel();
+            DataContext = ViewModelLocator.NoteBoxViewModel;
         }
         #endregion
 
@@ -56,6 +57,10 @@ namespace FastNote
                 DeselectAndDiscardEditAllItems();
                 listBoxItem.IsSelected = true;
             }
+
+            var noteItemViewModel = (NoteItemViewModel) listBoxItem.DataContext;
+            if (!noteItemViewModel.IsBeingEdited)
+                BackgroundGrid.Focus();
         }
         #endregion
 
@@ -85,19 +90,12 @@ namespace FastNote
         #endregion
 
         #region Common Helpers
-        private static ListBoxItem GetAssociatedListBoxItem(FrameworkElement contentElement)
-        {
-            var listBoxItem = contentElement.TemplatedParent as ListBoxItem;
-            return listBoxItem;
-        }
-
         private bool AcceptsClick(ListBoxItem listBoxItem)
         {
             NoteItemViewModel viewModel = GetNoteItemViewModelFrom(listBoxItem);
             bool isBeingEdited = viewModel?.IsBeingEdited ?? false;
 
-            return ListBox.SelectionMode == SelectionMode.Multiple ||
-                   (ListBox.SelectionMode == SelectionMode.Extended && IsShiftPressed()) ||
+            return IsShiftPressed() ||
                    listBoxItem.IsSelected ||
                    isBeingEdited;
         }
@@ -128,6 +126,20 @@ namespace FastNote
             {
                 item.IsSelected = false;
                 item.SubmitEdit();
+            }
+        }
+        #endregion
+
+        #region Deleting
+        private void BackgroundGrid_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                foreach (NoteItemViewModel item in ListBox.Items)
+                {
+                    if (item.IsSelected)
+                        ViewModel.DeleteNote(item);
+                }
             }
         }
         #endregion
@@ -207,7 +219,7 @@ namespace FastNote
         private void UpdateDraggableTilePosition(MouseEventArgs e)
         {
             DraggableTile.Margin = new Thickness(
-                e.GetPosition(BackgroundGrid).X - DraggableTile.ActualWidth/2,
+                e.GetPosition(BackgroundGrid).X - DraggableTile.ActualWidth/4,
                 e.GetPosition(BackgroundGrid).Y - DraggableTile.ActualHeight/2, 0, 0);
         }
 

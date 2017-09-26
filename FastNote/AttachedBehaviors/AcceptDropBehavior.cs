@@ -10,18 +10,18 @@ namespace FastNote
 	{
 		private bool isMouseOver;
 
-		protected override void OnAttached()
+		protected override void OnAttached(FrameworkElement associatedObject)
 		{
-			AssociatedObject.MouseEnter += OnMouseEnter;
-			AssociatedObject.MouseLeave += OnMouseLeave;
-			AssociatedObject.MouseLeftButtonUp += OnMouseLeftButtonUp;
+			associatedObject.MouseEnter += OnMouseEnter;
+			associatedObject.MouseLeave += OnMouseLeave;
+			associatedObject.MouseLeftButtonUp += OnMouseLeftButtonUp;
 		}
 
-		protected override void OnDetaching()
+		protected override void OnDetaching(FrameworkElement associatedObject)
 		{
-			AssociatedObject.MouseEnter -= OnMouseEnter;
-			AssociatedObject.MouseLeave -= OnMouseLeave;
-			AssociatedObject.MouseLeftButtonUp -= OnMouseLeftButtonUp;
+			associatedObject.MouseEnter -= OnMouseEnter;
+			associatedObject.MouseLeave -= OnMouseLeave;
+			associatedObject.MouseLeftButtonUp -= OnMouseLeftButtonUp;
 		}
 
 		private void OnMouseEnter(object sender, MouseEventArgs e)

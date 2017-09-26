@@ -84,12 +84,15 @@
     </ApplicationDefinition>
     <Compile Include="AttachedBehaviors\AcceptDropBehavior.cs" />
     <Compile Include="AttachedBehaviors\BaseAttachedBehavior.cs" />
+    <Compile Include="AttachedBehaviors\EditWithArrowsBehavior.cs" />
+    <Compile Include="AttachedBehaviors\ItemEditorEditWithArrowsBehavior.cs" />
+    <Compile Include="AttachedBehaviors\MainTextBoxEditWithArrowsBehavior.cs" />
     <Compile Include="AttachedBehaviors\NoteBoxAcceptDropBehavior.cs" />
     <Compile Include="AttachedBehaviors\NoteGroupAcceptDropBehavior.cs" />
     <Compile Include="AttachedProperties\AttachedProperties.cs" />
     <Compile Include="AttachedProperties\MarginSetter.cs" />
     <Compile Include="AttachedBehaviors\DoubleClickTextBlockBehavior.cs" />
-    <Compile Include="AttachedBehaviors\SelectAllTextBoxBehavior.cs" />
+    <Compile Include="AttachedBehaviors\SelectAllTextBehavior.cs" />
     <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
     <Compile Include="UserControls\UpdateIndicator.xaml.cs">
       <DependentUpon>UpdateIndicator.xaml</DependentUpon>

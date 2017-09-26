@@ -11,7 +11,7 @@ namespace FastNote.Core
 
         #region Constructor
         public NoteGroupListDesignModel()
-            : base(new DesingNoteGroupProvider())
+            : base(new DesignNoteGroupProvider())
         {
         }
         #endregion

@@ -16,7 +16,7 @@ namespace FastNote
         public NoteGroupListControl()
         {
             InitializeComponent();
-            DataContext = ViewModelLocator.GetNoteGroupListViewModel();
+            DataContext = ViewModelLocator.NoteGroupListViewModel;
         }
 
         private void Button_OnClick(object sender, RoutedEventArgs e)

@@ -12,6 +12,7 @@
         MinHeight="300"
         MinWidth="400"
         SizeChanged="MainWindow_OnSizeChanged"
+        KeyDown="MainWindow_OnKeyDown"
         Loaded="MainWindow_OnLoaded">
         <!--Height="450" Width="650"-->
     <Window.Resources>

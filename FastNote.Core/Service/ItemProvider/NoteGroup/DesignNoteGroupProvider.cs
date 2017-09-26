@@ -6,7 +6,7 @@ using GalaSoft.MvvmLight;
 
 namespace FastNote.Core
 {
-    public class DesingNoteGroupProvider : INoteGroupProvider
+    public class DesignNoteGroupProvider : INoteGroupProvider
     {
         public IEnumerable<NoteGroup> GetItems()
         {

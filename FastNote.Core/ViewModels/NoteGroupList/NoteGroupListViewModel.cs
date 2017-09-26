@@ -37,7 +37,6 @@ namespace FastNote.Core
             UpdateItems();
         }
 
-        public NoteGroupListViewModel() { }
         #endregion
 
         #region Methods

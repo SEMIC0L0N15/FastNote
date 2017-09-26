@@ -100,6 +100,7 @@ namespace FastNote.Test
 
             private void ConfigureNoteGroupViewModel()
             {
+                //TODO Update tests
                 NoteGroupProvider = A.Fake<INoteGroupProvider>();
                 A.CallTo(() => NoteGroupProvider.GetItems()).Returns(NoteGroups);
                 NoteGroupListViewModel = new NoteGroupListViewModel(NoteGroupProvider);

@@ -5,7 +5,8 @@
     <Style TargetType="{x:Type ContextMenu}">
         
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Grid.IsSharedSizeScope" Value="True"></Setter>
+        <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
+        <Setter Property="Opacity" Value="0.85"/>
 
         <Setter Property="ItemContainerStyle">
             <Setter.Value>

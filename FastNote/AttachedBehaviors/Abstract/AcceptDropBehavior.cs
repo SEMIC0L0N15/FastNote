@@ -5,23 +5,28 @@ using FastNote.Core;
 
 namespace FastNote
 {
-	public abstract class AcceptDropBehavior<TSelf> : BaseAttachedBehavior<TSelf, FrameworkElement>
-		where TSelf: new()
+	public abstract class AcceptDropBehavior : AttachedBehavior<FrameworkElement>
 	{
 		private bool isMouseOver;
 
-		protected override void OnAttached(FrameworkElement associatedObject)
+		public AcceptDropBehavior(FrameworkElement associatedObject)
+			: base(associatedObject)
 		{
-			associatedObject.MouseEnter += OnMouseEnter;
-			associatedObject.MouseLeave += OnMouseLeave;
-			associatedObject.MouseLeftButtonUp += OnMouseLeftButtonUp;
+
 		}
 
-		protected override void OnDetaching(FrameworkElement associatedObject)
+		public override void OnAttached()
 		{
-			associatedObject.MouseEnter -= OnMouseEnter;
-			associatedObject.MouseLeave -= OnMouseLeave;
-			associatedObject.MouseLeftButtonUp -= OnMouseLeftButtonUp;
+			AssociatedObject.MouseEnter += OnMouseEnter;
+			AssociatedObject.MouseLeave += OnMouseLeave;
+			AssociatedObject.MouseLeftButtonUp += OnMouseLeftButtonUp;
+		}
+
+		public override void OnDetaching()
+		{
+			AssociatedObject.MouseEnter -= OnMouseEnter;
+			AssociatedObject.MouseLeave -= OnMouseLeave;
+			AssociatedObject.MouseLeftButtonUp -= OnMouseLeftButtonUp;
 		}
 
 		private void OnMouseEnter(object sender, MouseEventArgs e)

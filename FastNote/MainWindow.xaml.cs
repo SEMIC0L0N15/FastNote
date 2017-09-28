@@ -14,10 +14,10 @@ namespace FastNote
             this.DataContext = new MainWindowViewModel(this);
         }
 
-        private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        #region MainWindow
+        private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            (sender as FrameworkElement)?.Focus();
-            NoteBox.DeselectAndDiscardEditAllItems();
+            await DatabaseAccessor.UpdateLocalDataFromDatabase();
         }
 
         private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -27,25 +27,24 @@ namespace FastNote
             else
                 NoteBox.Tag = "15 0 15 10";
         }
+        #endregion
 
-        private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        #region Background
+        private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            await DatabaseAccessor.UpdateLocalDataFromDatabase();
+            (sender as FrameworkElement)?.Focus();
+            NoteBox.SelectionBehavior.DeselectAndDiscardEditAllItems();
         }
 
         private void Grid_OnMouseMove(object sender, MouseEventArgs e)
         {
-            NoteBox.Grid_OnMouseMove(sender, e);
+            NoteBox.DragAndDropBehavior.UpdateDraggableTilePosition(e);
         }
 
         private void Grid_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            NoteBox.ListBox_OnMouseLeftButtonUp(sender, e);
-        }
-
-        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            
-        }
+            NoteBox.DragAndDropBehavior.EndDragAndDrop();
+        } 
+        #endregion
     }
 }

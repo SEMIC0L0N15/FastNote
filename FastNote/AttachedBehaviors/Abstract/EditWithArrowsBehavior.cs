@@ -6,12 +6,17 @@ using FastNote.Core;
 
 namespace FastNote
 {
-    public abstract class EditWithArrowsBehavior<TSelf> : BaseAttachedBehavior<TSelf, TextBox>
-        where TSelf : new()
+    public abstract class EditWithArrowsBehavior : AttachedBehavior<TextBox>
     {
-        protected override void OnAttached(TextBox associatedObject)
+        protected EditWithArrowsBehavior(TextBox asociatedObject) :
+            base(asociatedObject)
         {
-            associatedObject.PreviewKeyDown += TextBox_OnPreviewKeyDown;
+
+        }
+
+        public override void OnAttached()
+        {
+            AssociatedObject.PreviewKeyDown += TextBox_OnPreviewKeyDown;
         }
 
         private void TextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)

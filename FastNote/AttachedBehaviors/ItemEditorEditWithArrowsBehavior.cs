@@ -1,11 +1,31 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using FastNote.Core;
 
 namespace FastNote
 {
-    public class ItemEditorEditWithArrowsBehavior : EditWithArrowsBehavior<ItemEditorEditWithArrowsBehavior>
+    #region Property
+    public class ItemEditorEditWithArrowsBehaviorProperty :
+    AttachedBehaviorProperty<ItemEditorEditWithArrowsBehaviorProperty, TextBox>
     {
+        protected override AttachedBehavior<TextBox> CreateAttachedBehavior(DependencyObject d)
+        {
+            return new ItemEditorEditWithArrowsBehavior((TextBox)d);
+        }
+    } 
+    #endregion
+
+    public class ItemEditorEditWithArrowsBehavior: EditWithArrowsBehavior
+    {
+        #region Constructor
+        public ItemEditorEditWithArrowsBehavior(TextBox associatedObject) :
+            base(associatedObject)
+        {
+
+        } 
+        #endregion
+
         protected override void OnEditPrevious(TextBox textBox)
         {
             var currentItem = (NoteItemViewModel) textBox.DataContext;

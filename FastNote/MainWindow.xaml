@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FastNote"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Layout;assembly=Microsoft.Expression.Interactions"
         mc:Ignorable="d"
         Title="FastNote" 
         Height="620" Width="880"
@@ -12,7 +14,6 @@
         MinHeight="300"
         MinWidth="400"
         SizeChanged="MainWindow_OnSizeChanged"
-        KeyDown="MainWindow_OnKeyDown"
         Loaded="MainWindow_OnLoaded">
         <!--Height="450" Width="650"-->
     <Window.Resources>
@@ -142,13 +143,13 @@
             <ColumnDefinition Width="35"/>
         </Grid.ColumnDefinitions>
 
-        <local:LeftToolbarControl Grid.Column="0"/>
+        <local:LeftToolbarControl Grid.Column="0" Canvas.ZIndex="1"/>
 
-        <local:NoteGroupListControl Grid.Column="1"/>
+        <local:NoteGroupListControl Grid.Column="1" Canvas.ZIndex="1"/>
 
-        <local:NoteBoxControl x:Name="NoteBox" Grid.Column="2" Tag="15 0 15 10"/>
+        <local:NoteBoxControl x:Name="NoteBox" Grid.Column="2" Tag="15 0 15 10" Canvas.ZIndex="2"/>
 
-        <Border Grid.Column="3" 
+        <Border Grid.Column="3" Canvas.ZIndex="1"
                 Background="{StaticResource BackgroundVeryDarkBrush}"
                 BorderThickness="1 0 0 0" 
                 BorderBrush="{StaticResource BorderLightBrush}">

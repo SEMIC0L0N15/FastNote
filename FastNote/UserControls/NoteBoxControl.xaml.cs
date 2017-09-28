@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -11,15 +15,16 @@ using GalaSoft.MvvmLight;
 
 namespace FastNote
 {
-    public partial class NoteBoxControl : UserControl
+    public partial class NoteBoxControl : UserControl, IDragSource, IRichItemsControl
     {
-        #region Private Members
-        private bool autoScroll = true;
-        private Point startPosition;
-        #endregion
-
         #region Public Properties
         public NoteBoxViewModel ViewModel => (NoteBoxViewModel) DataContext;
+
+        public InitDragAndDropBehavior DragAndDropBehavior =>
+            (InitDragAndDropBehavior) InitDragAndDropBehaviorProperty.BehaviorInstances[this];
+
+        public RichSelectionBehavior SelectionBehavior =>
+            (RichSelectionBehavior) RichSelectionBehaviorProperty.BehaviorInstances[this];
         #endregion
 
         #region Constructor
@@ -27,265 +32,76 @@ namespace FastNote
         {
             InitializeComponent();
             DataContext = ViewModelLocator.NoteBoxViewModel;
+
+            ListBox.ItemContainerGenerator.StatusChanged += (sender, e) =>
+            {
+                var generator = (ItemContainerGenerator) sender;
+                
+                if (generator.Status == GeneratorStatus.ContainersGenerated) 
+                    ItemsChanged();
+            };
+
+
+            SetValue(InitDragAndDropBehaviorProperty.ValueProperty, true);
+            SetValue(RichSelectionBehaviorProperty.ValueProperty, true);
         }
         #endregion
 
-        #region Initial Actions
+        #region Event Handlers
         private void NoteBoxControl_OnLoaded(object sender, RoutedEventArgs e)
         {
             TextBox.Focus();
         }
-        #endregion
 
-        #region Selecting
-
-        #region Mouse Down / Up
-        private void ListBoxItem_OnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            HandleMouseUp((ListBoxItem) sender, e);
-        }
-
-        private void HandleMouseUp(ListBoxItem listBoxItem, MouseButtonEventArgs e)
-        {
-            if (AcceptsClick(listBoxItem))
-            {
-                if (e.ChangedButton == MouseButton.Left)
-                    listBoxItem.IsSelected ^= true;
-            }
-            else
-            {
-                DeselectAndDiscardEditAllItems();
-                listBoxItem.IsSelected = true;
-            }
-
-            var noteItemViewModel = (NoteItemViewModel) listBoxItem.DataContext;
-            if (!noteItemViewModel.IsBeingEdited)
-                BackgroundGrid.Focus();
-        }
-        #endregion
-
-        #region Mouse Enter / Leave
-        private void ListBoxItem_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            HandleMouseEnterLeave((ListBoxItem) sender, e);
-        }
-
-        private void ListBoxItem_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            HandleMouseEnterLeave((ListBoxItem) sender, e);
-        }
-
-        private void HandleMouseEnterLeave(ListBoxItem listBoxItem, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                if (AcceptsClick(listBoxItem))
-                {
-                    listBoxItem.IsSelected = true;
-                    e.Handled = true;
-                }
-            }
-        }
-
-        #endregion
-
-        #region Common Helpers
-        private bool AcceptsClick(ListBoxItem listBoxItem)
-        {
-            NoteItemViewModel viewModel = GetNoteItemViewModelFrom(listBoxItem);
-            bool isBeingEdited = viewModel?.IsBeingEdited ?? false;
-
-            return IsShiftPressed() ||
-                   listBoxItem.IsSelected ||
-                   isBeingEdited;
-        }
-
-        private static bool IsShiftPressed()
-        {
-            return Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
-        }
-
-        private static bool IsControlPressed()
-        {
-            return Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
-        }
-        #endregion
-
-        #endregion
-
-        #region Deselecting
         private void Background_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            DeselectAndDiscardEditAllItems();
+            SelectionBehavior.DeselectAndDiscardEditAllItems();
         }
+        #endregion        
 
+        #region Implemented Interfaces
 
-        public void DeselectAndDiscardEditAllItems()
+        #region IDragSource Members
+        public FrameworkElement GetDraggableTile()
         {
-            foreach (NoteItemViewModel item in ListBox.Items)
-            {
-                item.IsSelected = false;
-                item.SubmitEdit();
-            }
-        }
-        #endregion
-
-        #region Deleting
-        private void BackgroundGrid_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Delete)
-            {
-                foreach (NoteItemViewModel item in ListBox.Items)
-                {
-                    if (item.IsSelected)
-                        ViewModel.DeleteNote(item);
-                }
-            }
+            return DraggableTile;
         }
         #endregion
 
-        #region Scrolling
-        private void ScrollViewer_OnScrollChanged(object sender, ScrollChangedEventArgs e)
+        #region RichItemsControl Members
+        public ItemsControl GetItemsControl()
         {
-            var scrollViewer = (ScrollViewer)sender;
-
-            if (e.ExtentHeightChange == 0)
-            {
-                if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
-                    autoScroll = true;
-                else
-                    autoScroll = false;
-            }
-
-            if (autoScroll && e.ExtentHeightChange != 0)
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
-        }
-
-        private void UIElement_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            var scrollViewer = (ScrollViewer)sender;
-            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
-            e.Handled = true;
+            return ListBox;
         }
         #endregion
 
-        #region Drag and Drop
+        #region IItemsKeeper Members
+        public event Action ItemsChanged = () => { };
 
-        #region Event Handlers
-        private void ListBoxItem_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        public void AddItem(object item)
         {
-            InitDragAndDrop((ListBoxItem) sender, e);
+            ViewModel.AddNote((NoteItem)item);
         }
 
-        public void ListBox_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        public void DeleteItem(object item)
         {
-            EndDragAndDrop();
+            ViewModel.DeleteNote((NoteItem)item);
         }
 
-        public void Grid_OnMouseMove(object sender, MouseEventArgs e)
+        public IEnumerable<FrameworkElement> GetItems()
         {
-            UpdateDraggableTilePosition(e);
-        }
-
-        private void ListBoxItem_OnPreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.OriginalSource is TextBlock)
-            {
-                StartDragAndDropIfPossible((ListBoxItem) sender, e);
-            }
+            return ViewModel.Items.Select(
+                vm => (FrameworkElement) ListBox.ItemContainerGenerator.ContainerFromItem(vm)).ToList();
         }
         #endregion
 
-        #region Init/End DragAndDrop
-        private void InitDragAndDrop(ListBoxItem listBoxItem, MouseButtonEventArgs e)
+        #region IHasBackground Members
+        public FrameworkElement GetBackground()
         {
-            startPosition = e.GetPosition((IInputElement)e.OriginalSource);
-
-            NoteItemViewModel noteItemViewModel = GetNoteItemViewModelFrom(listBoxItem);
-            NoteItem noteItem = noteItemViewModel.NoteItem;
-
-            ViewModelLocator.ApplicationViewModel.DraggingObject = noteItem;
+            return BackgroundGrid;
         }
+        #endregion 
 
-        private void EndDragAndDrop()
-        {
-            HideDraggableTile();
-            ViewModelLocator.ApplicationViewModel.DraggingObject = null;
-            ViewModelLocator.ApplicationViewModel.IsDragActive = false;
-        } 
-        #endregion
-
-        #region DraggableTile
-        private void UpdateDraggableTilePosition(MouseEventArgs e)
-        {
-            DraggableTile.Margin = new Thickness(
-                e.GetPosition(BackgroundGrid).X - DraggableTile.ActualWidth/4,
-                e.GetPosition(BackgroundGrid).Y - DraggableTile.ActualHeight/2, 0, 0);
-        }
-
-        private void ShowDraggableTile()
-        {
-            DraggableTile.Visibility = Visibility.Visible;
-        }
-
-        private void HideDraggableTile()
-        {
-            DraggableTile.Visibility = Visibility.Hidden;
-        } 
-        #endregion
-
-        #region StartDragAndDropIfPossible
-        private void StartDragAndDropIfPossible(ListBoxItem listBoxItem, MouseEventArgs e)
-        {
-            if (ShouldStartDragAndDrop() && DraggedEnoughDistance(e))
-            {
-                ShowDraggableTile();
-
-                NoteItemViewModel noteItemViewModel = GetNoteItemViewModelFrom(listBoxItem);
-                StartDragAndDrop(noteItemViewModel);
-            }
-        }
-
-        private bool ShouldStartDragAndDrop()
-        {
-            return ViewModelLocator.ApplicationViewModel.DraggingObject != null &&
-                   DraggableTile.Visibility != Visibility.Visible;
-        }
-
-        private bool DraggedEnoughDistance(MouseEventArgs e)
-        {
-            Point mousePos = e.GetPosition((IInputElement)e.OriginalSource);
-            Vector distance = startPosition - mousePos;
-
-            return (Math.Abs(distance.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                    Math.Abs(distance.Y) > SystemParameters.MinimumVerticalDragDistance) &&
-                    LeftMouseButtonPressed(e);
-        }
-
-        private bool LeftMouseButtonPressed(MouseEventArgs e)
-        {
-            return e.LeftButton == MouseButtonState.Pressed;
-        }
-
-        private void StartDragAndDrop(NoteItemViewModel noteItemViewModel)
-        {
-            DraggableTile.Tag = noteItemViewModel.Content;
-            noteItemViewModel.IsSelected = false;
-
-            if (!IsControlPressed())
-                ((NoteBoxViewModel)NoteBox.DataContext).DeleteNote(noteItemViewModel);
-
-            ViewModelLocator.ApplicationViewModel.IsDragActive = true;
-        }
-        #endregion
-
-        #endregion
-
-        #region NoteItemViewModel Getters
-        private static NoteItemViewModel GetNoteItemViewModelFrom(ListBoxItem listBoxItem)
-        {
-            return listBoxItem.DataContext as NoteItemViewModel;
-        }
         #endregion
     }
 }

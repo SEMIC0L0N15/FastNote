@@ -118,13 +118,13 @@ namespace FastNote.Core
             foreach (var item in tempItems)
             {
                 if (item.IsSelected)
-                    DeleteNote(item);
+                    DeleteNote(item.NoteItem);
             }
         }
 
-        public void DeleteNote(NoteItemViewModel note)
+        public void DeleteNote(NoteItem noteItem)
         {
-            NoteGroup.DeleteNote(note.NoteItem);
+            NoteGroup.DeleteNote(noteItem);
         }
         #endregion
 
@@ -140,6 +140,7 @@ namespace FastNote.Core
         {
             // using private member instead of property due to stack overflow problem
             Items = ConvertToViewModels(noteGroup.GetNotes());
+            RaisePropertyChanged(nameof(Items));
         }
         #endregion
 

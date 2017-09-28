@@ -24,7 +24,7 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         
-                        <Setter Property="local:NoteGroupAcceptDropBehavior.Value" Value="True"/>
+                        <Setter Property="local:NoteGroupAcceptDropBehaviorProperty.Value" Value="True"/>
                         
                         <Setter Property="local:CanHighlight.Value"
                                 Value="{Binding CanHighlight, 

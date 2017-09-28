@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\DatabaseAccessor.cs" />
+    <Compile Include="Delegates\Delegates.cs" />
     <Compile Include="IoC\IoC.cs" />
     <Compile Include="Message\NoteContentChangedMessage.cs" />
     <Compile Include="Message\SelectedNoteGroupMessage.cs" />

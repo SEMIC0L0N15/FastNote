@@ -1,22 +1,44 @@
 ﻿using FastNote.Core;
 using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
 namespace FastNote
 {
-    public class DoubleClickTextBlockBehavior : BaseAttachedBehavior<DoubleClickTextBlockBehavior, ListBoxItem>
+    #region Property
+    public class DoubleClickTextBlockBehaviorProperty :
+    AttachedBehaviorProperty<DoubleClickTextBlockBehaviorProperty, ListBoxItem>
     {
-        protected override void OnAttached(ListBoxItem associatedObject)
+        protected override AttachedBehavior<ListBoxItem> CreateAttachedBehavior(DependencyObject d)
         {
-            associatedObject.MouseDoubleClick += OnMouseDown;
+            return new DoubleClickTextBlockBehavior((ListBoxItem)d);
+        }
+    } 
+    #endregion
+
+    public class DoubleClickTextBlockBehavior : AttachedBehavior<ListBoxItem>
+    {
+        #region Constructor
+        public DoubleClickTextBlockBehavior(ListBoxItem associatedObject)
+            : base(associatedObject)
+        {
+
+        }
+        #endregion
+
+        #region Attach/Detach
+        public override void OnAttached()
+        {
+            AssociatedObject.MouseDoubleClick += OnMouseDown;
         }
 
-        protected override void OnDetaching(ListBoxItem associatedObject)
+        public override void OnDetaching()
         {
-            associatedObject.MouseDoubleClick -= OnMouseDown;
-        }
+            AssociatedObject.MouseDoubleClick -= OnMouseDown;
+        } 
+        #endregion
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {

@@ -7,17 +7,38 @@ using System.Windows.Interactivity;
 
 namespace FastNote
 {
-    public class SelectAllTextBehavior : BaseAttachedBehavior<SelectAllTextBehavior, TextBox>
+    #region Property
+    public class SelectAllTextBehaviorProperty :
+    AttachedBehaviorProperty<SelectAllTextBehaviorProperty, TextBox>
     {
-        protected override void OnAttached(TextBox associatedObject)
+        protected override AttachedBehavior<TextBox> CreateAttachedBehavior(DependencyObject d)
         {
-            associatedObject.IsVisibleChanged += OnVisibleChanged;
+            return new SelectAllTextBehavior((TextBox)d);
+        }
+    } 
+    #endregion
+
+    public class SelectAllTextBehavior : AttachedBehavior<TextBox>
+    {
+        #region Constructor
+        public SelectAllTextBehavior(TextBox associatedObject)
+            : base(associatedObject)
+        {
         }
 
-        protected override void OnDetaching(TextBox associatedObject)
+        #endregion
+
+        #region Attach/Detach
+        public override void OnAttached()
         {
-            associatedObject.IsVisibleChanged -= OnVisibleChanged;
+            AssociatedObject.IsVisibleChanged += OnVisibleChanged;
         }
+
+        public override void OnDetaching()
+        {
+            AssociatedObject.IsVisibleChanged -= OnVisibleChanged;
+        } 
+        #endregion
 
         private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {

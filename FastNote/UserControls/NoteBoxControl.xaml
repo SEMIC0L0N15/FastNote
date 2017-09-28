@@ -2,8 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Layout;assembly=Microsoft.Expression.Interactions"
              xmlns:local="clr-namespace:FastNote"
              xmlns:core="clr-namespace:FastNote.Core;assembly=FastNote.Core"
              mc:Ignorable="d" 
@@ -13,10 +14,7 @@
              Tag="15 0 15 10">
 
     <Grid x:Name="BackgroundGrid"
-          MouseLeftButtonUp="ListBox_OnMouseLeftButtonUp"
-          PreviewMouseMove="Grid_OnMouseMove"
-          Focusable="True"
-          KeyDown="BackgroundGrid_OnKeyDown">
+          Focusable="True">
         
         <Grid Background="{StaticResource BackgroundDarkerBrush}">
 
@@ -30,8 +28,7 @@
                 BorderThickness="1">
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto"
-                          ScrollChanged="ScrollViewer_OnScrollChanged"
-                          PreviewMouseWheel="UIElement_OnPreviewMouseWheel">
+                              local:AutoScrollBehaviorProperty.Value="True">
                     <Grid MouseDown="Background_OnMouseDown">
 
                         <ListBox BorderThickness="0" 
@@ -42,15 +39,15 @@
                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
                              Background="Transparent"
                              Focusable="False"
-                             local:NoteBoxAcceptDropBehavior.Value="True">
+                             local:NoteBoxAcceptDropBehaviorProperty.Value="True">
 
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel VerticalAlignment="Bottom"/>
+                                    <VirtualizingStackPanel VerticalAlignment="Bottom" IsVirtualizing="False"/>
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
 
-                            <ListBox.ItemTemplate>
+                                <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
 
@@ -70,8 +67,8 @@
                                              BorderThickness="0"
                                              local:IsBeingUpdated.Value="{Binding IsBeingEdited, Mode=TwoWay}"
                                              AcceptsReturn="True"
-                                             local:ItemEditorEditWithArrowsBehavior.Value="True"
-                                             local:SelectAllTextBehavior.Value="True">
+                                             local:ItemEditorEditWithArrowsBehaviorProperty.Value="True"
+                                             local:SelectAllTextBehaviorProperty.Value="True">
 
                                             
                                             <TextBox.Style>
@@ -108,14 +105,8 @@
                                         Source={x:Static core:ViewModelLocator.ApplicationViewModel}, 
                                         Converter={local:ReverseBoolConverter}}" />
 
-                                    <Setter Property="local:DoubleClickTextBlockBehavior.Value" Value="True"/>
-                                    
-                                    <EventSetter Event="PreviewMouseMove" Handler="ListBoxItem_OnPreviewMouseMove"/>
-                                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBoxItem_OnPreviewMouseLeftButtonDown"></EventSetter>
-                                    <EventSetter Event="MouseUp" Handler="ListBoxItem_OnMouseUp"/>
-                                    <EventSetter Event="MouseEnter" Handler="ListBoxItem_OnMouseEnter"/>
-                                    <EventSetter Event="MouseLeave" Handler="ListBoxItem_OnMouseLeave"/>
-
+                                    <Setter Property="local:DoubleClickTextBlockBehaviorProperty.Value" Value="True"/>
+                                  
                                         <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -192,7 +183,7 @@
                      AcceptsReturn="True"
                      VerticalScrollBarVisibility="Auto"
                      PreviewMouseDown="Background_OnMouseDown"
-                     local:MainTextBoxEditWithArrowsBehavior.Value="True"
+                     local:MainTextBoxEditWithArrowsBehaviorProperty.Value="True"
                      Text="{Binding TypedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding PushNoteCommand}"/>
@@ -200,11 +191,11 @@
             </TextBox>
         </Grid>
 
-        <Border CornerRadius="5" x:Name="DraggableTile"
+        <Border CornerRadius="10" x:Name="DraggableTile"
                 VerticalAlignment="Top" HorizontalAlignment="Left"
                 Visibility="Hidden" Background="{StaticResource AzureRegularBrush}"
                 BorderThickness="1" BorderBrush="{StaticResource ForegroundLightBrush}"
-                IsHitTestVisible="False" Opacity="0.7">
+                IsHitTestVisible="False" Opacity="0.9" ClipToBounds="True">
             <TextBlock
                    Text="{Binding Tag, ElementName=DraggableTile}" 
                    Background="Transparent"
@@ -212,8 +203,8 @@
                    Visibility="{Binding Visibility, ElementName=DraggableTile}"
                    Padding="12"
                    IsHitTestVisible="False"
-                   ClipToBounds="True"
-                   Style="{StaticResource ItemTextBlock}"/>
+                   Style="{StaticResource ItemTextBlock}"
+                   TextWrapping="NoWrap"/>
 
         </Border>
 

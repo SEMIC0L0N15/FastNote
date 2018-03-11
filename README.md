@@ -5,7 +5,7 @@ FastNote is an application which was primary designed to manage your notes - and
 Supported platforms:
 - Windows
 
-Currently, the project is suspended, but it could get resumed at any time.
+Currently, the project is being suspended, but it could get resumed at any time.
 
 Author: Radosław Panuszewski
 

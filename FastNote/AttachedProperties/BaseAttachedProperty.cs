@@ -6,16 +6,11 @@ namespace FastNote
     public abstract class BaseAttachedProperty<TSelf, TProperty>
         where TSelf : new()
     {
-        #region Public Events
         public event Action<DependencyObject, DependencyPropertyChangedEventArgs> ValueChanged = (sender, e) => { };
         public event Action<DependencyObject, object> ValueUpdated = (sender, value) => { };
-        #endregion
 
-        #region Public Properties
         public static TSelf Instance { get; private set; } = new TSelf();
-        #endregion
 
-        #region Attached Property Definitions
         public static readonly DependencyProperty ValueProperty = DependencyProperty.RegisterAttached(
             "Value",
             typeof(TProperty),
@@ -49,11 +44,8 @@ namespace FastNote
         {
             d.SetValue(ValueProperty, value);
         }
-        #endregion
 
-        #region Event Handlers
         public virtual void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) { }
         public virtual void OnValueUpdated(DependencyObject d, object value) { }
-        #endregion
     }
 }

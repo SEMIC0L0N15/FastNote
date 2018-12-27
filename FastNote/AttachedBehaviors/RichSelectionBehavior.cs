@@ -7,7 +7,6 @@ using FastNote.Core;
 
 namespace FastNote
 {
-    #region Property
     public class RichSelectionBehaviorProperty
         : AttachedBehaviorProperty<RichSelectionBehaviorProperty, FrameworkElement>
     {
@@ -16,23 +15,17 @@ namespace FastNote
             return new RichSelectionBehavior((FrameworkElement) d);
         }
     }
-    #endregion
 
     public class RichSelectionBehavior : AttachedBehavior<FrameworkElement>
     {
-        #region Private Members
         private IRichItemsControl RichItemsControl { get; set; }
         private FrameworkElement Background => RichItemsControl.GetBackground();
-        #endregion
 
-        #region Contructor
         public RichSelectionBehavior(FrameworkElement associatedObject)
             : base(associatedObject)
         {
         }
-        #endregion
 
-        #region Attach/Detach
         public override void OnAttached()
         {
             if (AssociatedObject is IRichItemsControl richItemsControl)
@@ -78,11 +71,8 @@ namespace FastNote
                 Background.KeyDown -= Background_OnKeyDown;
             }
         }
-        #endregion
 
-        #region Selecting
 
-        #region Mouse Up
         private void Item_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             HandleMouseUp((ListBoxItem)sender, e);
@@ -107,9 +97,7 @@ namespace FastNote
                 Background.Focus();
             }
         }
-        #endregion
 
-        #region Mouse Enter / Leave
         private void Item_OnMouseEnter(object sender, MouseEventArgs e)
         {
             HandleMouseEnterLeave((ListBoxItem)sender, e);
@@ -132,9 +120,7 @@ namespace FastNote
             }
         }
 
-        #endregion
 
-        #region Common Helpers
         private bool AcceptsClick(ListBoxItem listBoxItem)
         {
             NoteItemViewModel viewModel = GetNoteItemViewModelFrom(listBoxItem);
@@ -154,11 +140,8 @@ namespace FastNote
         {
             return Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
         }
-        #endregion
 
-        #endregion
 
-        #region Deselecting
         private void Background_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             DeselectAndDiscardEditAllItems();
@@ -173,9 +156,7 @@ namespace FastNote
                 item.SubmitEdit();
             }
         }
-        #endregion
 
-        #region Deleting
         private void Background_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
@@ -192,13 +173,10 @@ namespace FastNote
                     RichItemsControl.DeleteItem(item.NoteItem);
             }
         }
-        #endregion
 
-        #region General Helpers
         private static NoteItemViewModel GetNoteItemViewModelFrom(FrameworkElement item)
         {
             return item.DataContext as NoteItemViewModel;
         }
-        #endregion
     }
 }

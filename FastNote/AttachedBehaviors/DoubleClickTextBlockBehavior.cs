@@ -7,7 +7,6 @@ using System.Windows.Interactivity;
 
 namespace FastNote
 {
-    #region Property
     public class DoubleClickTextBlockBehaviorProperty :
     AttachedBehaviorProperty<DoubleClickTextBlockBehaviorProperty, ListBoxItem>
     {
@@ -16,19 +15,15 @@ namespace FastNote
             return new DoubleClickTextBlockBehavior((ListBoxItem)d);
         }
     } 
-    #endregion
 
     public class DoubleClickTextBlockBehavior : AttachedBehavior<ListBoxItem>
     {
-        #region Constructor
         public DoubleClickTextBlockBehavior(ListBoxItem associatedObject)
             : base(associatedObject)
         {
 
         }
-        #endregion
 
-        #region Attach/Detach
         public override void OnAttached()
         {
             AssociatedObject.MouseDoubleClick += OnMouseDown;
@@ -38,7 +33,6 @@ namespace FastNote
         {
             AssociatedObject.MouseDoubleClick -= OnMouseDown;
         } 
-        #endregion
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {

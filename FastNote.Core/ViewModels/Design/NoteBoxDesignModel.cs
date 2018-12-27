@@ -7,11 +7,8 @@ namespace FastNote.Core
 {
     public sealed class NoteBoxDesignModel : NoteBoxViewModel
     {
-        #region Static Members
         public static NoteBoxDesignModel Instance { get; set; } = new NoteBoxDesignModel();
-        #endregion
 
-        #region Constructor
         public NoteBoxDesignModel()
         {
             NoteGroup = new NoteGroup();
@@ -22,7 +19,6 @@ namespace FastNote.Core
             NoteGroup.AddNote(new NoteItem("Mass Effect: Andromeda"));
             RefreshItems();
         }
-        #endregion
 
         public override NoteGroup NoteGroup
         {

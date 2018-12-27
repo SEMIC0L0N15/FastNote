@@ -9,7 +9,6 @@ using FastNote.Core;
 
 namespace FastNote
 {
-    #region Property
     public class InitDragAndDropBehaviorProperty 
         : AttachedBehaviorProperty<InitDragAndDropBehaviorProperty, FrameworkElement>
     {
@@ -18,26 +17,20 @@ namespace FastNote
             return new InitDragAndDropBehavior((FrameworkElement) d);
         }
     } 
-    #endregion
 
     public class InitDragAndDropBehavior : AttachedBehavior<FrameworkElement>
     {
-        #region Private Members
         private Point startPosition;
         private object originalSource;
         private IDragSource DragSource { get; set; }
         private FrameworkElement DraggableTile => DragSource.GetDraggableTile();
         private FrameworkElement Background => DragSource.GetBackground();
-        #endregion
 
-        #region Constructor
         public InitDragAndDropBehavior(FrameworkElement associatedObject) :
             base(associatedObject)
         {
         }
-        #endregion
 
-        #region Attach/Detach
         public override void OnAttached()
         {
             if (AssociatedObject is IDragSource dragSource)
@@ -80,9 +73,7 @@ namespace FastNote
                 Background.MouseLeftButtonUp -= Background_OnMouseLeftButtonUp;
             }
         }
-        #endregion
 
-        #region Event Handlers
         private void Item_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             InitDragAndDrop((FrameworkElement)sender, e);
@@ -105,9 +96,7 @@ namespace FastNote
         {
             UpdateDraggableTilePosition(e);
         }
-        #endregion
 
-        #region Init/End DragAndDrop
         public void InitDragAndDrop(FrameworkElement item, MouseButtonEventArgs e)
         {
             startPosition = e.GetPosition((IInputElement)e.OriginalSource);
@@ -125,9 +114,7 @@ namespace FastNote
             ViewModelLocator.ApplicationViewModel.DraggingObject = null;
             ViewModelLocator.ApplicationViewModel.IsDragActive = false;
         }
-        #endregion
 
-        #region DraggableTile
         public void UpdateDraggableTilePosition(MouseEventArgs e)
         {
             DraggableTile.Margin = new Thickness(
@@ -144,9 +131,7 @@ namespace FastNote
         {
             DraggableTile.Visibility = Visibility.Hidden;
         }
-        #endregion
 
-        #region StartDragAndDropIfPossible
         public void StartDragAndDropIfPossible(FrameworkElement item, MouseEventArgs e)
         {
             if (ShouldStartDragAndDrop() && DraggedEnoughDistance(e))
@@ -189,9 +174,7 @@ namespace FastNote
 
             ViewModelLocator.ApplicationViewModel.IsDragActive = true;
         }
-        #endregion
 
-        #region General Helpers
         private static NoteItemViewModel GetNoteItemViewModelFrom(FrameworkElement item)
         {
             return item.DataContext as NoteItemViewModel;
@@ -201,6 +184,5 @@ namespace FastNote
         {
             return Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
         }
-        #endregion
     }
 }

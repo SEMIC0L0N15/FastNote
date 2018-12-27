@@ -5,7 +5,6 @@ using FastNote.Core;
 
 namespace FastNote
 {
-    #region Property
     public class NoteGroupAcceptDropBehaviorProperty :
     AttachedBehaviorProperty<NoteGroupAcceptDropBehaviorProperty, FrameworkElement>
     {
@@ -14,16 +13,13 @@ namespace FastNote
             return new NoteGroupAcceptDropBehavior((FrameworkElement)d);
         }
     } 
-    #endregion
 
     public class NoteGroupAcceptDropBehavior : AcceptDropBehavior
     {
-        #region Constructor
         public NoteGroupAcceptDropBehavior(FrameworkElement associatedObject)
             : base(associatedObject)
         {
         } 
-        #endregion
 
         protected override void OnDrop(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {

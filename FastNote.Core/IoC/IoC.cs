@@ -4,11 +4,8 @@ namespace FastNote.Core
 {
     public static class IoC
     {
-        #region Public Properties
         public static IKernel Kernel { get; set; } = new StandardKernel();
-        #endregion
 
-        #region Methods
         static IoC()
         {
             Kernel.Bind<INoteItemProvider>().To<LocalNoteItemProvider>();
@@ -26,6 +23,5 @@ namespace FastNote.Core
         {
             return Kernel.Get<T>();
         }        
-        #endregion
     }
 }

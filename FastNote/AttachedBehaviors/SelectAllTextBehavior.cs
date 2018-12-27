@@ -7,7 +7,6 @@ using System.Windows.Interactivity;
 
 namespace FastNote
 {
-    #region Property
     public class SelectAllTextBehaviorProperty :
     AttachedBehaviorProperty<SelectAllTextBehaviorProperty, TextBox>
     {
@@ -16,19 +15,15 @@ namespace FastNote
             return new SelectAllTextBehavior((TextBox)d);
         }
     } 
-    #endregion
 
     public class SelectAllTextBehavior : AttachedBehavior<TextBox>
     {
-        #region Constructor
         public SelectAllTextBehavior(TextBox associatedObject)
             : base(associatedObject)
         {
         }
 
-        #endregion
 
-        #region Attach/Detach
         public override void OnAttached()
         {
             AssociatedObject.IsVisibleChanged += OnVisibleChanged;
@@ -38,7 +33,6 @@ namespace FastNote
         {
             AssociatedObject.IsVisibleChanged -= OnVisibleChanged;
         } 
-        #endregion
 
         private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {

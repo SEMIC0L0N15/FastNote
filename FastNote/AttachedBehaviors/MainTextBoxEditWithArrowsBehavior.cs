@@ -5,7 +5,6 @@ using FastNote.Core;
 
 namespace FastNote
 {
-    #region Property
     public class MainTextBoxEditWithArrowsBehaviorProperty :
     AttachedBehaviorProperty<MainTextBoxEditWithArrowsBehaviorProperty, TextBox>
     {
@@ -14,16 +13,13 @@ namespace FastNote
             return new MainTextBoxEditWithArrowsBehavior((TextBox)d);
         }
     } 
-    #endregion
 
     public class MainTextBoxEditWithArrowsBehavior : EditWithArrowsBehavior
     {
-        #region Contructor
         public MainTextBoxEditWithArrowsBehavior(TextBox associatedObject)
             : base(associatedObject)
         {
         } 
-        #endregion
 
         protected override void OnEditPrevious(TextBox textBox)
         {

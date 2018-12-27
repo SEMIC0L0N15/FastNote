@@ -15,14 +15,12 @@ namespace FastNote.Core
         }
         #endregion
 
-        #region Constructor
         public NoteGroupViewModel(NoteGroup noteGroup)
         {
             NoteGroup = noteGroup;
             NoteGroup.PropertyChanged += (sender, e) => RaisePropertyChanged(e.PropertyName);
         } 
         public NoteGroupViewModel() { }
-        #endregion
 
     }
 }

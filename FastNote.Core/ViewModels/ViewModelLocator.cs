@@ -13,11 +13,9 @@ namespace FastNote.Core
         public static ApplicationViewModel ApplicationViewModel => 
             IoC.Get<ApplicationViewModel>();
 
-        #region Helpers
         private static bool IsInDesignMode()
         {
             return ViewModelBase.IsInDesignModeStatic;
         } 
-        #endregion
     }
 }

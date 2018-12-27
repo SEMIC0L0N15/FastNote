@@ -8,12 +8,9 @@ namespace FastNote
 {
     class MainWindowViewModel : ViewModelBase
     { 
-        #region Private Mambers
         private Window mWindow;
         private WindowResizer mWindowResizer;
-        #endregion
 
-        #region Public Properties
         public bool Borderless => mWindow.WindowState == WindowState.Maximized;
 
         public int Border { get; set; } = 0;
@@ -38,17 +35,13 @@ namespace FastNote
             get => ViewModelLocator.ApplicationViewModel.IsUpdatingData;
             set => ViewModelLocator.ApplicationViewModel.IsUpdatingData = value;
         }
-        #endregion
 
-        #region Public Commands
         public ICommand MinimizeCommand { get; set; }
         public ICommand MaximizeCommand { get; set; }
         public ICommand CloseCommand { get; set; }
         public ICommand SystemMenuCommand { get; set; }
         public ICommand AdvancedSearchCommand { get; set; }
-        #endregion
 
-        #region Constructor
         public MainWindowViewModel(Window window)
         {
             mWindow = window;
@@ -58,7 +51,6 @@ namespace FastNote
             FixMaximizeBug();
         }
 
-        #region Contructor Helpers
         private void SetupEvents()
         {
             mWindow.Activated += (sender, e) => RaisePropertyChanged(nameof(IsActive));
@@ -130,8 +122,5 @@ namespace FastNote
         {
             mWindowResizer = new WindowResizer(mWindow);
         } 
-        #endregion
-
-        #endregion
     }
 }

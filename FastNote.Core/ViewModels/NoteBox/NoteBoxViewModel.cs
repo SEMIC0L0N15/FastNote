@@ -84,7 +84,6 @@ namespace FastNote.Core
 
         #region Methods
 
-        #region Adding Notes
         public void PushNote()
         {
             if (NoTextTyped())
@@ -108,9 +107,7 @@ namespace FastNote.Core
         {
             NoteGroup.AddNote(noteItem);
         }
-        #endregion
 
-        #region Deleting Notes
         public void DeleteSelectedNotes()
         {
             var tempItems = new ObservableCollection<NoteItemViewModel>(Items);
@@ -126,23 +123,18 @@ namespace FastNote.Core
         {
             NoteGroup.DeleteNote(noteItem);
         }
-        #endregion
 
-        #region Saving Notes
         public void SaveItems()
         {
             NoteGroup.SaveNotes();
         }
-        #endregion
 
-        #region Refreshing Notes
         public void RefreshItems()
         {
             // using private member instead of property due to stack overflow problem
             Items = ConvertToViewModels(noteGroup.GetNotes());
             RaisePropertyChanged(nameof(Items));
         }
-        #endregion
 
         #endregion
 

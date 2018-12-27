@@ -17,7 +17,6 @@ namespace FastNote
 {
     public partial class NoteBoxControl : UserControl, IDragSource, IRichItemsControl
     {
-        #region Public Properties
         public NoteBoxViewModel ViewModel => (NoteBoxViewModel) DataContext;
 
         public InitDragAndDropBehavior DragAndDropBehavior =>
@@ -25,9 +24,7 @@ namespace FastNote
 
         public RichSelectionBehavior SelectionBehavior =>
             (RichSelectionBehavior) RichSelectionBehaviorProperty.BehaviorInstances[this];
-        #endregion
 
-        #region Constructor
         public NoteBoxControl()
         {
             InitializeComponent();
@@ -45,9 +42,7 @@ namespace FastNote
             SetValue(InitDragAndDropBehaviorProperty.ValueProperty, true);
             SetValue(RichSelectionBehaviorProperty.ValueProperty, true);
         }
-        #endregion
 
-        #region Event Handlers
         private void NoteBoxControl_OnLoaded(object sender, RoutedEventArgs e)
         {
             TextBox.Focus();
@@ -57,25 +52,18 @@ namespace FastNote
         {
             SelectionBehavior.DeselectAndDiscardEditAllItems();
         }
-        #endregion        
 
-        #region Implemented Interfaces
 
-        #region IDragSource Members
         public FrameworkElement GetDraggableTile()
         {
             return DraggableTile;
         }
-        #endregion
 
-        #region RichItemsControl Members
         public ItemsControl GetItemsControl()
         {
             return ListBox;
         }
-        #endregion
 
-        #region IItemsKeeper Members
         public event Action ItemsChanged = () => { };
 
         public void AddItem(object item)
@@ -93,15 +81,10 @@ namespace FastNote
             return ViewModel.Items.Select(
                 vm => (FrameworkElement) ListBox.ItemContainerGenerator.ContainerFromItem(vm)).ToList();
         }
-        #endregion
 
-        #region IHasBackground Members
         public FrameworkElement GetBackground()
         {
             return BackgroundGrid;
         }
-        #endregion 
-
-        #endregion
     }
 }

@@ -4,7 +4,6 @@ using System.Windows.Input;
 
 namespace FastNote
 {
-    #region Property
     public class AutoScrollBehaviorProperty
         : AttachedBehaviorProperty<AutoScrollBehaviorProperty, ScrollViewer>
     {
@@ -13,22 +12,16 @@ namespace FastNote
             return new AutoScrollBehavior((ScrollViewer) d);
         }
     }
-    #endregion
 
     public class AutoScrollBehavior : AttachedBehavior<ScrollViewer>
     {
-        #region Private Members
         private bool autoScroll = true;
-        #endregion
 
-        #region Contructor
         public AutoScrollBehavior(ScrollViewer associatedObject)
             : base(associatedObject)
         {
         }
-        #endregion
 
-        #region Attach / Detach
         public override void OnAttached()
         {
             AssociatedObject.ScrollChanged += ScrollViewer_OnScrollChanged;
@@ -40,9 +33,7 @@ namespace FastNote
             AssociatedObject.ScrollChanged -= ScrollViewer_OnScrollChanged;
             AssociatedObject.PreviewMouseWheel -= ScrollViewer_OnPreviewMouseWheel;
         }
-        #endregion
 
-        #region Event Handlers
         private void ScrollViewer_OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             var scrollViewer = (ScrollViewer)sender;
@@ -65,6 +56,5 @@ namespace FastNote
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
             e.Handled = true;
         } 
-        #endregion
     }
 }

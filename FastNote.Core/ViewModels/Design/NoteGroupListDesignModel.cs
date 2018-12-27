@@ -5,16 +5,11 @@ namespace FastNote.Core
 {
     public class NoteGroupListDesignModel : NoteGroupListViewModel
     {
-        #region Static Members
         public static NoteGroupListDesignModel Instance = new NoteGroupListDesignModel();
-        #endregion
 
-        #region Constructor
         public NoteGroupListDesignModel()
             : base(new DesignNoteGroupProvider())
         {
         }
-        #endregion
-
     }
 }

@@ -11,12 +11,9 @@ namespace FastNote.Core
 {
     public class NoteGroupListViewModel : ViewModelBase
     {
-        #region Private Members
         private INoteGroupProvider itemProvider;
         private NoteGroup selectedGroup;
-        #endregion
 
-        #region Public Properties
         public ObservableCollection<NoteGroupViewModel> Items { get; set; }
 
         public NoteGroup SelectedGroup
@@ -28,18 +25,14 @@ namespace FastNote.Core
                 Messenger.Default.Send(new SelectedNoteGroupMessage(selectedGroup));
             }
         }
-        #endregion
 
-        #region Constructor
         public NoteGroupListViewModel(INoteGroupProvider itemProvider)
         {
             this.itemProvider = itemProvider;
             UpdateItems();
         }
 
-        #endregion
 
-        #region Methods
         public void UpdateItems()
         {
             Items = new ObservableCollection<NoteGroupViewModel>(
@@ -50,6 +43,5 @@ namespace FastNote.Core
         {
             return models.Select(noteGroup => new NoteGroupViewModel(noteGroup));
         }
-        #endregion
     }
 }

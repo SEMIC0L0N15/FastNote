@@ -22,11 +22,8 @@ namespace FastNote.Core
     [Serializable]
     public class NoteBoxViewModel : ViewModelBase
     {
-        #region Private and Protected Members
         protected NoteGroup noteGroup = new NoteGroup();
-        #endregion
 
-        #region Public Properties
         public string TypedText { get; set; }
         public List<NoteItemViewModel> Items { get; set; } = 
             new List<NoteItemViewModel>();
@@ -48,14 +45,10 @@ namespace FastNote.Core
                 }
             }
         }
-        #endregion
 
-        #region Public Commands
         public ICommand PushNoteCommand { get; set; }
         public ICommand DeleteNoteCommand { get; set; }
-        #endregion
 
-        #region Constructor
         public NoteBoxViewModel()
         {
             CreateCommands();
@@ -80,9 +73,6 @@ namespace FastNote.Core
             Messenger.Default.Register<NoteContentChangedMessage>(this, 
                 message => SaveItems());
         }
-        #endregion
-
-        #region Methods
 
         public void PushNote()
         {
@@ -136,9 +126,6 @@ namespace FastNote.Core
             RaisePropertyChanged(nameof(Items));
         }
 
-        #endregion
-
-        #region Helpers
         private static List<NoteItemViewModel> ConvertToViewModels(IEnumerable<NoteItem> models)
         {
             return models.Select((noteItem) => new NoteItemViewModel(noteItem)).ToList();
@@ -148,13 +135,10 @@ namespace FastNote.Core
         {
             return viewModels.Select(vm => vm.NoteItem).ToList();
         }
-        #endregion
 
-        #region Event Handlers
         public void OnNoteGroupPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             RefreshItems();
         }
-        #endregion
     }
 }

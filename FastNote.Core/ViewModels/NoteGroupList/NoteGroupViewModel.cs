@@ -5,7 +5,6 @@ namespace FastNote.Core
 {
     public class NoteGroupViewModel : ViewModelBase
     {
-        #region Public Properties
         public NoteGroup NoteGroup { get; set; }
 
         public string Name
@@ -13,7 +12,6 @@ namespace FastNote.Core
             get => NoteGroup.Name;
             set => NoteGroup.Name = value;
         }
-        #endregion
 
         public NoteGroupViewModel(NoteGroup noteGroup)
         {

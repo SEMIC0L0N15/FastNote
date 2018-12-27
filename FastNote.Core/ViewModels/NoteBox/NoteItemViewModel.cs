@@ -10,7 +10,6 @@ namespace FastNote.Core
 {
     public class NoteItemViewModel : ViewModelBase
     {
-        #region Public Properties
         public NoteItem NoteItem { get; set; }
         public bool IsSelected { get; set; }
         public bool IsBeingEdited { get; set; }
@@ -31,15 +30,11 @@ namespace FastNote.Core
             get => NoteItem.CreationDate;
             set => NoteItem.CreationDate = value;
         }
-        #endregion
 
-        #region Public Commands
         public ICommand EditNoteCommand { get; set; }
         public ICommand SubmitEditCommand { get; set; }
         public ICommand DiscardEditCommand { get; set; }
-        #endregion
 
-        #region Constructor
         public NoteItemViewModel(NoteItem noteItem)
         {
             NoteItem = noteItem;
@@ -59,9 +54,7 @@ namespace FastNote.Core
             SubmitEditCommand = new RelayCommand(SubmitEdit);
             DiscardEditCommand = new RelayCommand(DiscardEdit);
         }
-        #endregion
 
-        #region Methods
         public void StartEditing()
         {
             IsBeingEdited = true;
@@ -78,6 +71,5 @@ namespace FastNote.Core
             TypedText = Content;
             IsBeingEdited = false;
         }
-        #endregion
     }
 }
